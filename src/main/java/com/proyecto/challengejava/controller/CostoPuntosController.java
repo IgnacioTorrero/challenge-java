@@ -20,13 +20,16 @@ public class CostoPuntosController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> addCostoPuntos(@RequestParam Long idA, @RequestParam Long idB, @RequestParam Double costo) {
+    public ResponseEntity<Void> addCostoPuntos(@RequestParam Long idA,
+                                               @RequestParam Long idB,
+                                               @RequestParam Double costo) {
         service.addCostoPuntos(idA, idB, costo);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping
-    public ResponseEntity<Void> removeCostoPuntos(@RequestParam Long idA, @RequestParam Long idB) {
+    public ResponseEntity<Void> removeCostoPuntos(@RequestParam Long idA,
+                                                  @RequestParam Long idB) {
         service.removeCostoPuntos(idA, idB);
         return ResponseEntity.ok().build();
     }

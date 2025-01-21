@@ -11,7 +11,6 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.proyecto.challengejava.constants.Constantes.PUNTO_VENTA_NOT_FOUND;
 import static com.proyecto.challengejava.constants.ConstantesTest.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -74,18 +73,18 @@ public class CostoPuntosServiceTest {
 
     @Test
     void addCostoPuntos_ReturnsOk() {
-        costoPuntosService.addCostoPuntos(1L, 2L, 100.0);
+        costoPuntosService.addCostoPuntos(ID_PUNTO_VENTA, ID_PUNTO_VENTA2, IMPORTE);
 
-        List<CostoPuntos> costos = costoPuntosService.getCostosDesdePunto(1L);
+        List<CostoPuntos> costos = costoPuntosService.getCostosDesdePunto(ID_PUNTO_VENTA);
 
         assertEquals(3, costos.size());
-        assertEquals(100.0, costos.get(0).getCosto());
+        assertEquals(IMPORTE, costos.get(0).getCosto());
     }
 
     @Test
     void addCostoPuntosLessThanZero_ThrowsIllegalArgumentException() {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
-                costoPuntosService.addCostoPuntos(1L, 2L, INVALID_COSTO)
+                costoPuntosService.addCostoPuntos(ID_PUNTO_VENTA, ID_PUNTO_VENTA2, INVALID_COSTO)
         );
         assertEquals(COSTO_PUNTOS_LESS_THAN_ZERO, exception.getMessage());
     }
@@ -93,28 +92,28 @@ public class CostoPuntosServiceTest {
     @Test
     void addCostoPuntosNotFound_ThrowsIllegalArgumentException() {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
-                costoPuntosService.addCostoPuntos(INVALID_ID, INVALID_ID2, 100.0)
+                costoPuntosService.addCostoPuntos(INVALID_ID, INVALID_ID2, IMPORTE)
         );
         assertEquals(PUNTO_VENTA_NOT_FOUND, exception.getMessage());
     }
 
     @Test
     void removeCostoPuntosPuntos_ReturnsOk() {
-        costoPuntosService.removeCostoPuntos(1L, 2L);
-        double costoAhora = costoPuntosService.getCostosDesdePunto(1L).get(0).getCosto();
+        costoPuntosService.removeCostoPuntos(ID_PUNTO_VENTA, ID_PUNTO_VENTA2);
+        double costoAhora = costoPuntosService.getCostosDesdePunto(ID_PUNTO_VENTA).get(0).getCosto();
         assertEquals(0.0, costoAhora);
     }
 
     @Test
     void getCostosDesdePunto_ReturnsCostoPuntos() {
-        costoPuntosService.addCostoPuntos(1L, 2L, 100.0);
-        costoPuntosService.addCostoPuntos(1L, 3L, 150.0);
+        costoPuntosService.addCostoPuntos(ID_PUNTO_VENTA, ID_PUNTO_VENTA2, IMPORTE);
+        costoPuntosService.addCostoPuntos(ID_PUNTO_VENTA, ID_PUNTO_VENTA3, IMPORTE2);
 
-        List<CostoPuntos> costos = costoPuntosService.getCostosDesdePunto(1L);
+        List<CostoPuntos> costos = costoPuntosService.getCostosDesdePunto(ID_PUNTO_VENTA);
 
         assertEquals(3, costos.size());
-        assertEquals(100.0, costos.get(0).getCosto());
-        assertEquals(150.0, costos.get(1).getCosto());
+        assertEquals(IMPORTE, costos.get(0).getCosto());
+        assertEquals(IMPORTE2, costos.get(1).getCosto());
     }
 
     @Test
@@ -137,7 +136,7 @@ public class CostoPuntosServiceTest {
     void cargarCostosIniciales_ReturnsOk() {
         costoPuntosService.cargarCostosIniciales();
 
-        List<CostoPuntos> costosDesdePunto1 = costoPuntosService.getCostosDesdePunto(1L);
+        List<CostoPuntos> costosDesdePunto1 = costoPuntosService.getCostosDesdePunto(ID_PUNTO_VENTA);
 
         assertFalse(costosDesdePunto1.isEmpty());
         assertEquals(3, costosDesdePunto1.size());

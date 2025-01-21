@@ -24,20 +24,18 @@ public class PuntoVentaServiceTest {
 
         assertNotNull(puntosVenta);
         assertEquals(10, puntosVenta.size());
-        assertEquals(1L, puntosVenta.get(0).getId());
+        assertEquals(ID_PUNTO_VENTA, puntosVenta.get(0).getId());
         assertNotNull(puntosVenta.get(0).getNombre());
     }
 
     @Test
     void addPuntoVenta_AddsNewPuntoVenta() {
-        Long id = 11L;
-
-        service.addPuntoVenta(id, PUNTO_VENTA_3);
+        service.addPuntoVenta(ID_PUNTO_VENTA5, PUNTO_VENTA_3);
         List<PuntoVenta> puntosVenta = service.getAllPuntosVenta();
 
         assertEquals(11, puntosVenta.size());
         PuntoVenta addedPunto = puntosVenta.stream()
-                .filter(p -> p.getId().equals(id))
+                .filter(p -> p.getId().equals(ID_PUNTO_VENTA5))
                 .findFirst()
                 .orElse(null);
         assertNotNull(addedPunto);
@@ -46,13 +44,11 @@ public class PuntoVentaServiceTest {
 
     @Test
     void updatePuntoVenta_UpdatesExistingPuntoVenta() {
-        Long id = 2L;
-
-        service.updatePuntoVenta(id, PUNTO_VENTA_5);
+        service.updatePuntoVenta(ID_PUNTO_VENTA2, PUNTO_VENTA_5);
         List<PuntoVenta> puntosVenta = service.getAllPuntosVenta();
 
         PuntoVenta updatedPunto = puntosVenta.stream()
-                .filter(p -> p.getId().equals(id))
+                .filter(p -> p.getId().equals(ID_PUNTO_VENTA2))
                 .findFirst()
                 .orElse(null);
         assertNotNull(updatedPunto);
@@ -61,24 +57,20 @@ public class PuntoVentaServiceTest {
 
     @Test
     void updatePuntoVenta_ThrowsIllegalArgumentException() {
-        Long id = 99L;
-
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
-                service.updatePuntoVenta(id, PUNTO_VENTA_6)
+                service.updatePuntoVenta(INVALID_ID, PUNTO_VENTA_6)
         );
         assertEquals(PUNTO_VENTA_NOT_FOUND, exception.getMessage());
     }
 
     @Test
     void deletePuntoVenta_RemovesPuntoVenta() {
-        Long id = 10L;
-
-        service.deletePuntoVenta(id);
+        service.deletePuntoVenta(ID_PUNTO_VENTA4);
         List<PuntoVenta> puntosVenta = service.getAllPuntosVenta();
 
         assertEquals(9, puntosVenta.size());
         PuntoVenta deletedPunto = puntosVenta.stream()
-                .filter(p -> p.getId().equals(id))
+                .filter(p -> p.getId().equals(ID_PUNTO_VENTA4))
                 .findFirst()
                 .orElse(null);
         assertNull(deletedPunto);

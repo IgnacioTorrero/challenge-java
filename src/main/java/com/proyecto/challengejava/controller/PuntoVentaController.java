@@ -25,13 +25,15 @@ public class PuntoVentaController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> addPunto(@RequestParam Long id, @RequestParam String nombre) {
+    public ResponseEntity<Void> addPunto(@RequestParam Long id,
+                                         @RequestParam String nombre) {
         service.addPuntoVenta(id, nombre);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updatePunto(@PathVariable Long id, @RequestParam String nombre) {
+    public ResponseEntity<Void> updatePunto(@PathVariable Long id,
+                                            @RequestParam String nombre) {
         service.updatePuntoVenta(id, nombre);
         return ResponseEntity.ok().build();
     }

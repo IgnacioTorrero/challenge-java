@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.proyecto.challengejava.constants.ConstantesTest.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
@@ -30,40 +31,32 @@ public class CostoPuntosControllerTest {
 
     @Test
     void addCostoPuntos_ReturnsOk() {
-        Long idA = 1L;
-        Long idB = 2L;
-        Double costo = 100.0;
+        ResponseEntity<Void> response = controller.addCostoPuntos(ID_PUNTO_VENTA, ID_PUNTO_VENTA2, IMPORTE);
 
-        ResponseEntity<Void> response = controller.addCostoPuntos(idA, idB, costo);
-
-        assertEquals(200, response.getStatusCodeValue());
-        verify(service, times(1)).addCostoPuntos(idA, idB, costo);
+        assertEquals(SUCCESS_RESPONSE, response.getStatusCodeValue());
+        verify(service, times(1)).addCostoPuntos(ID_PUNTO_VENTA, ID_PUNTO_VENTA2, IMPORTE);
     }
 
     @Test
     void removeCostoPuntos_ReturnsOk() {
-        Long idA = 1L;
-        Long idB = 2L;
-
-        ResponseEntity<Void> response = controller.removeCostoPuntos(idA, idB);
+        ResponseEntity<Void> response = controller.removeCostoPuntos(ID_PUNTO_VENTA, ID_PUNTO_VENTA2);
 
         assertEquals(200, response.getStatusCodeValue());
-        verify(service, times(1)).removeCostoPuntos(idA, idB);
+        verify(service, times(1)).removeCostoPuntos(ID_PUNTO_VENTA, ID_PUNTO_VENTA2);
     }
 
     @Test
     void getCostosDesdePunto_ReturnsListOfCostos() {
-        Long idA = 1L;
         List<CostoPuntos> mockCostos = Arrays.asList(
                 new CostoPuntos(1L, 2L, 100.0, null),
                 new CostoPuntos(1L, 3L, 150.0, null)
         );
-        when(service.getCostosDesdePunto(idA)).thenReturn(mockCostos);
+        when(service.getCostosDesdePunto(ID_PUNTO_VENTA)).thenReturn(mockCostos);
 
-        ResponseEntity<List<CostoPuntos>> response = controller.getCostosDesdePunto(idA);
+        ResponseEntity<List<CostoPuntos>> response = controller.getCostosDesdePunto(ID_PUNTO_VENTA);
         
-        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(SUCCESS_RESPONSE, response.getStatusCodeValue());
         assertEquals(mockCostos, response.getBody());
-        verify(service, times(1)).getCostosDesdePunto(idA);
+        verify(service, times(1)).getCostosDesdePunto(ID_PUNTO_VENTA);
     }
 }

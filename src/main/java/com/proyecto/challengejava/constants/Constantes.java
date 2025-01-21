@@ -10,6 +10,7 @@ public class Constantes {
     public static final String REGEX = "-";
     public static final String UNKNOWN = "Desconocido";
 
+    /* Mensajes de error */
     public static final String PUNTO_VENTA_NOT_FOUND = "Punto/s de venta no encontrado/s";
     public static final String COSTO_PUNTOS_LESS_THAN_ZERO = "El costo no puede ser menor a cero";
 }

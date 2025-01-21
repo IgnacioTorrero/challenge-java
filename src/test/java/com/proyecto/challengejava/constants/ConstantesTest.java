@@ -17,6 +17,14 @@ public class ConstantesTest {
     public static final Long INVALID_ID = 99L;
     public static final Long INVALID_ID2 = 100L;
     public static final double INVALID_COSTO = -10.0;
+    public static final int SUCCESS_RESPONSE = 200;
+    public static final Long ID_PUNTO_VENTA = 1L;
+    public static final Long ID_PUNTO_VENTA2 = 2L;
+    public static final Long ID_PUNTO_VENTA3 = 3L;
+    public static final Long ID_PUNTO_VENTA4 = 10L;
+    public static final Long ID_PUNTO_VENTA5 = 11L;
+    public static final double IMPORTE = 100.0;
+    public static final double IMPORTE2 = 200.0;
 
     /* Mensajes de error */
     public static final String PUNTO_VENTA_NOT_FOUND = "Punto/s de venta no encontrado/s";
