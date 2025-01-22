@@ -19,6 +19,9 @@ public class CostoPuntosController {
         this.service = service;
     }
 
+    /*
+     * Método encargado de agregar el costo entre punto de venta A y punto de venta B.
+     */
     @PostMapping
     public ResponseEntity<Void> addCostoPuntos(@RequestParam Long idA,
                                                @RequestParam Long idB,
@@ -27,6 +30,9 @@ public class CostoPuntosController {
         return ResponseEntity.ok().build();
     }
 
+    /*
+     * Método encargado de eliminar el costo entre punto de venta A y punto de venta B.
+     */
     @DeleteMapping
     public ResponseEntity<Void> removeCostoPuntos(@RequestParam Long idA,
                                                   @RequestParam Long idB) {
@@ -34,6 +40,10 @@ public class CostoPuntosController {
         return ResponseEntity.ok().build();
     }
 
+    /*
+     * Método encargado de traer una lista de todos los puntos de venta y costos relacionados
+     * al punto de venta A.
+     */
     @GetMapping("/{idA}")
     public ResponseEntity<List<CostoPuntos>> getCostosDesdePunto(@PathVariable Long idA) {
         return ResponseEntity.ok(service.getCostosDesdePunto(idA));

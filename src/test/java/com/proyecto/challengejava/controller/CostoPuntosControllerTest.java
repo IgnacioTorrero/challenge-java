@@ -47,16 +47,16 @@ public class CostoPuntosControllerTest {
 
     @Test
     void getCostosDesdePunto_ReturnsListOfCostos() {
-        List<CostoPuntos> mockCostos = Arrays.asList(
+        List<CostoPuntos> costos = Arrays.asList(
                 new CostoPuntos(1L, 2L, 100.0, null),
                 new CostoPuntos(1L, 3L, 150.0, null)
         );
-        when(service.getCostosDesdePunto(ID_PUNTO_VENTA)).thenReturn(mockCostos);
+        when(service.getCostosDesdePunto(ID_PUNTO_VENTA)).thenReturn(costos);
 
         ResponseEntity<List<CostoPuntos>> response = controller.getCostosDesdePunto(ID_PUNTO_VENTA);
         
         assertEquals(SUCCESS_RESPONSE, response.getStatusCodeValue());
-        assertEquals(mockCostos, response.getBody());
+        assertEquals(costos, response.getBody());
         verify(service, times(1)).getCostosDesdePunto(ID_PUNTO_VENTA);
     }
 }

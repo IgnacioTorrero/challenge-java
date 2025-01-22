@@ -52,11 +52,11 @@ public class AcreditacionControllerTest {
         acreditacion2.setId(ID_PUNTO_VENTA2);
         acreditacion2.setImporte(IMPORTE2);
 
-        Iterable<Acreditacion> mockAcreditaciones = Arrays.asList(acreditacion1, acreditacion2);
-        when(acreditacionService.obtenerAcreditaciones()).thenReturn(mockAcreditaciones);
+        Iterable<Acreditacion> acreditaciones = Arrays.asList(acreditacion1, acreditacion2);
+        when(acreditacionService.obtenerAcreditaciones()).thenReturn(acreditaciones);
         ResponseEntity<Iterable<Acreditacion>> response = acreditacionController.obtenerAcreditaciones();
 
         assertEquals(SUCCESS_RESPONSE, response.getStatusCodeValue());
-        assertEquals(mockAcreditaciones, response.getBody());
+        assertEquals(acreditaciones, response.getBody());
     }
 }

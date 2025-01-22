@@ -98,7 +98,7 @@ public class CostoPuntosServiceTest {
     }
 
     @Test
-    void removeCostoPuntosPuntos_ReturnsOk() {
+    void removeCostoPuntos_ReturnsOk() {
         costoPuntosService.removeCostoPuntos(ID_PUNTO_VENTA, ID_PUNTO_VENTA2);
         double costoAhora = costoPuntosService.getCostosDesdePunto(ID_PUNTO_VENTA).get(0).getCosto();
         assertEquals(0.0, costoAhora);

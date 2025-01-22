@@ -19,27 +19,39 @@ public class PuntoVentaController {
         this.service = service;
     }
 
+    /*
+     * Método encargado de traer una lista de todos los puntos de venta existentes.
+     */
     @GetMapping
-    public ResponseEntity<List<PuntoVenta>> getAllPuntos() {
+    public ResponseEntity<List<PuntoVenta>> getAllPuntosVenta() {
         return ResponseEntity.ok(service.getAllPuntosVenta());
     }
 
+    /*
+     * Método encargado de agregar un punto de venta con su respectivo id y nombre.
+     */
     @PostMapping
-    public ResponseEntity<Void> addPunto(@RequestParam Long id,
-                                         @RequestParam String nombre) {
+    public ResponseEntity<Void> addPuntoVenta(@RequestParam Long id,
+                                              @RequestParam String nombre) {
         service.addPuntoVenta(id, nombre);
         return ResponseEntity.ok().build();
     }
 
+    /*
+     * Método encargado de actualizar el nombre del id de punto de venta ingresado.
+     */
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updatePunto(@PathVariable Long id,
-                                            @RequestParam String nombre) {
+    public ResponseEntity<Void> updatePuntoVenta(@PathVariable Long id,
+                                                 @RequestParam String nombre) {
         service.updatePuntoVenta(id, nombre);
         return ResponseEntity.ok().build();
     }
 
+    /*
+     * Método encargado de eliminar el punto de venta relacionado al id ingresado.
+     */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePunto(@PathVariable Long id) {
+    public ResponseEntity<Void> deletePuntoVenta(@PathVariable Long id) {
         service.deletePuntoVenta(id);
         return ResponseEntity.ok().build();
     }

@@ -5,6 +5,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+/*
+ * Clase utilizada para manejar los errores relacionados a la validacion de cada método.
+ */
 @ControllerAdvice
 public class GlobalExceptionHandler {
 

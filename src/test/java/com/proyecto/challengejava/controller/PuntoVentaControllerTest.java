@@ -38,20 +38,20 @@ public class PuntoVentaControllerTest {
     }
 
     @Test
-    void getAllPuntosVenta_ReturnsListOfPuntosVenta() {
-        List<PuntoVenta> mockPuntosVenta = Arrays.asList(punto1, punto2);
-        when(service.getAllPuntosVenta()).thenReturn(mockPuntosVenta);
+    void getAllPuntosVenta_ReturnsListOfPuntosVentaVenta() {
+        List<PuntoVenta> puntosVenta = Arrays.asList(punto1, punto2);
+        when(service.getAllPuntosVenta()).thenReturn(puntosVenta);
 
-        ResponseEntity<List<PuntoVenta>> response = controller.getAllPuntos();
+        ResponseEntity<List<PuntoVenta>> response = controller.getAllPuntosVenta();
 
         assertEquals(SUCCESS_RESPONSE, response.getStatusCodeValue());
-        assertEquals(mockPuntosVenta, response.getBody());
+        assertEquals(puntosVenta, response.getBody());
         verify(service, times(1)).getAllPuntosVenta();
     }
 
     @Test
     void addPuntoVenta_ReturnsResponseOk() {
-        ResponseEntity<Void> response = controller.addPunto(ID_PUNTO_VENTA5, PUNTO_VENTA_3);
+        ResponseEntity<Void> response = controller.addPuntoVenta(ID_PUNTO_VENTA5, PUNTO_VENTA_3);
 
         assertEquals(SUCCESS_RESPONSE, response.getStatusCodeValue());
         verify(service, times(1)).addPuntoVenta(ID_PUNTO_VENTA5, PUNTO_VENTA_3);
@@ -59,7 +59,7 @@ public class PuntoVentaControllerTest {
 
     @Test
     void updatePuntoVenta_ReturnsResponseOk() {
-        ResponseEntity<Void> response = controller.updatePunto(ID_PUNTO_VENTA, PUNTO_VENTA_4);
+        ResponseEntity<Void> response = controller.updatePuntoVenta(ID_PUNTO_VENTA, PUNTO_VENTA_4);
 
         assertEquals(SUCCESS_RESPONSE, response.getStatusCodeValue());
         verify(service, times(1)).updatePuntoVenta(ID_PUNTO_VENTA, PUNTO_VENTA_4);
@@ -67,7 +67,7 @@ public class PuntoVentaControllerTest {
 
     @Test
     void deletePuntoVenta_ReturnsResponseOk() {
-        ResponseEntity<Void> response = controller.deletePunto(ID_PUNTO_VENTA4);
+        ResponseEntity<Void> response = controller.deletePuntoVenta(ID_PUNTO_VENTA4);
 
         assertEquals(SUCCESS_RESPONSE, response.getStatusCodeValue());
         verify(service, times(1)).deletePuntoVenta(ID_PUNTO_VENTA4);
