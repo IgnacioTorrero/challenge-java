@@ -5,8 +5,7 @@ import com.proyecto.challengejava.entity.PuntoVenta;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.proyecto.challengejava.constants.Constantes.*;
@@ -74,7 +73,6 @@ public class CostoPuntosService {
         }
     }
 
-
     public List<CostoPuntos> getCostosDesdePunto(Long idA) {
         if (!puntoVentaExists(idA)) {
             throw new IllegalArgumentException(PUNTO_VENTA_NOT_FOUND);
@@ -93,6 +91,51 @@ public class CostoPuntosService {
             }
         });
         return costos;
+    }
+
+    public List<Long> calcularRutaMinima(Long puntoA, Long puntoB) {
+        Map<Long, Double> distancias = new HashMap<>();
+        Map<Long, Long> predecesores = new HashMap<>();
+        PriorityQueue<Map.Entry<Long, Double>> pq = new PriorityQueue<>(Comparator.comparing(Map.Entry::getValue));
+
+        puntoVentaService.getAllPuntosVenta().forEach(p -> distancias.put(p.getId(), Double.MAX_VALUE));
+        distancias.put(puntoA, 0.0);
+
+        pq.add(new AbstractMap.SimpleEntry<>(puntoA, 0.0));
+
+        while (!pq.isEmpty()) {
+            long actual = pq.poll().getKey();
+
+            for (Map.Entry<Long, Double> vecino : getVecinos(actual).entrySet()) {
+                double nuevoCosto = distancias.get(actual) + vecino.getValue();
+                if (nuevoCosto < distancias.get(vecino.getKey())) {
+                    distancias.put(vecino.getKey(), nuevoCosto);
+                    predecesores.put(vecino.getKey(), actual);
+                    pq.add(new AbstractMap.SimpleEntry<>(vecino.getKey(), nuevoCosto));
+                }
+            }
+        }
+
+        List<Long> ruta = new ArrayList<>();
+        Long current = puntoB;
+        while (current != null) {
+            ruta.add(current);
+            current = predecesores.get(current);
+        }
+        Collections.reverse(ruta);
+        return ruta;
+    }
+
+    // Obtener puntos de venta conectados
+    private Map<Long, Double> getVecinos(Long punto) {
+        Map<Long, Double> vecinos = new HashMap<>();
+        cache.forEach((key, value) -> {
+            String[] ids = key.split("-");
+            if (Long.valueOf(ids[0]).equals(punto)) {
+                vecinos.put(Long.valueOf(ids[1]), value);
+            }
+        });
+        return vecinos;
     }
 
     private boolean puntoVentaExists(Long id) {

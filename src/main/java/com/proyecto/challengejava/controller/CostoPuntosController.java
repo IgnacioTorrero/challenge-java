@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -47,5 +48,17 @@ public class CostoPuntosController {
     @GetMapping("/{idA}")
     public ResponseEntity<List<CostoPuntos>> getCostosDesdePunto(@PathVariable Long idA) {
         return ResponseEntity.ok(service.getCostosDesdePunto(idA));
+    }
+
+    @GetMapping("/minimo")
+    public ResponseEntity<List<Long>> calcularCostoMinimo(@RequestParam("idA") Long idA, @RequestParam("idB") Long idB) {
+        if (idA == null || idB == null) {
+            return ResponseEntity.badRequest().body(Collections.emptyList());
+        }
+        List<Long> ruta = service.calcularRutaMinima(idA, idB);
+        if (ruta.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(ruta);
     }
 }
