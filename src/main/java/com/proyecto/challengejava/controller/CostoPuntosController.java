@@ -1,5 +1,6 @@
 package com.proyecto.challengejava.controller;
 
+import com.proyecto.challengejava.dto.RutaCostoMinimoResponse;
 import com.proyecto.challengejava.entity.CostoPuntos;
 import com.proyecto.challengejava.service.CostoPuntosService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,14 +52,21 @@ public class CostoPuntosController {
     }
 
     @GetMapping("/minimo")
-    public ResponseEntity<List<Long>> calcularCostoMinimo(@RequestParam("idA") Long idA, @RequestParam("idB") Long idB) {
+    public ResponseEntity<RutaCostoMinimoResponse> calcularCostoMinimo(
+            @RequestParam("idA") Long idA,
+            @RequestParam("idB") Long idB) {
+
         if (idA == null || idB == null) {
-            return ResponseEntity.badRequest().body(Collections.emptyList());
+            return ResponseEntity.badRequest().body(null);
         }
+
         List<Long> ruta = service.calcularRutaMinima(idA, idB);
         if (ruta.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(ruta);
+
+        Double costoTotal = service.calcularCostoTotalRuta(ruta);
+        RutaCostoMinimoResponse response = new RutaCostoMinimoResponse(ruta, costoTotal);
+        return ResponseEntity.ok(response);
     }
 }

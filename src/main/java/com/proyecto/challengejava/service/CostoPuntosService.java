@@ -138,6 +138,22 @@ public class CostoPuntosService {
         return vecinos;
     }
 
+    public Double calcularCostoTotalRuta(List<Long> ruta) {
+        Double costoTotal = 0.0;
+
+        for (int i = 0; i < ruta.size() - 1; i++) {
+            Long idA = ruta.get(i);
+            Long idB = ruta.get(i + 1);
+            String key = generateKey(idA, idB);
+
+            if (cache.containsKey(key)) {
+                costoTotal += cache.get(key);
+            }
+        }
+
+        return costoTotal;
+    }
+
     private boolean puntoVentaExists(Long id) {
         return puntoVentaService.getAllPuntosVenta().stream().anyMatch(p -> p.getId().equals(id));
     }
