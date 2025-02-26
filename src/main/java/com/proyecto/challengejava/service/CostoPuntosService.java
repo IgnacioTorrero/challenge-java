@@ -2,6 +2,7 @@ package com.proyecto.challengejava.service;
 
 import com.proyecto.challengejava.entity.CostoPuntos;
 import com.proyecto.challengejava.entity.PuntoVenta;
+import com.proyecto.challengejava.exception.PuntoVentaNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +42,7 @@ public class CostoPuntosService {
 
     private void agregarCostoInicial(Long idA, Long idB, Double costo) {
         if (!puntoVentaExists(idA) || !puntoVentaExists(idB)) {
-            throw new IllegalArgumentException(PUNTO_VENTA_NOT_FOUND + ": " + idA + " - " + idB);
+            throw new PuntoVentaNotFoundException(PUNTO_VENTA_NOT_FOUND + ": " + idA + " - " + idB);
         }
         cache.put(generateKey(idA, idB), costo);
         cache.put(generateKey(idB, idA), costo);
@@ -60,7 +61,7 @@ public class CostoPuntosService {
 
     public void removeCostoPuntos(Long idA, Long idB) {
         if (!puntoVentaExists(idA) || !puntoVentaExists(idB)) {
-            throw new IllegalArgumentException(PUNTO_VENTA_NOT_FOUND);
+            throw new PuntoVentaNotFoundException(PUNTO_VENTA_NOT_FOUND);
         }
         String keyAB = generateKey(idA, idB);
         String keyBA = generateKey(idB, idA);
@@ -97,6 +98,10 @@ public class CostoPuntosService {
         Map<Long, Double> distancias = new HashMap<>();
         Map<Long, Long> predecesores = new HashMap<>();
         PriorityQueue<Map.Entry<Long, Double>> pq = new PriorityQueue<>(Comparator.comparing(Map.Entry::getValue));
+
+        if (!puntoVentaExists(puntoA) || !puntoVentaExists(puntoB)) {
+            throw new PuntoVentaNotFoundException(PUNTO_VENTA_NOT_FOUND);
+        }
 
         puntoVentaService.getAllPuntosVenta().forEach(p -> distancias.put(p.getId(), Double.MAX_VALUE));
         distancias.put(puntoA, 0.0);

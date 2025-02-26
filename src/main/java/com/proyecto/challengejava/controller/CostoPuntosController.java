@@ -7,8 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
 import java.util.List;
+
+import static com.proyecto.challengejava.constants.Constantes.*;
 
 @RestController
 @RequestMapping("/api/costos")
@@ -28,6 +29,7 @@ public class CostoPuntosController {
     public ResponseEntity<Void> addCostoPuntos(@RequestParam Long idA,
                                                @RequestParam Long idB,
                                                @RequestParam Double costo) {
+        validarParametros(idA, idB);
         service.addCostoPuntos(idA, idB, costo);
         return ResponseEntity.ok().build();
     }
@@ -38,6 +40,7 @@ public class CostoPuntosController {
     @DeleteMapping
     public ResponseEntity<Void> removeCostoPuntos(@RequestParam Long idA,
                                                   @RequestParam Long idB) {
+        validarParametros(idA, idB);
         service.removeCostoPuntos(idA, idB);
         return ResponseEntity.ok().build();
     }
@@ -52,21 +55,25 @@ public class CostoPuntosController {
     }
 
     @GetMapping("/minimo")
-    public ResponseEntity<RutaCostoMinimoResponse> calcularCostoMinimo(
-            @RequestParam("idA") Long idA,
-            @RequestParam("idB") Long idB) {
-
-        if (idA == null || idB == null) {
-            return ResponseEntity.badRequest().body(null);
-        }
-
+    public ResponseEntity<RutaCostoMinimoResponse> calcularCostoMinimo(@RequestParam("idA") Long idA,
+                                                                       @RequestParam("idB") Long idB) {
+        validarParametros(idA, idB);
         List<Long> ruta = service.calcularRutaMinima(idA, idB);
-        if (ruta.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
 
         Double costoTotal = service.calcularCostoTotalRuta(ruta);
         RutaCostoMinimoResponse response = new RutaCostoMinimoResponse(ruta, costoTotal);
         return ResponseEntity.ok(response);
+    }
+
+    /*
+     * Metodo auxiliar para validar IDs
+     */
+    private void validarParametros(Long idA, Long idB) {
+        if (idA == null || idB == null || idA <= 0 || idB <= 0) {
+            throw new IllegalArgumentException(INVALID_ID_EXCEPTION);
+        }
+        if (idA.equals(idB)) {
+            throw new IllegalArgumentException(INVALID_ID_EXCEPTION_2);
+        }
     }
 }

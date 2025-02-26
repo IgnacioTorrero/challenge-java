@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.proyecto.challengejava.constants.Constantes.*;
+
 @RestController
 @RequestMapping("/api/puntos-venta")
 public class PuntoVentaController {
@@ -33,6 +35,7 @@ public class PuntoVentaController {
     @PostMapping
     public ResponseEntity<Void> addPuntoVenta(@RequestParam Long id,
                                               @RequestParam String nombre) {
+        validarPuntoVenta(id, nombre);
         service.addPuntoVenta(id, nombre);
         return ResponseEntity.ok().build();
     }
@@ -43,6 +46,7 @@ public class PuntoVentaController {
     @PutMapping("/{id}")
     public ResponseEntity<Void> updatePuntoVenta(@PathVariable Long id,
                                                  @RequestParam String nombre) {
+        validarPuntoVenta(id, nombre);
         service.updatePuntoVenta(id, nombre);
         return ResponseEntity.ok().build();
     }
@@ -54,5 +58,14 @@ public class PuntoVentaController {
     public ResponseEntity<Void> deletePuntoVenta(@PathVariable Long id) {
         service.deletePuntoVenta(id);
         return ResponseEntity.ok().build();
+    }
+
+    private void validarPuntoVenta(Long id, String nombre) {
+        if (id == null || id <= 0) {
+            throw new IllegalArgumentException(INVALID_ID_EXCEPTION);
+        }
+        if (nombre == null || nombre.trim().isEmpty() || nombre.equals("\"\"") || (!nombre.matches(REGEX_2))) {
+            throw new IllegalArgumentException(INVALID_NAME_EXCEPTION);
+        }
     }
 }
