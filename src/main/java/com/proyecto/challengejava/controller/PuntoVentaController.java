@@ -20,7 +20,7 @@ public class PuntoVentaController {
     }
 
     /*
-     * Método encargado de traer una lista de todos los puntos de venta existentes.
+     * Metodo encargado de traer una lista de todos los puntos de venta existentes.
      */
     @GetMapping
     public ResponseEntity<List<PuntoVenta>> getAllPuntosVenta() {
@@ -28,7 +28,7 @@ public class PuntoVentaController {
     }
 
     /*
-     * Método encargado de agregar un punto de venta con su respectivo id y nombre.
+     * Metodo encargado de agregar un punto de venta con su respectivo id y nombre.
      */
     @PostMapping
     public ResponseEntity<Void> addPuntoVenta(@RequestParam Long id,
@@ -38,7 +38,7 @@ public class PuntoVentaController {
     }
 
     /*
-     * Método encargado de actualizar el nombre del id de punto de venta ingresado.
+     * Metodo encargado de actualizar el nombre del id de punto de venta ingresado.
      */
     @PutMapping("/{id}")
     public ResponseEntity<Void> updatePuntoVenta(@PathVariable Long id,
@@ -48,7 +48,7 @@ public class PuntoVentaController {
     }
 
     /*
-     * Método encargado de eliminar el punto de venta relacionado al id ingresado.
+     * Metodo encargado de eliminar el punto de venta relacionado al id ingresado.
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePuntoVenta(@PathVariable Long id) {

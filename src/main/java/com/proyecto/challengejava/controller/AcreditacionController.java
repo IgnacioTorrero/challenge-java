@@ -18,7 +18,7 @@ public class AcreditacionController {
     }
 
     /*
-     * Método encargado de recibir la acreditacion para determinado idPuntoVenta, con su
+     * Metodo encargado de recibir la acreditacion para determinado idPuntoVenta, con su
      * respectivo importe, y luego almacenarlo en la BBDD.
      */
     @PostMapping
@@ -28,7 +28,7 @@ public class AcreditacionController {
     }
 
     /*
-     * Método encargado de obtener todas las acreditaciones disponibles en la BBDD.
+     * Metodo encargado de obtener todas las acreditaciones disponibles en la BBDD.
      */
     @GetMapping
     public ResponseEntity<Iterable<Acreditacion>> obtenerAcreditaciones() {

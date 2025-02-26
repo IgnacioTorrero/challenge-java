@@ -20,7 +20,7 @@ public class CostoPuntosController {
     }
 
     /*
-     * Método encargado de agregar el costo entre punto de venta A y punto de venta B.
+     * Metodo encargado de agregar el costo entre punto de venta A y punto de venta B.
      */
     @PostMapping
     public ResponseEntity<Void> addCostoPuntos(@RequestParam Long idA,
@@ -31,7 +31,7 @@ public class CostoPuntosController {
     }
 
     /*
-     * Método encargado de eliminar el costo entre punto de venta A y punto de venta B.
+     * Metodo encargado de eliminar el costo entre punto de venta A y punto de venta B.
      */
     @DeleteMapping
     public ResponseEntity<Void> removeCostoPuntos(@RequestParam Long idA,
@@ -41,7 +41,7 @@ public class CostoPuntosController {
     }
 
     /*
-     * Método encargado de traer una lista de todos los puntos de venta y costos relacionados
+     * Metodo encargado de traer una lista de todos los puntos de venta y costos relacionados
      * al punto de venta A.
      */
     @GetMapping("/{idA}")
