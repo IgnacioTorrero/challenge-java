@@ -1,6 +1,7 @@
 package com.proyecto.challengejava.controller;
 
 import com.proyecto.challengejava.dto.CostoPuntosRequest;
+import com.proyecto.challengejava.dto.RutaCostoMinimoResponse;
 import com.proyecto.challengejava.entity.CostoPuntos;
 import com.proyecto.challengejava.service.CostoPuntosServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -64,5 +65,26 @@ public class CostoPuntosControllerTest {
         assertEquals(SUCCESS_RESPONSE, response.getStatusCodeValue());
         assertEquals(costos, response.getBody());
         verify(service, times(1)).getCostosDesdePunto(ID_PUNTO_VENTA);
+    }
+
+    @Test
+    void calcularCostoMinimo_ReturnsRutaCostoMinimoResponse() {
+        List<Long> ruta = Arrays.asList(1L, 2L, 3L); // Ruta esperada
+        Double costoTotal = 25.0;
+
+        // Mockeamos los métodos de servicio
+        when(service.calcularRutaMinima(anyLong(), anyLong())).thenReturn(ruta);
+        when(service.calcularCostoTotalRuta(anyList())).thenReturn(costoTotal);
+
+        ResponseEntity<RutaCostoMinimoResponse> response = controller.calcularCostoMinimo(request);
+
+        // Verificar resultados
+        assertEquals(SUCCESS_RESPONSE, response.getStatusCodeValue());
+        assertEquals(ruta, response.getBody().getRuta());
+        assertEquals(costoTotal, response.getBody().getCostoTotal());
+
+        // Verificar que los métodos mockeados fueron llamados
+        verify(service, times(1)).calcularRutaMinima(anyLong(), anyLong());
+        verify(service, times(1)).calcularCostoTotalRuta(anyList());
     }
 }

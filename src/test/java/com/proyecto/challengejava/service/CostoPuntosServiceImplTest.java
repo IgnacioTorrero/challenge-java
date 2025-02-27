@@ -14,7 +14,7 @@ import java.util.List;
 
 import static com.proyecto.challengejava.constants.ConstantesTest.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class CostoPuntosServiceImplTest {
 
@@ -152,5 +152,23 @@ public class CostoPuntosServiceImplTest {
                 method.invoke(costoPuntosServiceImpl, INVALID_ID, INVALID_ID2, null)
         );
         assertNull(exception.getMessage());
+    }
+
+    @Test
+    void calcularRutaMinima_ThrowsPuntoVentaNotFoundException_WhenPuntoVentaDoesNotExist() {
+        when(puntoVentaServiceImpl.getAllPuntosVenta()).thenReturn(Arrays.asList(
+                new PuntoVenta() {{
+                    setId(1L);
+                    setNombre(PUNTOS_VENTA.get(0));
+                }},
+                new PuntoVenta() {{
+                    setId(2L);
+                    setNombre(PUNTOS_VENTA.get(1));
+                }}
+        ));
+
+        assertThrows(PuntoVentaNotFoundException.class, () -> {
+            costoPuntosServiceImpl.calcularRutaMinima(1L, 3L);
+        });
     }
 }
