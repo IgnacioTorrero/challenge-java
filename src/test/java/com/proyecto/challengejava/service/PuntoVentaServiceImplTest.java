@@ -9,13 +9,13 @@ import java.util.List;
 import static com.proyecto.challengejava.constants.ConstantesTest.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class PuntoVentaServiceTest {
+public class PuntoVentaServiceImplTest {
 
-    private PuntoVentaService service;
+    private PuntoVentaServiceImpl service;
 
     @BeforeEach
     void setUp() {
-        service = new PuntoVentaService();
+        service = new PuntoVentaServiceImpl();
     }
 
     @Test

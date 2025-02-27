@@ -2,7 +2,7 @@ package com.proyecto.challengejava.controller;
 
 import com.proyecto.challengejava.dto.PuntoVentaRequest;
 import com.proyecto.challengejava.entity.PuntoVenta;
-import com.proyecto.challengejava.service.PuntoVentaService;
+import com.proyecto.challengejava.service.PuntoVentaServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -20,7 +20,7 @@ import static org.mockito.Mockito.*;
 public class PuntoVentaControllerTest {
 
     @Mock
-    private PuntoVentaService service;
+    private PuntoVentaServiceImpl service;
 
     @InjectMocks
     private PuntoVentaController controller;

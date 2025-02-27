@@ -16,18 +16,18 @@ import static com.proyecto.challengejava.constants.ConstantesTest.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-public class CostoPuntosServiceTest {
+public class CostoPuntosServiceImplTest {
 
     @Mock
-    private PuntoVentaService puntoVentaService;
+    private PuntoVentaServiceImpl puntoVentaServiceImpl;
 
-    private CostoPuntosService costoPuntosService;
+    private CostoPuntosServiceImpl costoPuntosServiceImpl;
 
     @BeforeEach
     void setUp() {
         org.mockito.MockitoAnnotations.openMocks(this);
 
-        when(puntoVentaService.getAllPuntosVenta()).thenReturn(Arrays.asList(
+        when(puntoVentaServiceImpl.getAllPuntosVenta()).thenReturn(Arrays.asList(
                 new PuntoVenta() {{
                     setId(1L);
                     setNombre(PUNTOS_VENTA.get(0));
@@ -69,14 +69,14 @@ public class CostoPuntosServiceTest {
                     setNombre(PUNTOS_VENTA.get(9));
                 }}
         ));
-        costoPuntosService = new CostoPuntosService(puntoVentaService);
+        costoPuntosServiceImpl = new CostoPuntosServiceImpl(puntoVentaServiceImpl);
     }
 
     @Test
     void addCostoPuntos_ReturnsOk() {
-        costoPuntosService.addCostoPuntos(ID_PUNTO_VENTA, ID_PUNTO_VENTA2, IMPORTE);
+        costoPuntosServiceImpl.addCostoPuntos(ID_PUNTO_VENTA, ID_PUNTO_VENTA2, IMPORTE);
 
-        List<CostoPuntos> costos = costoPuntosService.getCostosDesdePunto(ID_PUNTO_VENTA);
+        List<CostoPuntos> costos = costoPuntosServiceImpl.getCostosDesdePunto(ID_PUNTO_VENTA);
 
         assertEquals(3, costos.size());
         assertEquals(IMPORTE, costos.get(0).getCosto());
@@ -85,7 +85,7 @@ public class CostoPuntosServiceTest {
     @Test
     void addCostoPuntosLessThanZero_ThrowsIllegalArgumentException() {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
-                costoPuntosService.addCostoPuntos(ID_PUNTO_VENTA, ID_PUNTO_VENTA2, INVALID_COSTO)
+                costoPuntosServiceImpl.addCostoPuntos(ID_PUNTO_VENTA, ID_PUNTO_VENTA2, INVALID_COSTO)
         );
         assertEquals(COSTO_PUNTOS_LESS_THAN_ZERO, exception.getMessage());
     }
@@ -93,24 +93,24 @@ public class CostoPuntosServiceTest {
     @Test
     void addCostoPuntosNotFound_ThrowsIllegalArgumentException() {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
-                costoPuntosService.addCostoPuntos(INVALID_ID, INVALID_ID2, IMPORTE)
+                costoPuntosServiceImpl.addCostoPuntos(INVALID_ID, INVALID_ID2, IMPORTE)
         );
         assertEquals(PUNTO_VENTA_NOT_FOUND, exception.getMessage());
     }
 
     @Test
     void removeCostoPuntos_ReturnsOk() {
-        costoPuntosService.removeCostoPuntos(ID_PUNTO_VENTA, ID_PUNTO_VENTA2);
-        double costoAhora = costoPuntosService.getCostosDesdePunto(ID_PUNTO_VENTA).get(0).getCosto();
+        costoPuntosServiceImpl.removeCostoPuntos(ID_PUNTO_VENTA, ID_PUNTO_VENTA2);
+        double costoAhora = costoPuntosServiceImpl.getCostosDesdePunto(ID_PUNTO_VENTA).get(0).getCosto();
         assertEquals(0.0, costoAhora);
     }
 
     @Test
     void getCostosDesdePunto_ReturnsCostoPuntos() {
-        costoPuntosService.addCostoPuntos(ID_PUNTO_VENTA, ID_PUNTO_VENTA2, IMPORTE);
-        costoPuntosService.addCostoPuntos(ID_PUNTO_VENTA, ID_PUNTO_VENTA3, IMPORTE2);
+        costoPuntosServiceImpl.addCostoPuntos(ID_PUNTO_VENTA, ID_PUNTO_VENTA2, IMPORTE);
+        costoPuntosServiceImpl.addCostoPuntos(ID_PUNTO_VENTA, ID_PUNTO_VENTA3, IMPORTE2);
 
-        List<CostoPuntos> costos = costoPuntosService.getCostosDesdePunto(ID_PUNTO_VENTA);
+        List<CostoPuntos> costos = costoPuntosServiceImpl.getCostosDesdePunto(ID_PUNTO_VENTA);
 
         assertEquals(3, costos.size());
         assertEquals(IMPORTE, costos.get(0).getCosto());
@@ -120,7 +120,7 @@ public class CostoPuntosServiceTest {
     @Test
     void getCostosDesdePunto_ThrowsExceptionIllegalArgumentException() {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
-                costoPuntosService.getCostosDesdePunto(INVALID_ID)
+                costoPuntosServiceImpl.getCostosDesdePunto(INVALID_ID)
         );
         assertEquals(PUNTO_VENTA_NOT_FOUND, exception.getMessage());
     }
@@ -128,16 +128,16 @@ public class CostoPuntosServiceTest {
     @Test
     void removeCostoPuntos_ThrowsIllegalArgumentException() {
         Exception exception = assertThrows(PuntoVentaNotFoundException.class, () ->
-                costoPuntosService.removeCostoPuntos(INVALID_ID, INVALID_ID2)
+                costoPuntosServiceImpl.removeCostoPuntos(INVALID_ID, INVALID_ID2)
         );
         assertEquals(PUNTO_VENTA_NOT_FOUND, exception.getMessage());
     }
 
     @Test
     void cargarCostosIniciales_ReturnsOk() {
-        costoPuntosService.cargarCostosIniciales();
+        costoPuntosServiceImpl.cargarCostosIniciales();
 
-        List<CostoPuntos> costosDesdePunto1 = costoPuntosService.getCostosDesdePunto(ID_PUNTO_VENTA);
+        List<CostoPuntos> costosDesdePunto1 = costoPuntosServiceImpl.getCostosDesdePunto(ID_PUNTO_VENTA);
 
         assertFalse(costosDesdePunto1.isEmpty());
         assertEquals(3, costosDesdePunto1.size());
@@ -145,11 +145,11 @@ public class CostoPuntosServiceTest {
 
     @Test
     void cargarCostosIniciales_ThrowsExceptionIllegalArgumentException() throws NoSuchMethodException {
-        Method method = CostoPuntosService.class.getDeclaredMethod(METHOD_AGREGAR_COSTO_INICIAL, Long.class, Long.class, Double.class);
+        Method method = CostoPuntosServiceImpl.class.getDeclaredMethod(METHOD_AGREGAR_COSTO_INICIAL, Long.class, Long.class, Double.class);
         method.setAccessible(true);
 
         InvocationTargetException exception = assertThrows(InvocationTargetException.class, () ->
-                method.invoke(costoPuntosService, INVALID_ID, INVALID_ID2, null)
+                method.invoke(costoPuntosServiceImpl, INVALID_ID, INVALID_ID2, null)
         );
         assertNull(exception.getMessage());
     }

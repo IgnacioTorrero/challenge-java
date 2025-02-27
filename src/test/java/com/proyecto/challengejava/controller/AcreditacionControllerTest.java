@@ -2,7 +2,7 @@ package com.proyecto.challengejava.controller;
 
 import com.proyecto.challengejava.dto.AcreditacionRequest;
 import com.proyecto.challengejava.entity.Acreditacion;
-import com.proyecto.challengejava.service.AcreditacionService;
+import com.proyecto.challengejava.service.AcreditacionServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -19,7 +19,7 @@ import static org.mockito.Mockito.when;
 public class AcreditacionControllerTest {
 
     @Mock
-    private AcreditacionService acreditacionService;
+    private AcreditacionServiceImpl acreditacionServiceImpl;
 
     @InjectMocks
     private AcreditacionController acreditacionController;
@@ -41,7 +41,7 @@ public class AcreditacionControllerTest {
         acreditacion.setImporte(IMPORTE);
         acreditacion.setIdPuntoVenta(ID_PUNTO_VENTA);
 
-        when(acreditacionService.recibirAcreditacion(IMPORTE, ID_PUNTO_VENTA)).thenReturn(acreditacion);
+        when(acreditacionServiceImpl.recibirAcreditacion(IMPORTE, ID_PUNTO_VENTA)).thenReturn(acreditacion);
         ResponseEntity<Acreditacion> response = acreditacionController.recibirAcreditacion(request);
 
         assertEquals(SUCCESS_RESPONSE, response.getStatusCodeValue());
@@ -59,7 +59,7 @@ public class AcreditacionControllerTest {
         acreditacion2.setImporte(IMPORTE2);
 
         Iterable<Acreditacion> acreditaciones = Arrays.asList(acreditacion1, acreditacion2);
-        when(acreditacionService.obtenerAcreditaciones()).thenReturn(acreditaciones);
+        when(acreditacionServiceImpl.obtenerAcreditaciones()).thenReturn(acreditaciones);
         ResponseEntity<Iterable<Acreditacion>> response = acreditacionController.obtenerAcreditaciones();
 
         assertEquals(SUCCESS_RESPONSE, response.getStatusCodeValue());

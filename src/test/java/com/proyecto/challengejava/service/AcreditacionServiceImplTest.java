@@ -19,16 +19,16 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-public class AcreditacionServiceTest {
+public class AcreditacionServiceImplTest {
 
     @Mock
     private AcreditacionRepository acreditacionRepository;
 
     @Mock
-    private PuntoVentaService puntoVentaService;
+    private PuntoVentaServiceImpl puntoVentaServiceImpl;
 
     @InjectMocks
-    private AcreditacionService acreditacionService;
+    private AcreditacionServiceImpl acreditacionServiceImpl;
 
     @BeforeEach
     void setUp() {
@@ -41,7 +41,7 @@ public class AcreditacionServiceTest {
         puntoVenta.setId(ID_PUNTO_VENTA);
         puntoVenta.setNombre(PUNTO_VENTA_1);
 
-        when(puntoVentaService.getAllPuntosVenta()).thenReturn(List.of(puntoVenta));
+        when(puntoVentaServiceImpl.getAllPuntosVenta()).thenReturn(List.of(puntoVenta));
 
         Acreditacion acreditacion = new Acreditacion();
         acreditacion.setId(ID_PUNTO_VENTA);
@@ -51,7 +51,7 @@ public class AcreditacionServiceTest {
         acreditacion.setFechaRecepcion(LocalDate.now());
 
         when(acreditacionRepository.save(any(Acreditacion.class))).thenReturn(acreditacion);
-        Acreditacion result = acreditacionService.recibirAcreditacion(IMPORTE, ID_PUNTO_VENTA);
+        Acreditacion result = acreditacionServiceImpl.recibirAcreditacion(IMPORTE, ID_PUNTO_VENTA);
 
         assertNotNull(result);
         assertEquals(IMPORTE, result.getImporte());
@@ -63,10 +63,10 @@ public class AcreditacionServiceTest {
 
     @Test
     void recibirAcreditacion_ThrowsIllegalArgumentException() {
-        when(puntoVentaService.getAllPuntosVenta()).thenReturn(List.of());
+        when(puntoVentaServiceImpl.getAllPuntosVenta()).thenReturn(List.of());
 
         Exception exception = assertThrows(PuntoVentaNotFoundException.class,
-                () -> acreditacionService.recibirAcreditacion(IMPORTE, INVALID_ID));
+                () -> acreditacionServiceImpl.recibirAcreditacion(IMPORTE, INVALID_ID));
         assertEquals(PUNTO_VENTA_NOT_FOUND + ": 99", exception.getMessage());
         verify(acreditacionRepository, never()).save(any(Acreditacion.class));
     }
@@ -82,7 +82,7 @@ public class AcreditacionServiceTest {
         acreditacion2.setImporte(IMPORTE2);
 
         when(acreditacionRepository.findAll()).thenReturn(Arrays.asList(acreditacion1, acreditacion2));
-        Iterable<Acreditacion> result = acreditacionService.obtenerAcreditaciones();
+        Iterable<Acreditacion> result = acreditacionServiceImpl.obtenerAcreditaciones();
 
         assertNotNull(result);
         assertTrue(((Iterable<?>) result).iterator().hasNext());

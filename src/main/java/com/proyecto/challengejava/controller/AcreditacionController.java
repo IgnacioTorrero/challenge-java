@@ -2,22 +2,20 @@ package com.proyecto.challengejava.controller;
 
 import com.proyecto.challengejava.dto.AcreditacionRequest;
 import com.proyecto.challengejava.entity.Acreditacion;
-import com.proyecto.challengejava.service.AcreditacionService;
+import com.proyecto.challengejava.service.AcreditacionServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static com.proyecto.challengejava.constants.Constantes.*;
-
 @RestController
 @RequestMapping("/api/acreditaciones")
 public class AcreditacionController {
 
-    private final AcreditacionService service;
+    private final AcreditacionServiceImpl service;
 
     @Autowired
-    public AcreditacionController(AcreditacionService service) {
+    public AcreditacionController(AcreditacionServiceImpl service) {
         this.service = service;
     }
 

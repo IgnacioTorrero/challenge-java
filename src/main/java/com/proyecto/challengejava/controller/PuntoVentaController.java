@@ -2,7 +2,7 @@ package com.proyecto.challengejava.controller;
 
 import com.proyecto.challengejava.dto.PuntoVentaRequest;
 import com.proyecto.challengejava.entity.PuntoVenta;
-import com.proyecto.challengejava.service.PuntoVentaService;
+import com.proyecto.challengejava.service.PuntoVentaServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,10 +14,10 @@ import java.util.List;
 @RequestMapping("/api/puntos-venta")
 public class PuntoVentaController {
 
-    private final PuntoVentaService service;
+    private final PuntoVentaServiceImpl service;
 
     @Autowired
-    public PuntoVentaController(PuntoVentaService service) {
+    public PuntoVentaController(PuntoVentaServiceImpl service) {
         this.service = service;
     }
 

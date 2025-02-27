@@ -1,10 +1,9 @@
 package com.proyecto.challengejava.controller;
 
 import com.proyecto.challengejava.dto.CostoPuntosRequest;
-import com.proyecto.challengejava.dto.PuntoVentaRequest;
 import com.proyecto.challengejava.dto.RutaCostoMinimoResponse;
 import com.proyecto.challengejava.entity.CostoPuntos;
-import com.proyecto.challengejava.service.CostoPuntosService;
+import com.proyecto.challengejava.service.CostoPuntosServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +17,10 @@ import static com.proyecto.challengejava.constants.Constantes.*;
 @RequestMapping("/api/costos")
 public class CostoPuntosController {
 
-    private final CostoPuntosService service;
+    private final CostoPuntosServiceImpl service;
 
     @Autowired
-    public CostoPuntosController(CostoPuntosService service) {
+    public CostoPuntosController(CostoPuntosServiceImpl service) {
         this.service = service;
     }
 
