@@ -8,8 +8,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-import static com.proyecto.challengejava.constants.Constantes.PUNTOS_VENTA;
-import static com.proyecto.challengejava.constants.Constantes.PUNTO_VENTA_NOT_FOUND;
+import static com.proyecto.challengejava.constants.Constantes.*;
 
 @Service
 public class PuntoVentaService {
@@ -41,6 +40,9 @@ public class PuntoVentaService {
     }
 
     public void addPuntoVenta(Long id, String nombre) {
+        if (cache.containsKey(id)) {
+            throw new IllegalArgumentException(PUNTO_VENTA_ALREADY_EXISTS);
+        }
         cache.put(id, nombre);
     }
 

@@ -1,5 +1,6 @@
 package com.proyecto.challengejava.controller;
 
+import com.proyecto.challengejava.dto.PuntoVentaRequest;
 import com.proyecto.challengejava.entity.PuntoVenta;
 import com.proyecto.challengejava.service.PuntoVentaService;
 import org.junit.jupiter.api.BeforeEach;
@@ -51,11 +52,16 @@ public class PuntoVentaControllerTest {
 
     @Test
     void addPuntoVenta_ReturnsResponseOk() {
-        ResponseEntity<Void> response = controller.addPuntoVenta(ID_PUNTO_VENTA5, PUNTO_VENTA_3);
+        PuntoVentaRequest request = new PuntoVentaRequest();
+        request.setId(ID_PUNTO_VENTA5);
+        request.setNombre(PUNTO_VENTA_3);
 
+        ResponseEntity<Void> response = controller.addPuntoVenta(request);
         assertEquals(SUCCESS_RESPONSE, response.getStatusCodeValue());
+
         verify(service, times(1)).addPuntoVenta(ID_PUNTO_VENTA5, PUNTO_VENTA_3);
     }
+
 
     @Test
     void updatePuntoVenta_ReturnsResponseOk() {

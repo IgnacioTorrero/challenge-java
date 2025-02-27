@@ -1,5 +1,6 @@
 package com.proyecto.challengejava.controller;
 
+import com.proyecto.challengejava.dto.PuntoVentaRequest;
 import com.proyecto.challengejava.entity.PuntoVenta;
 import com.proyecto.challengejava.service.PuntoVentaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,10 +34,9 @@ public class PuntoVentaController {
      * Metodo encargado de agregar un punto de venta con su respectivo id y nombre.
      */
     @PostMapping
-    public ResponseEntity<Void> addPuntoVenta(@RequestParam Long id,
-                                              @RequestParam String nombre) {
-        validarPuntoVenta(id, nombre);
-        service.addPuntoVenta(id, nombre);
+    public ResponseEntity<Void> addPuntoVenta(@RequestBody PuntoVentaRequest request) {
+        validarPuntoVenta(request.getId(), request.getNombre());
+        service.addPuntoVenta(request.getId(), request.getNombre());
         return ResponseEntity.ok().build();
     }
 
