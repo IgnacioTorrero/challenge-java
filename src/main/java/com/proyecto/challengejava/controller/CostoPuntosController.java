@@ -1,8 +1,11 @@
 package com.proyecto.challengejava.controller;
 
+import com.proyecto.challengejava.dto.CostoPuntosRequest;
+import com.proyecto.challengejava.dto.PuntoVentaRequest;
 import com.proyecto.challengejava.dto.RutaCostoMinimoResponse;
 import com.proyecto.challengejava.entity.CostoPuntos;
 import com.proyecto.challengejava.service.CostoPuntosService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,11 +29,10 @@ public class CostoPuntosController {
      * Metodo encargado de agregar el costo entre punto de venta A y punto de venta B.
      */
     @PostMapping
-    public ResponseEntity<Void> addCostoPuntos(@RequestParam Long idA,
-                                               @RequestParam Long idB,
+    public ResponseEntity<Void> addCostoPuntos(@RequestBody @Valid CostoPuntosRequest request,
                                                @RequestParam Double costo) {
-        validarParametros(idA, idB);
-        service.addCostoPuntos(idA, idB, costo);
+        validarParametros(request.getIdA(), request.getIdB());
+        service.addCostoPuntos(request.getIdA(), request.getIdB(), costo);
         return ResponseEntity.ok().build();
     }
 
@@ -38,10 +40,9 @@ public class CostoPuntosController {
      * Metodo encargado de eliminar el costo entre punto de venta A y punto de venta B.
      */
     @DeleteMapping
-    public ResponseEntity<Void> removeCostoPuntos(@RequestParam Long idA,
-                                                  @RequestParam Long idB) {
-        validarParametros(idA, idB);
-        service.removeCostoPuntos(idA, idB);
+    public ResponseEntity<Void> removeCostoPuntos(@RequestBody @Valid CostoPuntosRequest request) {
+        validarParametros(request.getIdA(), request.getIdB());
+        service.removeCostoPuntos(request.getIdA(), request.getIdB());
         return ResponseEntity.ok().build();
     }
 
@@ -54,11 +55,13 @@ public class CostoPuntosController {
         return ResponseEntity.ok(service.getCostosDesdePunto(idA));
     }
 
+    /*
+    * Metodo encargado de calcular la ruta y el costo minimo entre dos puntos de venta.
+     */
     @GetMapping("/minimo")
-    public ResponseEntity<RutaCostoMinimoResponse> calcularCostoMinimo(@RequestParam("idA") Long idA,
-                                                                       @RequestParam("idB") Long idB) {
-        validarParametros(idA, idB);
-        List<Long> ruta = service.calcularRutaMinima(idA, idB);
+    public ResponseEntity<RutaCostoMinimoResponse> calcularCostoMinimo(@RequestBody @Valid CostoPuntosRequest request) {
+        validarParametros(request.getIdA(), request.getIdB());
+        List<Long> ruta = service.calcularRutaMinima(request.getIdA(), request.getIdB());
 
         Double costoTotal = service.calcularCostoTotalRuta(ruta);
         RutaCostoMinimoResponse response = new RutaCostoMinimoResponse(ruta, costoTotal);
@@ -66,14 +69,11 @@ public class CostoPuntosController {
     }
 
     /*
-     * Metodo auxiliar para validar IDs
+     * Metodo auxiliar para validar si ambos IDs son identicos
      */
     private void validarParametros(Long idA, Long idB) {
-        if (idA == null || idB == null || idA <= 0 || idB <= 0) {
-            throw new IllegalArgumentException(INVALID_ID_EXCEPTION);
-        }
         if (idA.equals(idB)) {
-            throw new IllegalArgumentException(INVALID_ID_EXCEPTION_2);
+            throw new IllegalArgumentException(INVALID_ID_EXCEPTION);
         }
     }
 }

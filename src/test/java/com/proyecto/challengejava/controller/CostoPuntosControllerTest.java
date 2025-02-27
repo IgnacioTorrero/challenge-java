@@ -1,5 +1,6 @@
 package com.proyecto.challengejava.controller;
 
+import com.proyecto.challengejava.dto.CostoPuntosRequest;
 import com.proyecto.challengejava.entity.CostoPuntos;
 import com.proyecto.challengejava.service.CostoPuntosService;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,25 +25,30 @@ public class CostoPuntosControllerTest {
     @InjectMocks
     private CostoPuntosController controller;
 
+    private final CostoPuntosRequest request = new CostoPuntosRequest();
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+
+        request.setIdA(ID_PUNTO_VENTA5);
+        request.setIdB(ID_PUNTO_VENTA2);
     }
 
     @Test
     void addCostoPuntos_ReturnsOk() {
-        ResponseEntity<Void> response = controller.addCostoPuntos(ID_PUNTO_VENTA, ID_PUNTO_VENTA2, IMPORTE);
+        ResponseEntity<Void> response = controller.addCostoPuntos(request, IMPORTE);
 
         assertEquals(SUCCESS_RESPONSE, response.getStatusCodeValue());
-        verify(service, times(1)).addCostoPuntos(ID_PUNTO_VENTA, ID_PUNTO_VENTA2, IMPORTE);
+        verify(service, times(1)).addCostoPuntos(ID_PUNTO_VENTA5, ID_PUNTO_VENTA2, IMPORTE);
     }
 
     @Test
     void removeCostoPuntos_ReturnsOk() {
-        ResponseEntity<Void> response = controller.removeCostoPuntos(ID_PUNTO_VENTA, ID_PUNTO_VENTA2);
+        ResponseEntity<Void> response = controller.removeCostoPuntos(request);
 
         assertEquals(200, response.getStatusCodeValue());
-        verify(service, times(1)).removeCostoPuntos(ID_PUNTO_VENTA, ID_PUNTO_VENTA2);
+        verify(service, times(1)).removeCostoPuntos(ID_PUNTO_VENTA5, ID_PUNTO_VENTA2);
     }
 
     @Test

@@ -27,6 +27,7 @@ public class PuntoVentaControllerTest {
 
     private final PuntoVenta punto1 = new PuntoVenta();
     private final PuntoVenta punto2 = new PuntoVenta();
+    private final PuntoVentaRequest request = new PuntoVentaRequest();
 
     @BeforeEach
     void setUp() {
@@ -36,6 +37,9 @@ public class PuntoVentaControllerTest {
         punto1.setNombre(PUNTO_VENTA_1);
         punto2.setId(ID_PUNTO_VENTA2);
         punto2.setNombre(PUNTO_VENTA_2);
+
+        request.setId(ID_PUNTO_VENTA5);
+        request.setNombre(PUNTO_VENTA_3);
     }
 
     @Test
@@ -52,10 +56,6 @@ public class PuntoVentaControllerTest {
 
     @Test
     void addPuntoVenta_ReturnsResponseOk() {
-        PuntoVentaRequest request = new PuntoVentaRequest();
-        request.setId(ID_PUNTO_VENTA5);
-        request.setNombre(PUNTO_VENTA_3);
-
         ResponseEntity<Void> response = controller.addPuntoVenta(request);
         assertEquals(SUCCESS_RESPONSE, response.getStatusCodeValue());
 
@@ -65,10 +65,10 @@ public class PuntoVentaControllerTest {
 
     @Test
     void updatePuntoVenta_ReturnsResponseOk() {
-        ResponseEntity<Void> response = controller.updatePuntoVenta(ID_PUNTO_VENTA, PUNTO_VENTA_4);
+        ResponseEntity<Void> response = controller.updatePuntoVenta(request);
 
         assertEquals(SUCCESS_RESPONSE, response.getStatusCodeValue());
-        verify(service, times(1)).updatePuntoVenta(ID_PUNTO_VENTA, PUNTO_VENTA_4);
+        verify(service, times(1)).updatePuntoVenta(ID_PUNTO_VENTA5, PUNTO_VENTA_3);
     }
 
     @Test

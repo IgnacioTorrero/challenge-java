@@ -1,5 +1,6 @@
 package com.proyecto.challengejava.controller;
 
+import com.proyecto.challengejava.dto.AcreditacionRequest;
 import com.proyecto.challengejava.entity.Acreditacion;
 import com.proyecto.challengejava.service.AcreditacionService;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,9 +24,14 @@ public class AcreditacionControllerTest {
     @InjectMocks
     private AcreditacionController acreditacionController;
 
+    private final AcreditacionRequest request = new AcreditacionRequest();
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+
+        request.setImporte(IMPORTE);
+        request.setIdPuntoVenta(ID_PUNTO_VENTA);
     }
 
     @Test
@@ -36,7 +42,7 @@ public class AcreditacionControllerTest {
         acreditacion.setIdPuntoVenta(ID_PUNTO_VENTA);
 
         when(acreditacionService.recibirAcreditacion(IMPORTE, ID_PUNTO_VENTA)).thenReturn(acreditacion);
-        ResponseEntity<Acreditacion> response = acreditacionController.recibirAcreditacion(IMPORTE, ID_PUNTO_VENTA);
+        ResponseEntity<Acreditacion> response = acreditacionController.recibirAcreditacion(request);
 
         assertEquals(SUCCESS_RESPONSE, response.getStatusCodeValue());
         assertEquals(acreditacion, response.getBody());

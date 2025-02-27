@@ -2,6 +2,7 @@ package com.proyecto.challengejava.service;
 
 import com.proyecto.challengejava.entity.CostoPuntos;
 import com.proyecto.challengejava.entity.PuntoVenta;
+import com.proyecto.challengejava.exception.PuntoVentaNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -126,7 +127,7 @@ public class CostoPuntosServiceTest {
 
     @Test
     void removeCostoPuntos_ThrowsIllegalArgumentException() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () ->
+        Exception exception = assertThrows(PuntoVentaNotFoundException.class, () ->
                 costoPuntosService.removeCostoPuntos(INVALID_ID, INVALID_ID2)
         );
         assertEquals(PUNTO_VENTA_NOT_FOUND, exception.getMessage());

@@ -2,6 +2,7 @@ package com.proyecto.challengejava.service;
 
 import com.proyecto.challengejava.entity.Acreditacion;
 import com.proyecto.challengejava.entity.PuntoVenta;
+import com.proyecto.challengejava.exception.PuntoVentaNotFoundException;
 import com.proyecto.challengejava.repository.AcreditacionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -64,9 +65,9 @@ public class AcreditacionServiceTest {
     void recibirAcreditacion_ThrowsIllegalArgumentException() {
         when(puntoVentaService.getAllPuntosVenta()).thenReturn(List.of());
 
-        Exception exception = assertThrows(IllegalArgumentException.class,
+        Exception exception = assertThrows(PuntoVentaNotFoundException.class,
                 () -> acreditacionService.recibirAcreditacion(IMPORTE, INVALID_ID));
-        assertEquals(PUNTO_VENTA_NOT_FOUND, exception.getMessage());
+        assertEquals(PUNTO_VENTA_NOT_FOUND + ": 99", exception.getMessage());
         verify(acreditacionRepository, never()).save(any(Acreditacion.class));
     }
 
