@@ -1,7 +1,7 @@
-CREATE TABLE punto_venta (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(255) NOT NULL UNIQUE
-);
+# CREATE TABLE punto_venta (
+#     id INT AUTO_INCREMENT PRIMARY KEY,
+#     nombre VARCHAR(255) NOT NULL UNIQUE
+# );
 
 
 # CREATE TABLE costo_puntos (

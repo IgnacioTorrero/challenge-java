@@ -53,6 +53,9 @@ public class PuntoVentaService {
     }
 
     public void deletePuntoVenta(Long id) {
+        if (!cache.containsKey(id)) {
+            throw new IllegalArgumentException(PUNTO_VENTA_NOT_FOUND);
+        }
         cache.remove(id);
     }
 }

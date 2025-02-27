@@ -83,6 +83,9 @@ public class CostoPuntosService {
             String[] ids = key.split(REGEX);
             if (ids[0].equals(String.valueOf(idA))) {
                 Long idB = Long.valueOf(ids[1]);
+                if (!puntoVentaExists(idB)) {
+                    return;
+                }
                 String nombrePuntoB = puntoVentaService.getAllPuntosVenta().stream()
                         .filter(p -> p.getId().equals(idB))
                         .map(PuntoVenta::getNombre)
