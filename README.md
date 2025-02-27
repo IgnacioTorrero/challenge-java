@@ -1,235 +1,218 @@
-# Challenge Java Project
+# 🚀 Challenge Java - Proyecto Backend con Spring Boot
 
-En la primera parte están algunas observaciones sobre el entorno del proyecto, patrones de diseño, etc. En la segunda,
-abajo de todo, está la guía para testear los endpoints paso a paso con Postman.
+Este proyecto es una API REST desarrollada con **Spring Boot 3.4.1** y **Java 17**. Utiliza **MySQL 8** como base de datos y gestiona costos y acreditaciones de puntos de venta.
 
----
+## 📋 Requisitos Previos
 
-## Requisitos Previos
+Antes de comenzar, asegúrate de tener instalados los siguientes programas:
 
-- **IDE Recomendado**: IntelliJ IDEA (con soporte para Maven y Spring Boot) con licencia.
-    - Ahí tengo todos los plugins necesarios para el trabajo.
-- **Java Development Kit (JDK)**: Versión 17.
-- **Spring Boot**: Creado con Spring Initializr.
-- **Base de Datos**: MySQL 8.0.36.
+1. **Java 17 (JDK 17)**
 
----
-
-## Configuración del Proyecto
-
-1. **Clonación del Repositorio**:
-    - Recomiendo clonar el repo desde Git Desktop y abrir el mismo IDE desde ahí.
-
-2. **Dependencias Maven**:
-    - Usé el **Maven Wrapper** por default.
-    - Para indexar las dependencias:
-      ```bash
-      mvn clean install
-      ```
-    - En IntelliJ IDEA, podes usar las opciones para sincronizar Maven desde la barrita lateral (M).
-
-3. **Base de Datos (MySQL)**:
-    - Usa MySQL y crea una base de datos `challenge_java`.
-    - Detalles de la conexión están en el archivo `application.properties`.
-    - Comandos para inicializar la BBDD:
-      ```bash
-      mysql -u root -p
-      CREATE DATABASE challenge_java;
-      USE challenge_java;
-      ```
-    - Las tablas se generan automáticamente con Hibernate corriendo el proyecto.
-
-4. **Compilación e Inicialización**:
-    - Para compilar y ejecutar el proyecto:
-      ```bash
-      mvn clean
-      mvn compile
-      mvn spring-boot:run
+    - Descargar desde: [Adoptium Temurin JDK 17](https://adoptium.net/temurin/releases/)
+    - Verificar la instalación:
+      ```sh
+      java -version
       ```
 
+2. **Maven 3.8+**
+
+    - Descargar desde: [Apache Maven](https://maven.apache.org/download.cgi)
+    - Verificar la instalación:
+      ```sh
+      mvn -version
+      ```
+
+3. **MySQL 8**
+
+    - Descargar desde: [MySQL Community Server](https://dev.mysql.com/downloads/mysql/)
+    - Verificar la instalación:
+      ```sh
+      mysql --version
+      ```
+
+4. **Git**
+
+    - Descargar desde: [Git](https://git-scm.com/downloads)
+    - Verificar la instalación:
+      ```sh
+      git --version
+      ```
+
+5. **IntelliJ IDEA (Recomendado)**
+
+    - Descargar desde: [IntelliJ IDEA Community Edition](https://www.jetbrains.com/idea/download/)
+
 ---
 
-## Estructura del Proyecto
+## 📦 Instalación y Configuración
+### 1️⃣ Clonar el Repositorio
+```sh
+ git clone https://github.com/IgnacioTorrero/challenge-java.git
+ cd challenge-java
+```
+### 2️⃣ Configurar la Base de Datos
+Asegúrate de tener **MySQL** instalado y configurado.
 
-El proyecto sigue el patrón de diseño **Modelo-Vista-Controlador (MVC)**:
-- **Modelo**:
-    - Clases entidad y repositorios que interactúan con la base de datos.
-- **Vista**:
-    - Usar **Postman** para probar los endpoints.
-- **Controlador**:
-    - Clases REST Controllers que envían las solicitudes HTTP.
+#### Crear la base de datos manualmente:
+```sql
+CREATE DATABASE challenge_java;
+```
+La conexión a la base de datos se configura en el archivo `application.properties`:
+```properties
+spring.datasource.url=jdbc:mysql://localhost:3306/challenge_java?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+spring.datasource.username=root
+spring.datasource.password=abc123
+```
+📌 **Asegúrate de cambiar las credenciales de acceso a MySQL si es necesario.**
 
----
-
-## Cobertura de Pruebas
-
-- Abarqué el **100% de cobertura en pruebas unitarias**.
-
----
-
-## Notas Finales
-
-- No usé docker porque más allá de un curso, nunca lo trabajé a nivel profesional.
-- Si MySQL o las dependencias te complican, usa estos comandos:
-```bash
-mvn clean
-mvn compile
+### 3️⃣ Construir el Proyecto
+```sh
+mvn clean install
+```
+### 4️⃣ Ejecutar la Aplicación
+```sh
 mvn spring-boot:run
+```
+La API estará disponible en `http://localhost:8080`.
+
+## 🛠️ Endpoints y Pruebas con Postman
+A continuación, se detallan los endpoints y cómo probarlos en **Postman**.
+
+### 1️⃣ Caché de Puntos de Venta
+#### Obtener todos los puntos de venta
+```http
+GET /api/puntos-venta
+```
+📌 **Prueba en Postman:**
+1. Abre Postman.
+2. Crea una nueva solicitud `GET`.
+3. Introduce la URL `http://localhost:8080/api/puntos-venta`.
+4. Presiona **Send** y verifica la lista de puntos de venta.
+
+#### Agregar un punto de venta
+```http
+POST /api/puntos-venta
+```
+**Body (JSON):**
+```json
+{
+  "id": 11,
+  "nombre": "San Juan"
+}
+```
+📌 **Prueba en Postman:**
+1. Crea una nueva solicitud `POST`.
+2. Introduce la URL `http://localhost:8080/api/puntos-venta`.
+3. En la pestaña **Body**, selecciona **raw** y el formato **JSON**.
+4. Ingresa el JSON anterior.
+5. Presiona **Send** y verifica que el punto de venta se haya agregado correctamente.
+
+#### Actualizar un punto de venta
+```http
+PUT /api/puntos-venta
+```
+**Body (JSON):**
+```json
+{
+  "id": 11,
+  "nombre": "San Luis"
+}
+```
+
+#### Eliminar un punto de venta
+```http
+DELETE /api/puntos-venta/{id}
+```
+Ejemplo para eliminar el punto de venta con id 11:
+```http
+DELETE /api/puntos-venta/11
 ```
 
 ---
 
-# Pruebas Postman
-
----
-
-## Punto 1: Caché Puntos de Venta
-
-### 1. Recuperar todos los puntos de venta presentes en el caché
-- **Método**: `GET`
-- **URL**: `http://localhost:8080/api/puntos-venta`
-- **Parámetros**: Ninguno
-- **Resultado**:
-  ```json
-  [
-    { "id": 1, "nombre": "CABA" },
-    { "id": 2, "nombre": "GBA_1" },
-    ...
-  ]
-
----
-
-## 2. Ingresar un nuevo punto de venta
-
-- **Método**: `POST`
-- **URL**: `http://localhost:8080/api/puntos-venta`
-- **Parámetros**:
-    - `id`: Identificador único (por ejemplo, `11`).
-    - `nombre`: Nombre del nuevo punto (por ejemplo, `La Rioja`).
-- **URL Completa**: `http://localhost:8080/api/puntos-venta?id=11&nombre=LaRioja`
-- **Resultado**: `200 OK`
-
----
-
-## 3. Actualizar un punto de venta
-
-- **Método**: `PUT`
-- **URL**: `http://localhost:8080/api/puntos-venta/{id}` (reemplazar `{id}` con el ID del punto de venta).
-- **Parámetros**:
-    - `nombre`: Nuevo nombre del punto (por ejemplo, `CABA Actualizado`).
-- **URL Completa**: `http://localhost:8080/api/puntos-venta/1?nombre=CapitalFederal`
-- **Resultado**: `200 OK`
-
----
-
-## 4. Borrar un punto de venta
-
-- **Método**: `DELETE`
-- **URL**: `http://localhost:8080/api/puntos-venta/{id}` (reemplazar `{id}` con el ID del punto de venta).
-- **URL Completa**: `http://localhost:8080/api/puntos-venta/10`
-- **Resultado**: `200 OK`
-
----
-
-## Punto 2: Caché Puntos de Costos
-
-## 1. Cargar un nuevo costo entre un punto de venta A y un punto de venta B
-
-- **Método**: `POST`
-- **URL**: `http://localhost:8080/api/costos`
-- **Parámetros**:
-    - `idA`: El ID del punto de venta de origen (por ejemplo, `1`).
-    - `idB`: El ID del punto de venta de destino (por ejemplo, `2`).
-    - `costo`: El costo entre los puntos (por ejemplo, `5.0`).
-- **URL Completa**: `http://localhost:8080/api/costos?idA=1&idB=2&costo=5.0`
-- **Resultado**: `200 OK`
-
----
-
-## 2. Remover un costo entre un punto de venta A y un punto de venta B
-
-- **Método**: `DELETE`
-- **URL**: `http://localhost:8080/api/costos`
-- **Parámetros**:
-    - `idA`: El ID del punto de venta de origen (por ejemplo, `1`).
-    - `idB`: El ID del punto de venta de destino (por ejemplo, `2`).
-- **URL Completa**: `http://localhost:8080/api/costos?idA=1&idB=2`
-- **Resultado**: `200 OK`
-
----
-
-## 3. Consultar los puntos de venta directamente desde un punto de venta A y los costos asociados
-
-- **Método**: `GET`
-- **URL**: `http://localhost:8080/api/costos/{idA}` (reemplazar `{idA}` con el ID del punto de venta de origen, por ejemplo, `1`).
-- **URL Completa**: `http://localhost:8080/api/costos/1`
-- **Resultado**: Lista de costos directos desde el punto especificado, en formato JSON. Ejemplo:
-  ```json
-  [
-      { "idA": 1, "idB": 2, "costo": 2.0, "nombrePuntoB": "GBA_1" },
-      { "idA": 1, "idB": 3, "costo": 3.0, "nombrePuntoB": "GBA_2" },
-      { "idA": 1, "idB": 4, "costo": 11.0, "nombrePuntoB": "Santa Fe" }
-  ]
-
----
-
-## 4. N/A
-
-Este punto no lo hice por la dificultad para entender la resolución. Más tarde identifiqué que la solución se basaba en el uso del algoritmo de Dijkstra, el cual no usé nunca en mi vida.
-La única forma de incorporarlo habría sido usando Internet, pero como esa no es la idea lo omití.
-
----
-
-## Punto 3: Acreditación
-
-## 1. Agregar una acreditación
-
-- **Método**: `POST`
-- **URL**: `http://localhost:8080/api/acreditaciones`
-- **Parámetros**:
-    - `importe`: `100.0`
-    - `idPuntoVenta`: `1`
-
-### Postman
-- **Método**: `POST`
-- **URL Completa**: `http://localhost:8080/api/acreditaciones?importe=100.0&idPuntoVenta=1`
-
-### Respuesta (200 OK)
+### 2️⃣ Caché de Costos entre Puntos de Venta
+#### Cargar un nuevo costo
+```http
+POST /api/costos
+```
+**Body (JSON):**
 ```json
 {
-    "id": 1,
-    "importe": 100.0,
-    "idPuntoVenta": 1,
-    "nombrePuntoVenta": "CABA",
-    "fechaRecepcion": "2025-01-21"
+  "idA": 1,
+  "idB": 2
+}
+```
+**Query Params:** `costo=5`
+
+#### Remover un costo
+```http
+DELETE /api/costos
+```
+**Body (JSON):**
+```json
+{
+  "idA": 1,
+  "idB": 2
+}
+```
+
+#### Consultar costos desde un punto de venta
+```http
+GET /api/costos/{idA}
+```
+Ejemplo:
+```http
+GET /api/costos/1
+```
+
+#### Obtener la ruta de menor costo entre dos puntos
+```http
+GET /api/costos/minimo
+```
+**Body (JSON):**
+```json
+{
+  "idA": 1,
+  "idB": 5
 }
 ```
 
 ---
 
-## 2. Obtener acreditaciones
-
-- **Método**: `GET`
-- **URL**: `http://localhost:8080/api/acreditaciones`
-
-### Respuesta (200 OK)
+### 3️⃣ Acreditaciones
+#### Crear una acreditación
+```http
+POST /api/acreditaciones
+```
+**Body (JSON):**
 ```json
-[
-    {
-        "id": 1,
-        "importe": 100.0,
-        "idPuntoVenta": 1,
-        "nombrePuntoVenta": "CABA",
-        "fechaRecepcion": "2025-01-21"
-    }
-]
+{
+  "importe": 100.50,
+  "idPuntoVenta": 1
+}
 ```
 
-## Dato a tener en cuenta
+#### Obtener todas las acreditaciones
+```http
+GET /api/acreditaciones
+```
 
-Puse validaciones sobre:
+## 🧪 Ejecución de Pruebas Unitarias
+```sh
+mvn test
+```
+Verifica la cobertura de pruebas en la terminal.
 
-- IDs inválidos o no registrados.
-- Montos menores a cero.
+## 📌 Notas Importantes
+- **La base de datos debe estar creada antes de correr la aplicación.**
+- **Los puntos de venta y costos iniciales están en caché y pueden modificarse en runtime.**
+- **Las pruebas de integración pueden realizarse en Postman con los ejemplos proporcionados.**
 
-También pueden testearlas, ya que deberían funcionar.
+---
+
+Este README proporciona instrucciones completas para levantar la API y probarla correctamente en otro entorno. 🚀
+
+
+
+
+
