@@ -55,8 +55,8 @@ public class CostoPuntosControllerTest {
     @Test
     void getCostosDesdePunto_ReturnsListOfCostos() {
         List<CostoPuntos> costos = Arrays.asList(
-                new CostoPuntos(1L, 2L, 100.0, null),
-                new CostoPuntos(1L, 3L, 150.0, null)
+                new CostoPuntos(1L, 2L, 100.0, "GBA_1"),
+                new CostoPuntos(1L, 3L, 150.0, "GBA_2")
         );
         when(service.getCostosDesdePunto(ID_PUNTO_VENTA)).thenReturn(costos);
 

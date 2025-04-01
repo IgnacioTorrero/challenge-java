@@ -1,11 +1,23 @@
 package com.proyecto.challengejava.entity;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
 public class CostoPuntos {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private Long idA;
     private Long idB;
     private Double costo;
     private String nombrePuntoB;
+
+    public CostoPuntos() {
+    }
 
     public CostoPuntos(Long idA, Long idB, Double costo, String nombrePuntoB) {
         this.idA = idA;
@@ -44,5 +56,13 @@ public class CostoPuntos {
 
     public void setNombrePuntoB(String nombreIdB) {
         this.nombrePuntoB = nombreIdB;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
     }
 }

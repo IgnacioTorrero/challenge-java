@@ -3,6 +3,8 @@ package com.proyecto.challengejava.service;
 import com.proyecto.challengejava.entity.CostoPuntos;
 import com.proyecto.challengejava.entity.PuntoVenta;
 import com.proyecto.challengejava.exception.PuntoVentaNotFoundException;
+import com.proyecto.challengejava.repository.CostoRepository;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,37 +18,46 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
 
     private final ConcurrentHashMap<String, Double> cache = new ConcurrentHashMap<>();
     private final PuntoVentaServiceImpl puntoVentaServiceImpl;
+    private final CostoRepository costoRepository;
 
-    public CostoPuntosServiceImpl(PuntoVentaServiceImpl puntoVentaServiceImpl) {
+    public CostoPuntosServiceImpl(PuntoVentaServiceImpl puntoVentaServiceImpl, CostoRepository costoRepository) {
         this.puntoVentaServiceImpl = puntoVentaServiceImpl;
-        cargarCostosIniciales();
+        this.costoRepository = costoRepository;
+        cargarCacheDesdeDB();
     }
 
-    public void cargarCostosIniciales() {
-        if (cache.isEmpty()) {
-            agregarCostoInicial(1L, 2L, 2.0);
-            agregarCostoInicial(1L, 3L, 3.0);
-            agregarCostoInicial(2L, 3L, 5.0);
-            agregarCostoInicial(2L, 4L, 10.0);
-            agregarCostoInicial(1L, 4L, 11.0);
-            agregarCostoInicial(4L, 5L, 5.0);
-            agregarCostoInicial(2L, 5L, 14.0);
-            agregarCostoInicial(6L, 7L, 32.0);
-            agregarCostoInicial(8L, 9L, 11.0);
-            agregarCostoInicial(10L, 7L, 5.0);
-            agregarCostoInicial(3L, 8L, 10.0);
-            agregarCostoInicial(5L, 8L, 30.0);
-            agregarCostoInicial(10L, 5L, 5.0);
-            agregarCostoInicial(4L, 6L, 6.0);
+    @PostConstruct
+    public void init() {
+        if (costoRepository.count() == 0) {
+            precargarCostosIniciales();
         }
+        cargarCacheDesdeDB();
     }
 
-    private void agregarCostoInicial(Long idA, Long idB, Double costo) {
-        if (!puntoVentaExists(idA) || !puntoVentaExists(idB)) {
-            throw new PuntoVentaNotFoundException(PUNTO_VENTA_NOT_FOUND + ": " + idA + " - " + idB);
-        }
-        cache.put(generateKey(idA, idB), costo);
-        cache.put(generateKey(idB, idA), costo);
+    public void cargarCacheDesdeDB() {
+        costoRepository.findAll().forEach(costo -> {
+            Long idA = costo.getIdA();
+            Long idB = costo.getIdB();
+            Double importe = costo.getCosto();
+            cache.put(generateKey(idA, idB), importe);
+        });
+    }
+
+    private void precargarCostosIniciales() {
+        addCostoPuntos(1L, 2L, 2.0);
+        addCostoPuntos(1L, 3L, 3.0);
+        addCostoPuntos(2L, 3L, 5.0);
+        addCostoPuntos(2L, 4L, 10.0);
+        addCostoPuntos(1L, 4L, 11.0);
+        addCostoPuntos(4L, 5L, 5.0);
+        addCostoPuntos(2L, 5L, 14.0);
+        addCostoPuntos(6L, 7L, 32.0);
+        addCostoPuntos(8L, 9L, 11.0);
+        addCostoPuntos(10L, 7L, 5.0);
+        addCostoPuntos(3L, 8L, 10.0);
+        addCostoPuntos(5L, 8L, 30.0);
+        addCostoPuntos(10L, 5L, 5.0);
+        addCostoPuntos(4L, 6L, 6.0);
     }
 
     public void addCostoPuntos(Long idA, Long idB, Double costo) {
@@ -56,8 +67,11 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
         if (!puntoVentaExists(idA) || !puntoVentaExists(idB)) {
             throw new IllegalArgumentException(PUNTO_VENTA_NOT_FOUND);
         }
+
         cache.put(generateKey(idA, idB), costo);
         cache.put(generateKey(idB, idA), costo);
+
+        saveCostoToDB(idA, idB, costo);
     }
 
     public void removeCostoPuntos(Long idA, Long idB) {
@@ -169,5 +183,22 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
 
     private String generateKey(Long idA, Long idB) {
         return idA + REGEX + idB;
+    }
+
+    private void saveCostoToDB(Long idA, Long idB, Double costo) {
+        if (costoRepository.findByIdAAndIdB(idA, idB).isEmpty()) {
+            CostoPuntos entity = new CostoPuntos();
+            entity.setIdA(idA);
+            entity.setIdB(idB);
+            entity.setCosto(costo);
+            costoRepository.save(entity);
+
+            // Guardar inverso para reflejar que es bidireccional
+            CostoPuntos reverse = new CostoPuntos();
+            reverse.setIdA(idB);
+            reverse.setIdB(idA);
+            reverse.setCosto(costo);
+            costoRepository.save(reverse);
+        }
     }
 }

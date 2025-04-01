@@ -3,12 +3,11 @@ package com.proyecto.challengejava.service;
 import com.proyecto.challengejava.entity.CostoPuntos;
 import com.proyecto.challengejava.entity.PuntoVenta;
 import com.proyecto.challengejava.exception.PuntoVentaNotFoundException;
+import com.proyecto.challengejava.repository.CostoRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,6 +21,9 @@ public class CostoPuntosServiceImplTest {
     private PuntoVentaServiceImpl puntoVentaServiceImpl;
 
     private CostoPuntosServiceImpl costoPuntosServiceImpl;
+
+    @Mock
+    private CostoRepository costoRepository;
 
     @BeforeEach
     void setUp() {
@@ -69,7 +71,26 @@ public class CostoPuntosServiceImplTest {
                     setNombre(PUNTOS_VENTA.get(9));
                 }}
         ));
-        costoPuntosServiceImpl = new CostoPuntosServiceImpl(puntoVentaServiceImpl);
+
+        when(costoRepository.findAll()).thenReturn(Arrays.asList(
+                new CostoPuntos() {{
+                    setIdA(1L);
+                    setIdB(2L);
+                    setCosto(2.0);
+                }},
+                new CostoPuntos() {{
+                    setIdA(1L);
+                    setIdB(3L);
+                    setCosto(3.0);
+                }},
+                new CostoPuntos() {{
+                    setIdA(1L);
+                    setIdB(4L);
+                    setCosto(4.0);
+                }}
+        ));
+
+        costoPuntosServiceImpl = new CostoPuntosServiceImpl(puntoVentaServiceImpl, costoRepository);
     }
 
     @Test
@@ -134,24 +155,13 @@ public class CostoPuntosServiceImplTest {
     }
 
     @Test
-    void cargarCostosIniciales_ReturnsOk() {
-        costoPuntosServiceImpl.cargarCostosIniciales();
+    void cargarCacheDesdeDB_ReturnsOk() {
+        costoPuntosServiceImpl.cargarCacheDesdeDB();
 
         List<CostoPuntos> costosDesdePunto1 = costoPuntosServiceImpl.getCostosDesdePunto(ID_PUNTO_VENTA);
 
         assertFalse(costosDesdePunto1.isEmpty());
         assertEquals(3, costosDesdePunto1.size());
-    }
-
-    @Test
-    void cargarCostosIniciales_ThrowsExceptionIllegalArgumentException() throws NoSuchMethodException {
-        Method method = CostoPuntosServiceImpl.class.getDeclaredMethod(METHOD_AGREGAR_COSTO_INICIAL, Long.class, Long.class, Double.class);
-        method.setAccessible(true);
-
-        InvocationTargetException exception = assertThrows(InvocationTargetException.class, () ->
-                method.invoke(costoPuntosServiceImpl, INVALID_ID, INVALID_ID2, null)
-        );
-        assertNull(exception.getMessage());
     }
 
     @Test
