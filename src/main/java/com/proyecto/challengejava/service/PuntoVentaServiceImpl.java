@@ -42,7 +42,7 @@ public class PuntoVentaServiceImpl implements PuntoVentaService {
                 puntoVenta.setNombre(PUNTOS_VENTA.get((int) (i - 1)));
                 puntos.add(puntoVenta);
             }
-            puntoVentaRepository.saveAll(puntos); // Solo si no había nada en la tabla
+            puntoVentaRepository.saveAll(puntos);
         }
     }
 
