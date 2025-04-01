@@ -1,8 +1,10 @@
 package com.proyecto.challengejava.service;
 
 import com.proyecto.challengejava.entity.PuntoVenta;
+import com.proyecto.challengejava.repository.PuntoVentaRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 
 import java.util.List;
 
@@ -13,9 +15,12 @@ public class PuntoVentaServiceImplTest {
 
     private PuntoVentaServiceImpl service;
 
+    @Mock
+    private PuntoVentaRepository puntoVentaRepository;
+
     @BeforeEach
     void setUp() {
-        service = new PuntoVentaServiceImpl();
+        service = new PuntoVentaServiceImpl(puntoVentaRepository);
     }
 
     @Test

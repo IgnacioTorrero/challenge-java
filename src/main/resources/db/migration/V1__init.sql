@@ -1,3 +1,8 @@
+CREATE TABLE punto_venta (
+    id BIGINT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL
+);
+
 CREATE TABLE acreditacion (
     id INT AUTO_INCREMENT PRIMARY KEY,
     importe DECIMAL(10,2) NOT NULL,
