@@ -39,7 +39,6 @@ public class PuntoVentaServiceImpl implements PuntoVentaService {
             for (long i = 1; i <= 10; i++) {
                 PuntoVenta puntoVenta = new PuntoVenta();
                 puntoVenta.setNombre(PUNTOS_VENTA.get((int) (i - 1)));
-                puntoVenta.setNombre(PUNTOS_VENTA.get((int) (i - 1)));
                 puntos.add(puntoVenta);
             }
             puntoVentaRepository.saveAll(puntos);
@@ -57,15 +56,12 @@ public class PuntoVentaServiceImpl implements PuntoVentaService {
         }
     }
 
-    public void addPuntoVenta(Long id, String nombre) {
-        if (cache.containsKey(id)) {
-            throw new IllegalArgumentException(PUNTO_VENTA_ALREADY_EXISTS);
-        }
+    @Override
+    public void addPuntoVenta(String nombre) {
         PuntoVenta puntoVenta = new PuntoVenta();
-        puntoVenta.setId(id);
         puntoVenta.setNombre(nombre);
-        puntoVentaRepository.save(puntoVenta);
-        cache.put(id, nombre);
+        puntoVenta = puntoVentaRepository.save(puntoVenta);
+        cache.put(puntoVenta.getId(), nombre);
     }
 
     public void updatePuntoVenta(Long id, String nombre) {

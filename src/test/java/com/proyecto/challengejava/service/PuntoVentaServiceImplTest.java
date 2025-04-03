@@ -4,23 +4,68 @@ import com.proyecto.challengejava.entity.PuntoVenta;
 import com.proyecto.challengejava.repository.PuntoVentaRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
-import java.util.List;
+import java.util.*;
 
 import static com.proyecto.challengejava.constants.ConstantesTest.*;
+import static com.proyecto.challengejava.constants.Constantes.PUNTO_VENTA_NOT_FOUND;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public class PuntoVentaServiceImplTest {
-
-    private PuntoVentaServiceImpl service;
 
     @Mock
     private PuntoVentaRepository puntoVentaRepository;
 
+    @InjectMocks
+    private PuntoVentaServiceImpl service;
+
+    private List<PuntoVenta> datosMock;
+
     @BeforeEach
     void setUp() {
-        service = new PuntoVentaServiceImpl(puntoVentaRepository);
+        datosMock = new ArrayList<>();
+        for (long i = 1; i <= 10; i++) {
+            datosMock.add(new PuntoVenta(i, "Punto " + i));
+        }
+
+        when(puntoVentaRepository.findAll()).thenAnswer(invocation -> new ArrayList<>(datosMock));
+
+        when(puntoVentaRepository.findById(anyLong())).thenAnswer(invocation -> {
+            Long id = invocation.getArgument(0);
+            return datosMock.stream().filter(p -> p.getId().equals(id)).findFirst();
+        });
+
+        when(puntoVentaRepository.existsById(anyLong())).thenAnswer(invocation -> {
+            Long id = invocation.getArgument(0);
+            return datosMock.stream().anyMatch(p -> p.getId().equals(id));
+        });
+
+        when(puntoVentaRepository.save(any(PuntoVenta.class))).thenAnswer(invocation -> {
+            PuntoVenta nuevo = invocation.getArgument(0);
+            if (nuevo.getId() == null) {
+                nuevo.setId((long) (datosMock.size() + 1));
+            } else {
+                datosMock.removeIf(p -> p.getId().equals(nuevo.getId()));
+            }
+            datosMock.add(nuevo);
+            return nuevo;
+        });
+
+        doAnswer(invocation -> {
+            Long id = invocation.getArgument(0);
+            datosMock.removeIf(p -> p.getId().equals(id));
+            return null;
+        }).when(puntoVentaRepository).deleteById(anyLong());
     }
 
     @Test
@@ -29,55 +74,51 @@ public class PuntoVentaServiceImplTest {
 
         assertNotNull(puntosVenta);
         assertEquals(10, puntosVenta.size());
-        assertEquals(ID_PUNTO_VENTA, puntosVenta.get(0).getId());
-        assertNotNull(puntosVenta.get(0).getNombre());
+        assertEquals(1L, puntosVenta.get(0).getId());
+        assertEquals("Punto 1", puntosVenta.get(0).getNombre());
     }
 
     @Test
     void addPuntoVenta_AddsNewPuntoVenta() {
-        service.addPuntoVenta(ID_PUNTO_VENTA5, PUNTO_VENTA_3);
-        List<PuntoVenta> puntosVenta = service.getAllPuntosVenta();
+        service.addPuntoVenta(PUNTO_VENTA_3);
 
+        List<PuntoVenta> puntosVenta = service.getAllPuntosVenta();
         assertEquals(11, puntosVenta.size());
-        PuntoVenta addedPunto = puntosVenta.stream()
-                .filter(p -> p.getId().equals(ID_PUNTO_VENTA5))
+
+        PuntoVenta agregado = puntosVenta.stream()
+                .filter(p -> PUNTO_VENTA_3.equals(p.getNombre()))
                 .findFirst()
                 .orElse(null);
-        assertNotNull(addedPunto);
-        assertEquals(PUNTO_VENTA_3, addedPunto.getNombre());
+        assertNotNull(agregado);
     }
 
     @Test
     void updatePuntoVenta_UpdatesExistingPuntoVenta() {
-        service.updatePuntoVenta(ID_PUNTO_VENTA2, PUNTO_VENTA_5);
-        List<PuntoVenta> puntosVenta = service.getAllPuntosVenta();
+        Long idParaActualizar = 2L;
+        service.updatePuntoVenta(idParaActualizar, PUNTO_VENTA_5);
 
-        PuntoVenta updatedPunto = puntosVenta.stream()
-                .filter(p -> p.getId().equals(ID_PUNTO_VENTA2))
+        PuntoVenta actualizado = service.getAllPuntosVenta().stream()
+                .filter(p -> p.getId().equals(idParaActualizar))
                 .findFirst()
                 .orElse(null);
-        assertNotNull(updatedPunto);
-        assertEquals(PUNTO_VENTA_5, updatedPunto.getNombre());
+        assertNotNull(actualizado);
+        assertEquals(PUNTO_VENTA_5, actualizado.getNombre());
     }
 
     @Test
     void updatePuntoVenta_ThrowsIllegalArgumentException() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () ->
-                service.updatePuntoVenta(INVALID_ID, PUNTO_VENTA_6)
-        );
-        assertEquals(PUNTO_VENTA_NOT_FOUND, exception.getMessage());
+        Exception ex = assertThrows(IllegalArgumentException.class, () ->
+                service.updatePuntoVenta(INVALID_ID, PUNTO_VENTA_6));
+        assertEquals(PUNTO_VENTA_NOT_FOUND, ex.getMessage());
     }
 
     @Test
     void deletePuntoVenta_RemovesPuntoVenta() {
-        service.deletePuntoVenta(ID_PUNTO_VENTA4);
-        List<PuntoVenta> puntosVenta = service.getAllPuntosVenta();
+        Long idAEliminar = 4L;
+        service.deletePuntoVenta(idAEliminar);
 
+        List<PuntoVenta> puntosVenta = service.getAllPuntosVenta();
         assertEquals(9, puntosVenta.size());
-        PuntoVenta deletedPunto = puntosVenta.stream()
-                .filter(p -> p.getId().equals(ID_PUNTO_VENTA4))
-                .findFirst()
-                .orElse(null);
-        assertNull(deletedPunto);
+        assertTrue(puntosVenta.stream().noneMatch(p -> p.getId().equals(idAEliminar)));
     }
 }

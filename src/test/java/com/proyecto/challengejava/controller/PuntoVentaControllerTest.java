@@ -38,7 +38,6 @@ public class PuntoVentaControllerTest {
         punto2.setId(ID_PUNTO_VENTA2);
         punto2.setNombre(PUNTO_VENTA_2);
 
-        request.setId(ID_PUNTO_VENTA5);
         request.setNombre(PUNTO_VENTA_3);
     }
 
@@ -59,13 +58,13 @@ public class PuntoVentaControllerTest {
         ResponseEntity<Void> response = controller.addPuntoVenta(request);
         assertEquals(SUCCESS_RESPONSE, response.getStatusCodeValue());
 
-        verify(service, times(1)).addPuntoVenta(ID_PUNTO_VENTA5, PUNTO_VENTA_3);
+        verify(service, times(1)).addPuntoVenta(PUNTO_VENTA_3);
     }
 
 
     @Test
     void updatePuntoVenta_ReturnsResponseOk() {
-        ResponseEntity<Void> response = controller.updatePuntoVenta(request);
+        ResponseEntity<Void> response = controller.updatePuntoVenta(ID_PUNTO_VENTA5, request);
 
         assertEquals(SUCCESS_RESPONSE, response.getStatusCodeValue());
         verify(service, times(1)).updatePuntoVenta(ID_PUNTO_VENTA5, PUNTO_VENTA_3);

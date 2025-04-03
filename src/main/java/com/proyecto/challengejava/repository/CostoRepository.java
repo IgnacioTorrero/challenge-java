@@ -8,4 +8,3 @@ import java.util.Optional;
 public interface CostoRepository extends JpaRepository<CostoPuntos, Long> {
     Optional<CostoPuntos> findByIdAAndIdB(Long idA, Long idB);
 }
-
