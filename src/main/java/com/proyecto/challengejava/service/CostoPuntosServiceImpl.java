@@ -91,20 +91,30 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
         List<CostoPuntosResponse> costos = new ArrayList<>();
         cache.forEach((key, value) -> {
             String[] ids = key.split(REGEX);
-            if (ids[0].equals(String.valueOf(idA))) {
-                Long idB = Long.valueOf(ids[1]);
+            Long id1 = Long.valueOf(ids[0]);
+            Long id2 = Long.valueOf(ids[1]);
+
+            if (id1.equals(idA)) {
+                Long idB = id2;
                 if (!puntoVentaExists(idB)) return;
-
-                String nombrePuntoB = puntoVentaServiceImpl.getAllPuntosVenta().stream()
-                        .filter(p -> p.getId().equals(idB))
-                        .map(PuntoVenta::getNombre)
-                        .findFirst()
-                        .orElse(UNKNOWN);
-
+                String nombrePuntoB = getNombrePuntoVenta(idB);
+                costos.add(new CostoPuntosResponse(idA, idB, value, nombrePuntoB));
+            } else if (id2.equals(idA)) {
+                Long idB = id1;
+                if (!puntoVentaExists(idB)) return;
+                String nombrePuntoB = getNombrePuntoVenta(idB);
                 costos.add(new CostoPuntosResponse(idA, idB, value, nombrePuntoB));
             }
         });
         return costos;
+    }
+
+    private String getNombrePuntoVenta(Long id) {
+        return puntoVentaServiceImpl.getAllPuntosVenta().stream()
+                .filter(p -> p.getId().equals(id))
+                .map(PuntoVenta::getNombre)
+                .findFirst()
+                .orElse(UNKNOWN);
     }
 
     public List<Long> calcularRutaMinima(Long puntoA, Long puntoB) {
