@@ -8,6 +8,7 @@ import com.proyecto.challengejava.repository.CostoRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.util.Arrays;
 import java.util.List;
@@ -28,70 +29,31 @@ public class CostoPuntosServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        org.mockito.MockitoAnnotations.openMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         when(puntoVentaServiceImpl.getAllPuntosVenta()).thenReturn(Arrays.asList(
-                new PuntoVenta() {{
-                    setId(1L);
-                    setNombre(PUNTOS_VENTA.get(0));
-                }},
-                new PuntoVenta() {{
-                    setId(2L);
-                    setNombre(PUNTOS_VENTA.get(1));
-                }},
-                new PuntoVenta() {{
-                    setId(3L);
-                    setNombre(PUNTOS_VENTA.get(2));
-                }},
-                new PuntoVenta() {{
-                    setId(4L);
-                    setNombre(PUNTOS_VENTA.get(3));
-                }},
-                new PuntoVenta() {{
-                    setId(5L);
-                    setNombre(PUNTOS_VENTA.get(4));
-                }},
-                new PuntoVenta() {{
-                    setId(6L);
-                    setNombre(PUNTOS_VENTA.get(5));
-                }},
-                new PuntoVenta() {{
-                    setId(7L);
-                    setNombre(PUNTOS_VENTA.get(6));
-                }},
-                new PuntoVenta() {{
-                    setId(8L);
-                    setNombre(PUNTOS_VENTA.get(7));
-                }},
-                new PuntoVenta() {{
-                    setId(9L);
-                    setNombre(PUNTOS_VENTA.get(8));
-                }},
-                new PuntoVenta() {{
-                    setId(10L);
-                    setNombre(PUNTOS_VENTA.get(9));
-                }}
+                new PuntoVenta() {{ setId(1L); setNombre(PUNTOS_VENTA.get(0)); }},
+                new PuntoVenta() {{ setId(2L); setNombre(PUNTOS_VENTA.get(1)); }},
+                new PuntoVenta() {{ setId(3L); setNombre(PUNTOS_VENTA.get(2)); }},
+                new PuntoVenta() {{ setId(4L); setNombre(PUNTOS_VENTA.get(3)); }},
+                new PuntoVenta() {{ setId(5L); setNombre(PUNTOS_VENTA.get(4)); }},
+                new PuntoVenta() {{ setId(6L); setNombre(PUNTOS_VENTA.get(5)); }},
+                new PuntoVenta() {{ setId(7L); setNombre(PUNTOS_VENTA.get(6)); }},
+                new PuntoVenta() {{ setId(8L); setNombre(PUNTOS_VENTA.get(7)); }},
+                new PuntoVenta() {{ setId(9L); setNombre(PUNTOS_VENTA.get(8)); }},
+                new PuntoVenta() {{ setId(10L); setNombre(PUNTOS_VENTA.get(9)); }}
         ));
 
         when(costoRepository.findAll()).thenReturn(Arrays.asList(
-                new CostoPuntos() {{
-                    setIdA(1L);
-                    setIdB(2L);
-                    setCosto(2.0);
-                }},
-                new CostoPuntos() {{
-                    setIdA(1L);
-                    setIdB(3L);
-                    setCosto(3.0);
-                }},
-                new CostoPuntos() {{
-                    setIdA(1L);
-                    setIdB(4L);
-                    setCosto(4.0);
-                }}
+                new CostoPuntos() {{ setIdA(1L); setIdB(2L); setCosto(2.0); }},
+                new CostoPuntos() {{ setIdA(1L); setIdB(3L); setCosto(3.0); }},
+                new CostoPuntos() {{ setIdA(1L); setIdB(4L); setCosto(4.0); }}
         ));
 
         costoPuntosServiceImpl = new CostoPuntosServiceImpl(puntoVentaServiceImpl, costoRepository);
+
+        // 👇 Solución mágica
+        costoPuntosServiceImpl.cargarCacheDesdeDB();
     }
 
     @Test
