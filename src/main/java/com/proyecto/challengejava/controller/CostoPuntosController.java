@@ -1,6 +1,7 @@
 package com.proyecto.challengejava.controller;
 
 import com.proyecto.challengejava.dto.CostoPuntosRequest;
+import com.proyecto.challengejava.dto.CostoPuntosResponse;
 import com.proyecto.challengejava.dto.RutaCostoMinimoResponse;
 import com.proyecto.challengejava.entity.CostoPuntos;
 import com.proyecto.challengejava.service.CostoPuntosServiceImpl;
@@ -50,7 +51,7 @@ public class CostoPuntosController {
      * al punto de venta A.
      */
     @GetMapping("/{idA}")
-    public ResponseEntity<List<CostoPuntos>> getCostosDesdePunto(@PathVariable Long idA) {
+    public ResponseEntity<List<CostoPuntosResponse>> getCostosDesdePunto(@PathVariable Long idA) {
         return ResponseEntity.ok(service.getCostosDesdePunto(idA));
     }
 

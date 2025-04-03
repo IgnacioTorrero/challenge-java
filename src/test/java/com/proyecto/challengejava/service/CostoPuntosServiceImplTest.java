@@ -1,5 +1,6 @@
 package com.proyecto.challengejava.service;
 
+import com.proyecto.challengejava.dto.CostoPuntosResponse;
 import com.proyecto.challengejava.entity.CostoPuntos;
 import com.proyecto.challengejava.entity.PuntoVenta;
 import com.proyecto.challengejava.exception.PuntoVentaNotFoundException;
@@ -97,7 +98,7 @@ public class CostoPuntosServiceImplTest {
     void addCostoPuntos_ReturnsOk() {
         costoPuntosServiceImpl.addCostoPuntos(ID_PUNTO_VENTA, ID_PUNTO_VENTA2, IMPORTE);
 
-        List<CostoPuntos> costos = costoPuntosServiceImpl.getCostosDesdePunto(ID_PUNTO_VENTA);
+        List<CostoPuntosResponse> costos = costoPuntosServiceImpl.getCostosDesdePunto(ID_PUNTO_VENTA);
 
         assertEquals(3, costos.size());
         assertEquals(IMPORTE, costos.get(0).getCosto());
@@ -131,7 +132,7 @@ public class CostoPuntosServiceImplTest {
         costoPuntosServiceImpl.addCostoPuntos(ID_PUNTO_VENTA, ID_PUNTO_VENTA2, IMPORTE);
         costoPuntosServiceImpl.addCostoPuntos(ID_PUNTO_VENTA, ID_PUNTO_VENTA3, IMPORTE2);
 
-        List<CostoPuntos> costos = costoPuntosServiceImpl.getCostosDesdePunto(ID_PUNTO_VENTA);
+        List<CostoPuntosResponse> costos = costoPuntosServiceImpl.getCostosDesdePunto(ID_PUNTO_VENTA);
 
         assertEquals(3, costos.size());
         assertEquals(IMPORTE, costos.get(0).getCosto());
@@ -158,7 +159,7 @@ public class CostoPuntosServiceImplTest {
     void cargarCacheDesdeDB_ReturnsOk() {
         costoPuntosServiceImpl.cargarCacheDesdeDB();
 
-        List<CostoPuntos> costosDesdePunto1 = costoPuntosServiceImpl.getCostosDesdePunto(ID_PUNTO_VENTA);
+        List<CostoPuntosResponse> costosDesdePunto1 = costoPuntosServiceImpl.getCostosDesdePunto(ID_PUNTO_VENTA);
 
         assertFalse(costosDesdePunto1.isEmpty());
         assertEquals(3, costosDesdePunto1.size());

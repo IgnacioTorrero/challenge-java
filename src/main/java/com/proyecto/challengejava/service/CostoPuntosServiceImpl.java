@@ -1,5 +1,6 @@
 package com.proyecto.challengejava.service;
 
+import com.proyecto.challengejava.dto.CostoPuntosResponse;
 import com.proyecto.challengejava.entity.CostoPuntos;
 import com.proyecto.challengejava.entity.PuntoVenta;
 import com.proyecto.challengejava.exception.PuntoVentaNotFoundException;
@@ -22,7 +23,6 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
     public CostoPuntosServiceImpl(PuntoVentaServiceImpl puntoVentaServiceImpl, CostoRepository costoRepository) {
         this.puntoVentaServiceImpl = puntoVentaServiceImpl;
         this.costoRepository = costoRepository;
-        cargarCacheDesdeDB();
     }
 
     @PostConstruct
@@ -38,7 +38,9 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
             Long idA = costo.getIdA();
             Long idB = costo.getIdB();
             Double importe = costo.getCosto();
-            cache.put(generateKey(idA, idB), importe);
+            String key = generateKey(idA, idB);
+            cache.put(key, importe);
+            System.out.println("✅ Cache cargada con key: " + key + " => " + importe);
         });
     }
 
@@ -67,8 +69,8 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
             throw new IllegalArgumentException(PUNTO_VENTA_NOT_FOUND);
         }
 
-        cache.put(generateKey(idA, idB), costo);
-        cache.put(generateKey(idB, idA), costo);
+        String key = generateKey(idA, idB);
+        cache.put(key, costo);
 
         saveCostoToDB(idA, idB, costo);
     }
@@ -77,35 +79,29 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
         if (!puntoVentaExists(idA) || !puntoVentaExists(idB)) {
             throw new PuntoVentaNotFoundException(PUNTO_VENTA_NOT_FOUND);
         }
-        String keyAB = generateKey(idA, idB);
-        String keyBA = generateKey(idB, idA);
 
-        if (cache.containsKey(keyAB)) {
-            cache.put(keyAB, 0.0);
-        }
-        if (cache.containsKey(keyBA)) {
-            cache.put(keyBA, 0.0);
-        }
+        String key = generateKey(idA, idB);
+        cache.put(key, 0.0);
     }
 
-    public List<CostoPuntos> getCostosDesdePunto(Long idA) {
+    public List<CostoPuntosResponse> getCostosDesdePunto(Long idA) {
         if (!puntoVentaExists(idA)) {
             throw new IllegalArgumentException(PUNTO_VENTA_NOT_FOUND);
         }
-        List<CostoPuntos> costos = new ArrayList<>();
+        List<CostoPuntosResponse> costos = new ArrayList<>();
         cache.forEach((key, value) -> {
             String[] ids = key.split(REGEX);
             if (ids[0].equals(String.valueOf(idA))) {
                 Long idB = Long.valueOf(ids[1]);
-                if (!puntoVentaExists(idB)) {
-                    return;
-                }
+                if (!puntoVentaExists(idB)) return;
+
                 String nombrePuntoB = puntoVentaServiceImpl.getAllPuntosVenta().stream()
                         .filter(p -> p.getId().equals(idB))
                         .map(PuntoVenta::getNombre)
                         .findFirst()
                         .orElse(UNKNOWN);
-                costos.add(new CostoPuntos(idA, idB, value, nombrePuntoB));
+
+                costos.add(new CostoPuntosResponse(idA, idB, value, nombrePuntoB));
             }
         });
         return costos;
@@ -152,7 +148,7 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
     private Map<Long, Double> getVecinos(Long punto) {
         Map<Long, Double> vecinos = new HashMap<>();
         cache.forEach((key, value) -> {
-            String[] ids = key.split("-");
+            String[] ids = key.split(REGEX);
             if (Long.valueOf(ids[0]).equals(punto)) {
                 vecinos.put(Long.valueOf(ids[1]), value);
             }
@@ -161,16 +157,21 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
     }
 
     public Double calcularCostoTotalRuta(List<Long> ruta) {
-        Double costoTotal = 0.0;
+        double costoTotal = 0.0;
 
         for (int i = 0; i < ruta.size() - 1; i++) {
             Long idA = ruta.get(i);
             Long idB = ruta.get(i + 1);
             String key = generateKey(idA, idB);
 
-            if (cache.containsKey(key)) {
-                costoTotal += cache.get(key);
+            Double costo = cache.get(key);
+            if (!cache.containsKey(key)) {
+                System.err.println("❌ Key faltante en cache: " + key);
+                System.err.println("📦 Cache disponible: " + cache);
+                throw new IllegalStateException("Falta costo entre " + idA + " y " + idB);
             }
+
+            costoTotal += costo;
         }
 
         return costoTotal;
@@ -181,23 +182,24 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
     }
 
     private String generateKey(Long idA, Long idB) {
-        return idA + REGEX + idB;
+        return (idA < idB ? idA + REGEX + idB : idB + REGEX + idA);
     }
 
     private void saveCostoToDB(Long idA, Long idB, Double costo) {
-        if (costoRepository.findByIdAAndIdB(idA, idB).isEmpty()) {
-            CostoPuntos entity = new CostoPuntos();
-            entity.setIdA(idA);
-            entity.setIdB(idB);
-            entity.setCosto(costo);
-            costoRepository.save(entity);
+        Long menor = Math.min(idA, idB);
+        Long mayor = Math.max(idA, idB);
 
-            // Guardar inverso para reflejar que es bidireccional
-            CostoPuntos reverse = new CostoPuntos();
-            reverse.setIdA(idB);
-            reverse.setIdB(idA);
-            reverse.setCosto(costo);
-            costoRepository.save(reverse);
+        Optional<CostoPuntos> existente = costoRepository.findByIdAAndIdB(menor, mayor);
+        if (existente.isPresent()) {
+            CostoPuntos existentePunto = existente.get();
+            existentePunto.setCosto(costo);
+            costoRepository.save(existentePunto);
+        } else {
+            CostoPuntos nuevo = new CostoPuntos();
+            nuevo.setIdA(menor);
+            nuevo.setIdB(mayor);
+            nuevo.setCosto(costo);
+            costoRepository.save(nuevo);
         }
     }
 }
