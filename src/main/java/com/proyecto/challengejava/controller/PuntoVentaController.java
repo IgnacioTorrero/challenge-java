@@ -34,16 +34,16 @@ public class PuntoVentaController {
      */
     @PostMapping
     public ResponseEntity<Void> addPuntoVenta(@RequestBody @Valid PuntoVentaRequest request) {
-        service.addPuntoVenta(request.getId(), request.getNombre());
+        service.addPuntoVenta(request.getNombre());
         return ResponseEntity.ok().build();
     }
 
     /*
      * Metodo encargado de actualizar el nombre del id de punto de venta ingresado.
      */
-    @PutMapping
-    public ResponseEntity<Void> updatePuntoVenta(@RequestBody @Valid PuntoVentaRequest request) {
-        service.updatePuntoVenta(request.getId(), request.getNombre());
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updatePuntoVenta(@PathVariable Long id, @RequestBody @Valid PuntoVentaRequest request) {
+        service.updatePuntoVenta(id, request.getNombre());
         return ResponseEntity.ok().build();
     }
 

@@ -1,9 +1,11 @@
 package com.proyecto.challengejava.service;
 
+import com.proyecto.challengejava.dto.CostoPuntosResponse;
 import com.proyecto.challengejava.entity.CostoPuntos;
 import com.proyecto.challengejava.entity.PuntoVenta;
 import com.proyecto.challengejava.exception.PuntoVentaNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.proyecto.challengejava.repository.CostoRepository;
+import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -16,37 +18,59 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
 
     private final ConcurrentHashMap<String, Double> cache = new ConcurrentHashMap<>();
     private final PuntoVentaServiceImpl puntoVentaServiceImpl;
+    private final CostoRepository costoRepository;
 
-    public CostoPuntosServiceImpl(PuntoVentaServiceImpl puntoVentaServiceImpl) {
+    public CostoPuntosServiceImpl(PuntoVentaServiceImpl puntoVentaServiceImpl, CostoRepository costoRepository) {
         this.puntoVentaServiceImpl = puntoVentaServiceImpl;
-        cargarCostosIniciales();
+        this.costoRepository = costoRepository;
     }
 
-    public void cargarCostosIniciales() {
-        if (cache.isEmpty()) {
-            agregarCostoInicial(1L, 2L, 2.0);
-            agregarCostoInicial(1L, 3L, 3.0);
-            agregarCostoInicial(2L, 3L, 5.0);
-            agregarCostoInicial(2L, 4L, 10.0);
-            agregarCostoInicial(1L, 4L, 11.0);
-            agregarCostoInicial(4L, 5L, 5.0);
-            agregarCostoInicial(2L, 5L, 14.0);
-            agregarCostoInicial(6L, 7L, 32.0);
-            agregarCostoInicial(8L, 9L, 11.0);
-            agregarCostoInicial(10L, 7L, 5.0);
-            agregarCostoInicial(3L, 8L, 10.0);
-            agregarCostoInicial(5L, 8L, 30.0);
-            agregarCostoInicial(10L, 5L, 5.0);
-            agregarCostoInicial(4L, 6L, 6.0);
+    @PostConstruct
+    public void init() {
+        // Esperar a que se hayan precargado los puntos de venta
+        List<PuntoVenta> puntos = puntoVentaServiceImpl.getAllPuntosVenta();
+        if (costoRepository.count() == 0 && !puntos.isEmpty()) {
+            try {
+                precargarCostosIniciales();
+            } catch (IllegalArgumentException e) {
+                System.err.println("⚠️ No se precargaron costos: " + e.getMessage());
+            }
+        } else if (puntos.isEmpty()) {
+            System.out.println("⚠️ No hay puntos de venta disponibles aún, se omite la precarga de costos.");
         }
+
+        cargarCacheDesdeDB();
     }
 
-    private void agregarCostoInicial(Long idA, Long idB, Double costo) {
-        if (!puntoVentaExists(idA) || !puntoVentaExists(idB)) {
-            throw new PuntoVentaNotFoundException(PUNTO_VENTA_NOT_FOUND + ": " + idA + " - " + idB);
-        }
-        cache.put(generateKey(idA, idB), costo);
-        cache.put(generateKey(idB, idA), costo);
+    public void cargarCacheDesdeDB() {
+        costoRepository.findAll().forEach(costo -> {
+            Long idA = costo.getIdA();
+            Long idB = costo.getIdB();
+            Double importe = costo.getCosto();
+            String key = generateKey(idA, idB);
+            cache.putIfAbsent(key, importe);
+            System.out.println("✅ Cache cargada con key: " + key + " => " + importe);
+        });
+    }
+
+    private void precargarCostosIniciales() {
+        if (costoRepository.count() > 0) return;
+        if (puntoVentaServiceImpl.getAllPuntosVenta().isEmpty()) throw new IllegalArgumentException(PUNTO_VENTA_NOT_FOUND);
+
+        addCostoPuntos(1L, 2L, 2.0);
+        addCostoPuntos(1L, 3L, 3.0);
+        addCostoPuntos(2L, 3L, 5.0);
+        addCostoPuntos(2L, 4L, 10.0);
+        addCostoPuntos(1L, 4L, 11.0);
+        addCostoPuntos(4L, 5L, 5.0);
+        addCostoPuntos(2L, 5L, 14.0);
+        addCostoPuntos(6L, 7L, 32.0);
+        addCostoPuntos(8L, 9L, 11.0);
+        addCostoPuntos(10L, 7L, 5.0);
+        addCostoPuntos(3L, 8L, 10.0);
+        addCostoPuntos(5L, 8L, 30.0);
+        addCostoPuntos(10L, 5L, 5.0);
+        addCostoPuntos(4L, 6L, 6.0);
     }
 
     public void addCostoPuntos(Long idA, Long idB, Double costo) {
@@ -56,46 +80,53 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
         if (!puntoVentaExists(idA) || !puntoVentaExists(idB)) {
             throw new IllegalArgumentException(PUNTO_VENTA_NOT_FOUND);
         }
-        cache.put(generateKey(idA, idB), costo);
-        cache.put(generateKey(idB, idA), costo);
+
+        String key = generateKey(idA, idB);
+        cache.put(key, costo);
+
+        saveCostoToDB(idA, idB, costo);
     }
 
     public void removeCostoPuntos(Long idA, Long idB) {
         if (!puntoVentaExists(idA) || !puntoVentaExists(idB)) {
             throw new PuntoVentaNotFoundException(PUNTO_VENTA_NOT_FOUND);
         }
-        String keyAB = generateKey(idA, idB);
-        String keyBA = generateKey(idB, idA);
 
-        if (cache.containsKey(keyAB)) {
-            cache.put(keyAB, 0.0);
-        }
-        if (cache.containsKey(keyBA)) {
-            cache.put(keyBA, 0.0);
-        }
+        String key = generateKey(idA, idB);
+        cache.put(key, 0.0);
     }
 
-    public List<CostoPuntos> getCostosDesdePunto(Long idA) {
+    public List<CostoPuntosResponse> getCostosDesdePunto(Long idA) {
         if (!puntoVentaExists(idA)) {
             throw new IllegalArgumentException(PUNTO_VENTA_NOT_FOUND);
         }
-        List<CostoPuntos> costos = new ArrayList<>();
+        List<CostoPuntosResponse> costos = new ArrayList<>();
         cache.forEach((key, value) -> {
             String[] ids = key.split(REGEX);
-            if (ids[0].equals(String.valueOf(idA))) {
-                Long idB = Long.valueOf(ids[1]);
-                if (!puntoVentaExists(idB)) {
-                    return;
-                }
-                String nombrePuntoB = puntoVentaServiceImpl.getAllPuntosVenta().stream()
-                        .filter(p -> p.getId().equals(idB))
-                        .map(PuntoVenta::getNombre)
-                        .findFirst()
-                        .orElse(UNKNOWN);
-                costos.add(new CostoPuntos(idA, idB, value, nombrePuntoB));
+            Long id1 = Long.valueOf(ids[0]);
+            Long id2 = Long.valueOf(ids[1]);
+
+            if (id1.equals(idA)) {
+                Long idB = id2;
+                if (!puntoVentaExists(idB)) return;
+                String nombrePuntoB = getNombrePuntoVenta(idB);
+                costos.add(new CostoPuntosResponse(idA, idB, value, nombrePuntoB));
+            } else if (id2.equals(idA)) {
+                Long idB = id1;
+                if (!puntoVentaExists(idB)) return;
+                String nombrePuntoB = getNombrePuntoVenta(idB);
+                costos.add(new CostoPuntosResponse(idA, idB, value, nombrePuntoB));
             }
         });
         return costos;
+    }
+
+    private String getNombrePuntoVenta(Long id) {
+        return puntoVentaServiceImpl.getAllPuntosVenta().stream()
+                .filter(p -> p.getId().equals(id))
+                .map(PuntoVenta::getNombre)
+                .findFirst()
+                .orElse(UNKNOWN);
     }
 
     public List<Long> calcularRutaMinima(Long puntoA, Long puntoB) {
@@ -139,25 +170,35 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
     private Map<Long, Double> getVecinos(Long punto) {
         Map<Long, Double> vecinos = new HashMap<>();
         cache.forEach((key, value) -> {
-            String[] ids = key.split("-");
-            if (Long.valueOf(ids[0]).equals(punto)) {
-                vecinos.put(Long.valueOf(ids[1]), value);
+            String[] ids = key.split(REGEX);
+            Long id1 = Long.valueOf(ids[0]);
+            Long id2 = Long.valueOf(ids[1]);
+
+            if (id1.equals(punto)) {
+                vecinos.put(id2, value);
+            } else if (id2.equals(punto)) {
+                vecinos.put(id1, value);
             }
         });
         return vecinos;
     }
 
     public Double calcularCostoTotalRuta(List<Long> ruta) {
-        Double costoTotal = 0.0;
+        double costoTotal = 0.0;
 
         for (int i = 0; i < ruta.size() - 1; i++) {
             Long idA = ruta.get(i);
             Long idB = ruta.get(i + 1);
             String key = generateKey(idA, idB);
 
-            if (cache.containsKey(key)) {
-                costoTotal += cache.get(key);
+            Double costo = cache.get(key);
+            if (!cache.containsKey(key)) {
+                System.err.println("❌ Key faltante en cache: " + key);
+                System.err.println("📦 Cache disponible: " + cache);
+                throw new IllegalStateException("Falta costo entre " + idA + " y " + idB);
             }
+
+            costoTotal += costo;
         }
 
         return costoTotal;
@@ -168,6 +209,24 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
     }
 
     private String generateKey(Long idA, Long idB) {
-        return idA + REGEX + idB;
+        return (idA < idB ? idA + REGEX + idB : idB + REGEX + idA);
+    }
+
+    private void saveCostoToDB(Long idA, Long idB, Double costo) {
+        Long menor = Math.min(idA, idB);
+        Long mayor = Math.max(idA, idB);
+
+        Optional<CostoPuntos> existente = costoRepository.findByIdAAndIdB(menor, mayor);
+        if (existente.isPresent()) {
+            CostoPuntos costoExistente = existente.get();
+            costoExistente.setCosto(costo);
+            costoRepository.save(costoExistente);
+        } else {
+            CostoPuntos nuevo = new CostoPuntos();
+            nuevo.setIdA(menor);
+            nuevo.setIdB(mayor);
+            nuevo.setCosto(costo);
+            costoRepository.save(nuevo);
+        }
     }
 }

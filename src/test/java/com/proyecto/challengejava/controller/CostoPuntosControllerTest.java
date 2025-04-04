@@ -1,6 +1,7 @@
 package com.proyecto.challengejava.controller;
 
 import com.proyecto.challengejava.dto.CostoPuntosRequest;
+import com.proyecto.challengejava.dto.CostoPuntosResponse;
 import com.proyecto.challengejava.dto.RutaCostoMinimoResponse;
 import com.proyecto.challengejava.entity.CostoPuntos;
 import com.proyecto.challengejava.service.CostoPuntosServiceImpl;
@@ -54,14 +55,14 @@ public class CostoPuntosControllerTest {
 
     @Test
     void getCostosDesdePunto_ReturnsListOfCostos() {
-        List<CostoPuntos> costos = Arrays.asList(
-                new CostoPuntos(1L, 2L, 100.0, null),
-                new CostoPuntos(1L, 3L, 150.0, null)
+        List<CostoPuntosResponse> costos = Arrays.asList(
+                new CostoPuntosResponse(1L, 2L, 100.0, "GBA_1"),
+                new CostoPuntosResponse(1L, 3L, 150.0, "GBA_2")
         );
         when(service.getCostosDesdePunto(ID_PUNTO_VENTA)).thenReturn(costos);
 
-        ResponseEntity<List<CostoPuntos>> response = controller.getCostosDesdePunto(ID_PUNTO_VENTA);
-        
+        ResponseEntity<List<CostoPuntosResponse>> response = controller.getCostosDesdePunto(ID_PUNTO_VENTA);
+
         assertEquals(SUCCESS_RESPONSE, response.getStatusCodeValue());
         assertEquals(costos, response.getBody());
         verify(service, times(1)).getCostosDesdePunto(ID_PUNTO_VENTA);
