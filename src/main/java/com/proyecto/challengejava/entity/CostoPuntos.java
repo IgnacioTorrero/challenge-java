@@ -14,16 +14,14 @@ public class CostoPuntos {
     private Long idA;
     private Long idB;
     private Double costo;
-    private String nombrePuntoB;
 
     public CostoPuntos() {
     }
 
-    public CostoPuntos(Long idA, Long idB, Double costo, String nombrePuntoB) {
+    public CostoPuntos(Long idA, Long idB, Double costo) {
         this.idA = idA;
         this.idB = idB;
         this.costo = costo;
-        this.nombrePuntoB = nombrePuntoB;
     }
 
     public Long getIdA() {
@@ -48,14 +46,6 @@ public class CostoPuntos {
 
     public void setCosto(Double costo) {
         this.costo = costo;
-    }
-
-    public String getNombrePuntoB() {
-        return nombrePuntoB;
-    }
-
-    public void setNombrePuntoB(String nombreIdB) {
-        this.nombrePuntoB = nombreIdB;
     }
 
     public void setId(Long id) {

@@ -27,9 +27,18 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
 
     @PostConstruct
     public void init() {
-        if (costoRepository.count() == 0) {
-            precargarCostosIniciales();
+        // Esperar a que se hayan precargado los puntos de venta
+        List<PuntoVenta> puntos = puntoVentaServiceImpl.getAllPuntosVenta();
+        if (costoRepository.count() == 0 && !puntos.isEmpty()) {
+            try {
+                precargarCostosIniciales();
+            } catch (IllegalArgumentException e) {
+                System.err.println("⚠️ No se precargaron costos: " + e.getMessage());
+            }
+        } else if (puntos.isEmpty()) {
+            System.out.println("⚠️ No hay puntos de venta disponibles aún, se omite la precarga de costos.");
         }
+
         cargarCacheDesdeDB();
     }
 
@@ -39,12 +48,15 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
             Long idB = costo.getIdB();
             Double importe = costo.getCosto();
             String key = generateKey(idA, idB);
-            cache.put(key, importe);
+            cache.putIfAbsent(key, importe);
             System.out.println("✅ Cache cargada con key: " + key + " => " + importe);
         });
     }
 
     private void precargarCostosIniciales() {
+        if (costoRepository.count() > 0) return;
+        if (puntoVentaServiceImpl.getAllPuntosVenta().isEmpty()) throw new IllegalArgumentException(PUNTO_VENTA_NOT_FOUND);
+
         addCostoPuntos(1L, 2L, 2.0);
         addCostoPuntos(1L, 3L, 3.0);
         addCostoPuntos(2L, 3L, 5.0);
@@ -159,8 +171,13 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
         Map<Long, Double> vecinos = new HashMap<>();
         cache.forEach((key, value) -> {
             String[] ids = key.split(REGEX);
-            if (Long.valueOf(ids[0]).equals(punto)) {
-                vecinos.put(Long.valueOf(ids[1]), value);
+            Long id1 = Long.valueOf(ids[0]);
+            Long id2 = Long.valueOf(ids[1]);
+
+            if (id1.equals(punto)) {
+                vecinos.put(id2, value);
+            } else if (id2.equals(punto)) {
+                vecinos.put(id1, value);
             }
         });
         return vecinos;
@@ -201,9 +218,9 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
 
         Optional<CostoPuntos> existente = costoRepository.findByIdAAndIdB(menor, mayor);
         if (existente.isPresent()) {
-            CostoPuntos existentePunto = existente.get();
-            existentePunto.setCosto(costo);
-            costoRepository.save(existentePunto);
+            CostoPuntos costoExistente = existente.get();
+            costoExistente.setCosto(costo);
+            costoRepository.save(costoExistente);
         } else {
             CostoPuntos nuevo = new CostoPuntos();
             nuevo.setIdA(menor);
