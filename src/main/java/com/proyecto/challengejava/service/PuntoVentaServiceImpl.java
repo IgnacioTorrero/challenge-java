@@ -25,7 +25,7 @@ public class PuntoVentaServiceImpl implements PuntoVentaService {
 
     @PostConstruct
     public void init() {
-        precargarPuntosVentaSiNoExisten();
+//        precargarPuntosVentaSiNoExisten();
         cargarCacheDesdeDB();
     }
 
@@ -33,17 +33,21 @@ public class PuntoVentaServiceImpl implements PuntoVentaService {
         puntoVentaRepository.findAll().forEach(p -> cache.put(p.getId(), p.getNombre()));
     }
 
-    private void precargarPuntosVentaSiNoExisten() {
-        if (puntoVentaRepository.count() == 0) {
-            List<PuntoVenta> puntos = new ArrayList<>();
-            for (long i = 1; i <= 10; i++) {
-                PuntoVenta puntoVenta = new PuntoVenta();
-                puntoVenta.setNombre(PUNTOS_VENTA.get((int) (i - 1)));
-                puntos.add(puntoVenta);
-            }
-            puntoVentaRepository.saveAll(puntos);
-        }
-    }
+    /*
+        Carga los datos en la db local.
+        Se comenta porque solo se utiliza la db del contenedor.
+     */
+//    private void precargarPuntosVentaSiNoExisten() {
+//        if (puntoVentaRepository.count() == 0) {
+//            List<PuntoVenta> puntos = new ArrayList<>();
+//            for (long i = 1; i <= 10; i++) {
+//                PuntoVenta puntoVenta = new PuntoVenta();
+//                puntoVenta.setNombre(PUNTOS_VENTA.get((int) (i - 1)));
+//                puntos.add(puntoVenta);
+//            }
+//            puntoVentaRepository.saveAll(puntos);
+//        }
+//    }
 
     public List<PuntoVenta> getAllPuntosVenta() {
         return puntoVentaRepository.findAll();
@@ -58,6 +62,9 @@ public class PuntoVentaServiceImpl implements PuntoVentaService {
 
     @Override
     public void addPuntoVenta(String nombre) {
+        if (puntoVentaRepository.existsByNombre(nombre)) {
+            throw new IllegalArgumentException(PUNTO_VENTA_ALREADY_EXISTS);
+        }
         PuntoVenta puntoVenta = new PuntoVenta();
         puntoVenta.setNombre(nombre);
         puntoVenta = puntoVentaRepository.save(puntoVenta);

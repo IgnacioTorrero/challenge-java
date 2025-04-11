@@ -1,218 +1,188 @@
-# 🚀 Challenge Java - Proyecto Backend con Spring Boot
+# Challenge Java
 
-Este proyecto es una API REST desarrollada con **Spring Boot 3.4.1** y **Java 17**. Utiliza **MySQL 8** como base de datos y gestiona costos y acreditaciones de puntos de venta.
-
-## 📋 Requisitos Previos
-
-Antes de comenzar, asegúrate de tener instalados los siguientes programas:
-
-1. **Java 17 (JDK 17)**
-
-    - Descargar desde: [Adoptium Temurin JDK 17](https://adoptium.net/temurin/releases/)
-    - Verificar la instalación:
-      ```sh
-      java -version
-      ```
-
-2. **Maven 3.8+**
-
-    - Descargar desde: [Apache Maven](https://maven.apache.org/download.cgi)
-    - Verificar la instalación:
-      ```sh
-      mvn -version
-      ```
-
-3. **MySQL 8**
-
-    - Descargar desde: [MySQL Community Server](https://dev.mysql.com/downloads/mysql/)
-    - Verificar la instalación:
-      ```sh
-      mysql --version
-      ```
-
-4. **Git**
-
-    - Descargar desde: [Git](https://git-scm.com/downloads)
-    - Verificar la instalación:
-      ```sh
-      git --version
-      ```
-
-5. **IntelliJ IDEA (Recomendado)**
-
-    - Descargar desde: [IntelliJ IDEA Community Edition](https://www.jetbrains.com/idea/download/)
+Este proyecto es una API REST construida con Spring Boot para la gestión de puntos de venta, acreditaciones y costos de conexión entre dichos puntos, incorporando JWT para autenticación, Swagger UI para documentación, y Docker/Podman para el despliegue.
 
 ---
 
-## 📦 Instalación y Configuración
-### 1️⃣ Clonar el Repositorio
-```sh
- git clone https://github.com/IgnacioTorrero/challenge-java.git
- cd challenge-java
-```
-### 2️⃣ Configurar la Base de Datos
-Asegúrate de tener **MySQL** instalado y configurado.
+## 📖 Módulo teórico
 
-#### Crear la base de datos manualmente:
-```sql
-CREATE DATABASE challenge_java;
-```
-La conexión a la base de datos se configura en el archivo `application.properties`:
-```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/challenge_java?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
-spring.datasource.username=root
-spring.datasource.password=abc123
-```
-📌 **Asegúrate de cambiar las credenciales de acceso a MySQL si es necesario.**
+### 1) Tecnologías utilizadas
 
-### 3️⃣ Construir el Proyecto
-```sh
-mvn clean install
-```
-### 4️⃣ Ejecutar la Aplicación
-```sh
-mvn spring-boot:run
-```
-La API estará disponible en `http://localhost:8080`.
+- **Lenguaje principal:** Java 17
+- **Framework:** Spring Boot 3.4.1
+- **Base de datos:** MySQL 8 (contenedorizado)
+- **ORM:** Spring Data JPA + Hibernate
+- **Migrations:** Flyway
+- **Autenticación y Seguridad:** Spring Security + JWT (con firma HS256)
+- **Documentación:** Swagger UI (vía Springdoc OpenAPI)
+- **Contenedores:** Podman (alternativa a Docker)
+- **Build Tool:** Maven 3.9.6
+- **Testing:** JUnit 5 + Mockito
 
-## 🛠️ Endpoints y Pruebas con Postman
-A continuación, se detallan los endpoints y cómo probarlos en **Postman**.
+### 2) Patrones de diseño utilizados
 
-### 1️⃣ Caché de Puntos de Venta
-#### Obtener todos los puntos de venta
+- **Controller-Service-Repository (C-S-R):** organización en capas separadas para manejar responsabilidades.
+- **DTO (Data Transfer Object):** para separar entidad y vista, y reducir acoplamiento.
+- **Factory Method (en `mapToResponse()`):** para la transformación entre entidades y DTOs.
+- **Singleton (con beans Spring):** servicios y repositorios funcionan como singleton gestionados por el contenedor Spring.
+- **Builder (parcialmente en JWT):** generación fluida de tokens con la API de `Jwts.builder()`.
+
+### 3) Arquitectura utilizada
+
+- Arquitectura **monolítica** basada en REST.
+- **Capas bien definidas:**
+   - `controller`: expone los endpoints.
+   - `service`: contiene la lógica de negocio.
+   - `repository`: accede a la base de datos.
+   - `entity`: representa las tablas.
+   - `dto`: datos que viajan por la red.
+   - `security`: manejo de autenticación JWT y configuración de filtros.
+   - `exception`: manejo global de errores.
+   - `hateoas`: soporte para enlaces RESTful enriquecidos.
+
+### 4) Resumen de endpoints
+
+#### Autenticación (`/api/auth`)
+- `POST /register`: Registrar un nuevo usuario.
+- `POST /login`: Iniciar sesión. Devuelve un token JWT.
+
+#### Puntos de venta (`/api/puntos-venta`)
+- `GET /`: Listar puntos de venta (token requerido).
+- `POST /`: Crear un punto de venta.
+- `PUT /{id}`: Actualizar nombre del punto.
+- `DELETE /{id}`: Eliminar un punto y sus costos relacionados.
+
+#### Costos (`/api/costos`)
+- `POST /`: Agregar costo entre dos puntos (requiere `costo` en query param).
+- `DELETE /`: Eliminar el costo entre dos puntos.
+- `GET /{idA}`: Listar todos los costos desde un punto A.
+- `POST /minimo`: Calcular ruta de costo mínimo entre dos puntos (usando algoritmo de Dijkstra).
+
+#### Acreditaciones (`/api/acreditaciones`)
+- `GET /`: Listar todas las acreditaciones registradas.
+- `POST /`: Recibir y guardar una nueva acreditación.
+
+---
+
+## 📝 Módulo práctico
+
+### 5) ¿Cómo montar la aplicación desde cero?
+
+**Tecnologías necesarias a instalar en el entorno:**
+- [Java 17 SDK](https://jdk.java.net/17/) (específicamente esta versión, ya que el proyecto está construido con Java 17)
+- [Apache Maven 3.9.x](https://maven.apache.org/download.cgi) (para compilar y gestionar dependencias)
+- [IntelliJ IDEA](https://www.jetbrains.com/idea/) (recomendado como entorno de desarrollo)
+- [Spring Boot](https://spring.io/projects/spring-boot) *(no requiere instalación manual)*: todas las dependencias necesarias se descargan automáticamente desde el `pom.xml` al compilar con Maven.
+- [Podman](https://podman.io/) (alternativa a Docker, utilizado para levantar los servicios en contenedores)
+- [podman-compose](https://github.com/containers/podman-compose) (equivalente a docker-compose, permite orquestar contenedores)
+- [MySQL Workbench](https://dev.mysql.com/downloads/workbench/) (opcional, para visualizar y gestionar la base de datos de forma gráfica)
+- Conexión a internet para que Maven pueda descargar automáticamente las dependencias del proyecto (Spring Boot, Hibernate, JWT, etc).
+
+**Pasos para montar y ejecutar el proyecto:**
+1. Abrir el proyecto en IntelliJ IDEA.
+2. Configurar el SDK de Java 17.
+3. Verificar que Maven esté activo (usando el archivo `pom.xml`).
+4. Asegurarse de que `application.properties` utilice las variables de entorno necesarias (ya están configuradas para usarse con Podman).
+5. Ejecutar los siguientes comandos desde la terminal en el directorio raíz del proyecto:
+
+```bash
+podman-compose up --detach #Para levantar el proyecto
+podman-compose down #Para frenar el proyecto
+podman-compose build #Para buildear el proyecto después de un cambio
+```
+
+### 6) ¿Cómo visualizar y testear Swagger UI?
+
+**Desde IntelliJ:**
+- Plugin `OpenAPI (Swagger) Editor`
+- `Tools > OpenAPI (Swagger) Editor > Show Open API Preview`
+
+### 7) ¿Cómo testear cada endpoint en Postman?
+
+**Paso a paso:**
+1. Enviar `POST /api/auth/login` con mail y password:
+```json
+{
+   "email": "usuario@mail.com",
+   "password": "1234"
+}
+```
+2. Copiar el token devuelto en la propiedad `token`.
+3. En Postman, ir a la sección `Authorization` > `Bearer Token` y pegar el token:
+```
+Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6...
+```
+4. Usar cualquier endpoint desde la sección `Request` con el token incluido.
+
+**Listado de endpoints con ejemplos para testear:**
+
+#### 🛡️ Autenticación
+
+```http
+POST /api/auth/register
+Body:
+{ "nombre": "Juan", "email": "juan@mail.com", "password": "1234" }
+
+POST /api/auth/login
+Body:
+{ "email": "juan@mail.com", "password": "1234" }
+```
+
+#### 🏬 Puntos de Venta
+
 ```http
 GET /api/puntos-venta
-```
-📌 **Prueba en Postman:**
-1. Abre Postman.
-2. Crea una nueva solicitud `GET`.
-3. Introduce la URL `http://localhost:8080/api/puntos-venta`.
-4. Presiona **Send** y verifica la lista de puntos de venta.
 
-#### Agregar un punto de venta
-```http
 POST /api/puntos-venta
-```
-**Body (JSON):**
-```json
-{
-  "id": 11,
-  "nombre": "San Juan"
-}
-```
-📌 **Prueba en Postman:**
-1. Crea una nueva solicitud `POST`.
-2. Introduce la URL `http://localhost:8080/api/puntos-venta`.
-3. En la pestaña **Body**, selecciona **raw** y el formato **JSON**.
-4. Ingresa el JSON anterior.
-5. Presiona **Send** y verifica que el punto de venta se haya agregado correctamente.
+Body: { "nombre": "Jujuy" }
 
-#### Actualizar un punto de venta
-```http
-PUT /api/puntos-venta
-```
-**Body (JSON):**
-```json
-{
-  "id": 11,
-  "nombre": "San Luis"
-}
+PUT /api/puntos-venta/1
+Body: { "nombre": "Capital Federal" }
+
+DELETE /api/puntos-venta/1
 ```
 
-#### Eliminar un punto de venta
-```http
-DELETE /api/puntos-venta/{id}
-```
-Ejemplo para eliminar el punto de venta con id 11:
-```http
-DELETE /api/puntos-venta/11
-```
+#### 💸 Costos entre Puntos
 
----
-
-### 2️⃣ Caché de Costos entre Puntos de Venta
-#### Cargar un nuevo costo
 ```http
-POST /api/costos
-```
-**Body (JSON):**
-```json
-{
-  "idA": 1,
-  "idB": 2
-}
-```
-**Query Params:** `costo=5`
+POST /api/costos?costo=10
+Body: { "idA": 1, "idB": 4 }
 
-#### Remover un costo
-```http
 DELETE /api/costos
-```
-**Body (JSON):**
-```json
-{
-  "idA": 1,
-  "idB": 2
-}
-```
+Body: { "idA": 1, "idB": 4 }
 
-#### Consultar costos desde un punto de venta
-```http
-GET /api/costos/{idA}
-```
-Ejemplo:
-```http
 GET /api/costos/1
+
+POST /api/costos/minimo
+Body: { "idA": 1, "idB": 5 }
 ```
 
-#### Obtener la ruta de menor costo entre dos puntos
-```http
-GET /api/costos/minimo
-```
-**Body (JSON):**
-```json
-{
-  "idA": 1,
-  "idB": 5
-}
-```
+#### 🧾 Acreditaciones
 
----
-
-### 3️⃣ Acreditaciones
-#### Crear una acreditación
-```http
-POST /api/acreditaciones
-```
-**Body (JSON):**
-```json
-{
-  "importe": 100.50,
-  "idPuntoVenta": 1
-}
-```
-
-#### Obtener todas las acreditaciones
 ```http
 GET /api/acreditaciones
+
+POST /api/acreditaciones
+Body:
+{ "importe": 1500.00, "idPuntoVenta": 2 }
 ```
 
-## 🧪 Ejecución de Pruebas Unitarias
-```sh
-mvn test
-```
-Verifica la cobertura de pruebas en la terminal.
-
-## 📌 Notas Importantes
-- **La base de datos debe estar creada antes de correr la aplicación.**
-- **Los puntos de venta y costos iniciales están en caché y pueden modificarse en runtime.**
-- **Las pruebas de integración pueden realizarse en Postman con los ejemplos proporcionados.**
+💡 Todos los endpoints salvo `/auth/register` y `/auth/login` requieren el token JWT.
 
 ---
 
-Este README proporciona instrucciones completas para levantar la API y probarla correctamente en otro entorno. 🚀
+## Extras y detalles técnicos
 
+- El token JWT tiene una duración de 10 horas.
+- Todos los errores están manejados globalmente desde `GlobalExceptionHandler`.
+- Swagger está configurado para persistir autorización JWT (`springdoc.swagger-ui.persistAuthorization=true`).
+- Se permite CORS desde `localhost` para facilitar pruebas en entorno local.
 
+---
 
+Si algo no funciona, lo primero que deberías revisar es:
+- ⚡ Que el contenedor de MySQL esté corriendo y haya sido creado correctamente.
+- 🔐 Que el token JWT sea válido y no esté vencido.
+- ✉ Que los datos requeridos (como `nombre`, `importe`, `idA`, `idB`, etc) estén bien formateados en las requests.
 
-
+Cualquier duda extra, el código está completamente documentado y modularizado, con ejemplos y convenciones claras.

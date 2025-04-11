@@ -1,7 +1,6 @@
 package com.proyecto.challengejava.service;
 
 import com.proyecto.challengejava.dto.CostoPuntosResponse;
-import com.proyecto.challengejava.entity.CostoPuntos;
 import java.util.List;
 
 public interface CostoPuntosService {
@@ -10,4 +9,5 @@ public interface CostoPuntosService {
     List<CostoPuntosResponse> getCostosDesdePunto(Long idA);
     List<Long> calcularRutaMinima(Long puntoA, Long puntoB);
     Double calcularCostoTotalRuta(List<Long> ruta);
+    void eliminarCostosRelacionadosA(Long id);
 }

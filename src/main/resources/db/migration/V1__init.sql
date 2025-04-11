@@ -1,20 +1,32 @@
-CREATE TABLE punto_venta (
-    id BIGINT PRIMARY KEY,
-    nombre VARCHAR(255) NOT NULL
+CREATE TABLE IF NOT EXISTS punto_venta (
+        id BIGINT AUTO_INCREMENT PRIMARY KEY,
+        nombre VARCHAR(255)
+    );
+
+CREATE TABLE IF NOT EXISTS costo_puntos (
+        id BIGINT AUTO_INCREMENT PRIMARY KEY,
+        idA BIGINT,
+        idB BIGINT,
+        costo DOUBLE
 );
 
-CREATE TABLE acreditacion (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    importe DECIMAL(10,2) NOT NULL,
-    idPuntoVenta INT NOT NULL,
-    fechaRecepcion DATE DEFAULT CURRENT_DATE,
-    nombrePuntoVenta VARCHAR(255),
-    CONSTRAINT fk_idPuntoVenta FOREIGN KEY (idPuntoVenta) REFERENCES punto_venta(id)
-);
+CREATE TABLE IF NOT EXISTS acreditacion (
+        id BIGINT AUTO_INCREMENT PRIMARY KEY,
+        importe DOUBLE,
+        id_punto_venta BIGINT,
+        nombre_punto_venta VARCHAR(255),
+        fecha_recepcion DATE
+    );
 
-CREATE TABLE costos (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    id_a INT NOT NULL,
-    id_b INT NOT NULL,
-    costo DECIMAL(10,2) NOT NULL
-);
+CREATE TABLE IF NOT EXISTS usuario (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255),
+    email VARCHAR(255) UNIQUE,
+    password VARCHAR(255),
+    rol ENUM('ADMIN', 'USER')
+    );
+
+-- Datos de ejemplo
+INSERT INTO punto_venta (nombre) VALUES
+    ('CABA'), ('GBA_1'), ('GBA_2'), ('Santa Fe'), ('Córdoba'),
+    ('Misiones'), ('Salta'), ('Chubut'), ('Santa Cruz'), ('Catamarca');

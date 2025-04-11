@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PuntoVentaRepository extends JpaRepository<PuntoVenta, Long> {
     boolean existsById(Long id);
+    boolean existsByNombre(String nombre);
 }

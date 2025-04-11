@@ -3,14 +3,17 @@ package com.proyecto.challengejava.controller;
 import com.proyecto.challengejava.dto.CostoPuntosRequest;
 import com.proyecto.challengejava.dto.CostoPuntosResponse;
 import com.proyecto.challengejava.dto.RutaCostoMinimoResponse;
-import com.proyecto.challengejava.entity.CostoPuntos;
-import com.proyecto.challengejava.service.CostoPuntosServiceImpl;
+import com.proyecto.challengejava.hateoas.CostoPuntosModelAssembler;
+import com.proyecto.challengejava.hateoas.RutaCostoMinimoModelAssembler;
+import com.proyecto.challengejava.service.CostoPuntosService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.proyecto.challengejava.constants.Constantes.*;
 
@@ -18,11 +21,16 @@ import static com.proyecto.challengejava.constants.Constantes.*;
 @RequestMapping("/api/costos")
 public class CostoPuntosController {
 
-    private final CostoPuntosServiceImpl service;
+    private final CostoPuntosService service;
+    private final CostoPuntosModelAssembler costoPuntosModelAssembler;
+    private final RutaCostoMinimoModelAssembler rutaCostoMinimoModelAssembler;
 
     @Autowired
-    public CostoPuntosController(CostoPuntosServiceImpl service) {
+    public CostoPuntosController(CostoPuntosService service, CostoPuntosModelAssembler costoPuntosModelAssembler,
+                                 RutaCostoMinimoModelAssembler rutaCostoMinimoModelAssembler) {
         this.service = service;
+        this.costoPuntosModelAssembler = costoPuntosModelAssembler;
+        this.rutaCostoMinimoModelAssembler = rutaCostoMinimoModelAssembler;
     }
 
     /*
@@ -51,21 +59,30 @@ public class CostoPuntosController {
      * al punto de venta A.
      */
     @GetMapping("/{idA}")
-    public ResponseEntity<List<CostoPuntosResponse>> getCostosDesdePunto(@PathVariable Long idA) {
-        return ResponseEntity.ok(service.getCostosDesdePunto(idA));
+    public ResponseEntity<CollectionModel<CostoPuntosResponse>> getCostosDesdePunto(@PathVariable Long idA) {
+        List<CostoPuntosResponse> responseList = service.getCostosDesdePunto(idA)
+                .stream()
+                .map(costoPuntosModelAssembler::toModel)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(CollectionModel.of(responseList));
     }
 
     /*
     * Metodo encargado de calcular la ruta y el costo minimo entre dos puntos de venta.
+    *
+    * Este endpoint técnicamente es un GET, porque no modifica datos.
+    * Pero se define como POST para que Swagger UI pueda enviarlo correctamente,
+    * ya que no permite body en métodos GET (según restricciones del protocolo HTTP)
      */
-    @GetMapping("/minimo")
+    @PostMapping("/minimo")
     public ResponseEntity<RutaCostoMinimoResponse> calcularCostoMinimo(@RequestBody @Valid CostoPuntosRequest request) {
         validarParametros(request.getIdA(), request.getIdB());
-        List<Long> ruta = service.calcularRutaMinima(request.getIdA(), request.getIdB());
 
+        List<Long> ruta = service.calcularRutaMinima(request.getIdA(), request.getIdB());
         Double costoTotal = service.calcularCostoTotalRuta(ruta);
+
         RutaCostoMinimoResponse response = new RutaCostoMinimoResponse(ruta, costoTotal);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(rutaCostoMinimoModelAssembler.toModel(response));
     }
 
     /*

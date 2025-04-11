@@ -12,6 +12,11 @@ public class CostoPuntosRequest {
     @Min(value = 1, message = "El ID debe ser mayor que 0")
     private Long idB;
 
+    public CostoPuntosRequest(Long idA, Long idB) {
+        this.idA = idA;
+        this.idB = idB;
+    }
+
     public Long getIdA() { return idA; }
     public void setIdA(Long id) { this.idA = id; }
     public Long getIdB() { return idB; }

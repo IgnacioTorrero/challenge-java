@@ -1,26 +1,36 @@
 package com.proyecto.challengejava.controller;
 
 import com.proyecto.challengejava.dto.PuntoVentaRequest;
+import com.proyecto.challengejava.dto.PuntoVentaResponse;
 import com.proyecto.challengejava.entity.PuntoVenta;
+import com.proyecto.challengejava.hateoas.PuntoVentaModelAssembler;
+import com.proyecto.challengejava.service.PuntoVentaManager;
 import com.proyecto.challengejava.service.PuntoVentaServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Arrays;
 import java.util.List;
 
 import static com.proyecto.challengejava.constants.ConstantesTest.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class PuntoVentaControllerTest {
 
     @Mock
     private PuntoVentaServiceImpl service;
+
+    @Mock
+    private PuntoVentaManager puntoVentaManager;
+
+    @Mock
+    private PuntoVentaModelAssembler assembler;
 
     @InjectMocks
     private PuntoVentaController controller;
@@ -42,14 +52,31 @@ public class PuntoVentaControllerTest {
     }
 
     @Test
-    void getAllPuntosVenta_ReturnsListOfPuntosVentaVenta() {
+    void getAllPuntosVenta_ReturnsCollectionModelOfPuntoVentaResponses() {
+        // Arrange
         List<PuntoVenta> puntosVenta = Arrays.asList(punto1, punto2);
         when(service.getAllPuntosVenta()).thenReturn(puntosVenta);
+        when(assembler.toModel(any(PuntoVentaResponse.class)))
+                .thenAnswer(invocation -> invocation.getArgument(0));
 
-        ResponseEntity<List<PuntoVenta>> response = controller.getAllPuntosVenta();
+        // Act
+        ResponseEntity<CollectionModel<PuntoVentaResponse>> response = controller.getAllPuntosVenta();
 
+        // Assert
         assertEquals(SUCCESS_RESPONSE, response.getStatusCodeValue());
-        assertEquals(puntosVenta, response.getBody());
+        CollectionModel<PuntoVentaResponse> body = response.getBody();
+        assertNotNull(body);
+        assertEquals(2, body.getContent().size());
+
+        List<PuntoVentaResponse> resultList = body.getContent().stream().toList();
+
+        assertTrue(resultList.stream().anyMatch(p ->
+                ID_PUNTO_VENTA.equals(p.getId()) && PUNTO_VENTA_1.equals(p.getNombre())
+        ));
+        assertTrue(resultList.stream().anyMatch(p ->
+                ID_PUNTO_VENTA2.equals(p.getId()) && PUNTO_VENTA_2.equals(p.getNombre())
+        ));
+
         verify(service, times(1)).getAllPuntosVenta();
     }
 
@@ -75,6 +102,6 @@ public class PuntoVentaControllerTest {
         ResponseEntity<Void> response = controller.deletePuntoVenta(ID_PUNTO_VENTA4);
 
         assertEquals(SUCCESS_RESPONSE, response.getStatusCodeValue());
-        verify(service, times(1)).deletePuntoVenta(ID_PUNTO_VENTA4);
+        verify(puntoVentaManager, times(1)).eliminarPuntoVentaConCostos(ID_PUNTO_VENTA4);
     }
 }

@@ -4,7 +4,6 @@ import com.proyecto.challengejava.entity.Acreditacion;
 import com.proyecto.challengejava.entity.PuntoVenta;
 import com.proyecto.challengejava.exception.PuntoVentaNotFoundException;
 import com.proyecto.challengejava.repository.AcreditacionRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -15,11 +14,11 @@ import static com.proyecto.challengejava.constants.Constantes.PUNTO_VENTA_NOT_FO
 public class AcreditacionServiceImpl implements AcreditacionService {
 
     private final AcreditacionRepository repository;
-    private final PuntoVentaServiceImpl puntoVentaServiceImpl;
+    private final PuntoVentaService puntoVentaService;
 
-    public AcreditacionServiceImpl(AcreditacionRepository repository, PuntoVentaServiceImpl puntoVentaServiceImpl) {
+    public AcreditacionServiceImpl(AcreditacionRepository repository, PuntoVentaService puntoVentaService) {
         this.repository = repository;
-        this.puntoVentaServiceImpl = puntoVentaServiceImpl;
+        this.puntoVentaService = puntoVentaService;
     }
 
     public Acreditacion recibirAcreditacion(Double importe, Long idPuntoVenta) {
@@ -27,7 +26,7 @@ public class AcreditacionServiceImpl implements AcreditacionService {
             throw new PuntoVentaNotFoundException(PUNTO_VENTA_NOT_FOUND + ": " + idPuntoVenta);
         }
 
-        String nombrePuntoVenta = puntoVentaServiceImpl.getAllPuntosVenta().stream()
+        String nombrePuntoVenta = puntoVentaService.getAllPuntosVenta().stream()
                 .filter(p -> p.getId().equals(idPuntoVenta))
                 .map(PuntoVenta::getNombre)
                 .findFirst()
@@ -43,7 +42,7 @@ public class AcreditacionServiceImpl implements AcreditacionService {
     }
 
     private boolean puntoVentaExists(Long id) {
-        return puntoVentaServiceImpl.getAllPuntosVenta().stream().anyMatch(p -> p.getId().equals(id));
+        return puntoVentaService.getAllPuntosVenta().stream().anyMatch(p -> p.getId().equals(id));
     }
 
     public Iterable<Acreditacion> obtenerAcreditaciones() {

@@ -1,6 +1,8 @@
 package com.proyecto.challengejava.dto;
 
-public class CostoPuntosResponse {
+import org.springframework.hateoas.RepresentationModel;
+
+public class CostoPuntosResponse extends RepresentationModel<CostoPuntosResponse> {
     private Long idA;
     private Long idB;
     private Double costo;
