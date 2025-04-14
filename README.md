@@ -86,11 +86,15 @@ Este proyecto es una API REST construida con Spring Boot para la gestión de pun
 5. Ejecutar los siguientes comandos desde la terminal en el directorio raíz del proyecto:
 
 ```bash
+podman machine start #Para activar el podman
 podman-compose up --detach #Para levantar el proyecto
 podman-compose down #Para frenar el proyecto
 podman-compose build #Para buildear el proyecto después de un cambio
 ```
-
+El orden para levantar de cero sería:
+1) podman machine start
+2) podman-compose build
+3) podman-compose up --detach
 ### 6) ¿Cómo visualizar y testear Swagger UI?
 
 **Desde IntelliJ:**
