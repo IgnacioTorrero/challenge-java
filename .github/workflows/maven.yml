@@ -1,0 +1,54 @@
+name: Java CI con Maven
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0.36
+        env:
+          MYSQL_DATABASE: challenge_java_prod
+          MYSQL_ROOT_PASSWORD: abc123
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -pabc123"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 17
+
+      - name: Esperar a MySQL
+        run: |
+          echo "Esperando a MySQL..."
+          for i in {1..30}; do
+            if mysqladmin ping -h 127.0.0.1 -proot --silent; then
+              echo "MySQL está listo."
+              break
+            fi
+            echo "MySQL no está listo aún..."
+            sleep 2
+          done
+
+      - name: Construir con Maven
+        run: mvn clean install
+
+      - name: Ejecutar tests
+        run: mvn test
