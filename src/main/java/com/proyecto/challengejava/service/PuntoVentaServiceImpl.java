@@ -25,14 +25,13 @@ public class PuntoVentaServiceImpl implements PuntoVentaService {
 
     public PuntoVentaServiceImpl(PuntoVentaRepository puntoVentaRepository) {
         this.puntoVentaRepository = puntoVentaRepository;
-        precargarCache();
     }
 
     @PostConstruct
     public void init() {
 //        precargarPuntosVentaSiNoExisten();
         if (!Arrays.asList(env.getActiveProfiles()).contains("test")) {
-            cargarCacheDesdeDB();
+            precargarCache();
         }
     }
 
