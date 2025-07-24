@@ -30,7 +30,8 @@ public class PuntoVentaServiceImpl implements PuntoVentaService {
     @PostConstruct
     public void init() {
 //        precargarPuntosVentaSiNoExisten();
-        if (!Arrays.asList(env.getActiveProfiles()).contains("test")) {
+        String activeProfile = System.getProperty("spring.profiles.active", "");
+        if (!activeProfile.equals("test")) {
             precargarCache();
         }
     }
