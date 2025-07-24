@@ -128,7 +128,7 @@ public class CostoPuntosServiceImplTest {
     }
 
     @Test
-    void calcularRutaMinima_ThrowsPuntoVentaNotFoundException_WhenPuntoVentaDoesNotExist() {
+    void calcularRutaMinima_ThrowsIllegalArgumentException_WhenPuntoVentaDoesNotExist() {
         when(puntoVentaServiceImpl.getAllPuntosVenta()).thenReturn(Arrays.asList(
                 new PuntoVenta() {{
                     setId(1L);
@@ -140,8 +140,104 @@ public class CostoPuntosServiceImplTest {
                 }}
         ));
 
-        assertThrows(PuntoVentaNotFoundException.class, () -> {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             costoPuntosServiceImpl.calcularRutaMinima(1L, 3L);
         });
+
+        assertEquals("Punto/s de venta no encontrado/s", exception.getMessage());
+    }
+
+    @Test
+    void calcularCostoTotalRuta_ReturnsCorrectCosto() {
+        List<Long> ruta = Arrays.asList(1L, 2L, 3L); // 1→2 y 2→3 deben existir en cache
+
+        ruta = Arrays.asList(1L, 2L); // Key 1-2 tiene costo 2.0 según tu setUp
+
+        double costoTotal = costoPuntosServiceImpl.calcularCostoTotalRuta(ruta);
+
+        assertEquals(2.0, costoTotal);
+    }
+
+    @Test
+    void calcularCostoTotalRuta_ThrowsException_WhenKeyNotInCache() {
+        List<Long> rutaInvalida = Arrays.asList(2L, 3L);
+
+        Exception exception = assertThrows(IllegalStateException.class, () -> {
+            costoPuntosServiceImpl.calcularCostoTotalRuta(rutaInvalida);
+        });
+
+        assertEquals("Falta costo entre 2 y 3", exception.getMessage());
+    }
+
+    @Test
+    void eliminarCostosRelacionadosA_DeletesFromRepository() {
+        Long id = 2L;
+
+        CostoPuntos costo1 = new CostoPuntos(); costo1.setIdA(1L); costo1.setIdB(2L); costo1.setCosto(2.0);
+        CostoPuntos costo2 = new CostoPuntos(); costo2.setIdA(2L); costo2.setIdB(3L); costo2.setCosto(2.5);
+        CostoPuntos costo3 = new CostoPuntos(); costo3.setIdA(4L); costo3.setIdB(5L); costo3.setCosto(3.0); // no relacionado
+
+        when(costoRepository.findAll()).thenReturn(Arrays.asList(costo1, costo2, costo3));
+
+        // Ejecutar
+        costoPuntosServiceImpl.eliminarCostosRelacionadosA(id);
+
+        // Verificar llamadas
+        verify(costoRepository).delete(costo1);
+        verify(costoRepository).delete(costo2);
+        verify(costoRepository, never()).delete(costo3);
+    }
+
+    @Test
+    void calcularRutaMinima_ReturnsCorrectPath() {
+        // Arrange
+        Long puntoA = 1L;
+        Long puntoB = 4L;
+
+        // Simula 4 puntos de venta conectados secuencialmente
+        when(puntoVentaServiceImpl.getAllPuntosVenta()).thenReturn(Arrays.asList(
+                new PuntoVenta() {{ setId(1L); setNombre("P1"); }},
+                new PuntoVenta() {{ setId(2L); setNombre("P2"); }},
+                new PuntoVenta() {{ setId(3L); setNombre("P3"); }},
+                new PuntoVenta() {{ setId(4L); setNombre("P4"); }}
+        ));
+
+        // Limpiamos la cache y la llenamos a mano
+        costoPuntosServiceImpl.getCache().clear();
+        costoPuntosServiceImpl.addCostoPuntos(1L, 2L, 1.0); // 1 → 2
+        costoPuntosServiceImpl.addCostoPuntos(2L, 3L, 1.0); // 2 → 3
+        costoPuntosServiceImpl.addCostoPuntos(3L, 4L, 1.0); // 3 → 4
+
+        // Act
+        List<Long> ruta = costoPuntosServiceImpl.calcularRutaMinima(puntoA, puntoB);
+
+        // Assert
+        assertEquals(Arrays.asList(1L, 2L, 3L, 4L), ruta);
+    }
+
+    @Test
+    void getCostosDesdePunto_ReturnsCostoCuandoEsId2() {
+        // Arrange
+        Long idA = 2L;
+        Long idRelacionado = 1L;
+
+        // Simular puntos válidos
+        when(puntoVentaServiceImpl.getAllPuntosVenta()).thenReturn(Arrays.asList(
+                new PuntoVenta() {{ setId(idA); setNombre("Punto 2"); }},
+                new PuntoVenta() {{ setId(idRelacionado); setNombre("Punto 1"); }}
+        ));
+
+        costoPuntosServiceImpl.getCache().clear();
+        costoPuntosServiceImpl.addCostoPuntos(idRelacionado, idA, 5.5); // crea key "1-2"
+
+        // Act
+        List<CostoPuntosResponse> costos = costoPuntosServiceImpl.getCostosDesdePunto(idA);
+
+        // Assert
+        assertEquals(1, costos.size());
+        assertEquals(idA, costos.get(0).getIdA());
+        assertEquals(idRelacionado, costos.get(0).getIdB());
+        assertEquals(5.5, costos.get(0).getCosto());
+        assertEquals("Punto 1", costos.get(0).getNombrePuntoB());
     }
 }

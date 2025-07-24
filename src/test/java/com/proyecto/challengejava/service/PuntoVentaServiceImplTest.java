@@ -13,6 +13,7 @@ import org.mockito.quality.Strictness;
 
 import java.util.*;
 
+import static com.proyecto.challengejava.constants.Constantes.PUNTO_VENTA_ALREADY_EXISTS;
 import static com.proyecto.challengejava.constants.ConstantesTest.*;
 import static com.proyecto.challengejava.constants.Constantes.PUNTO_VENTA_NOT_FOUND;
 import static org.junit.jupiter.api.Assertions.*;
@@ -92,6 +93,21 @@ public class PuntoVentaServiceImplTest {
     }
 
     @Test
+    void addPuntoVenta_ThrowsIllegalArgumentException_WhenNombreAlreadyExists() {
+        // Arrange
+        String nombreDuplicado = "Punto 5";
+
+        when(puntoVentaRepository.existsByNombre(nombreDuplicado)).thenReturn(true);
+
+        // Act & Assert
+        Exception ex = assertThrows(IllegalArgumentException.class, () ->
+                service.addPuntoVenta(nombreDuplicado)
+        );
+
+        assertEquals(PUNTO_VENTA_ALREADY_EXISTS, ex.getMessage());
+    }
+
+    @Test
     void updatePuntoVenta_UpdatesExistingPuntoVenta() {
         Long idParaActualizar = 2L;
         service.updatePuntoVenta(idParaActualizar, PUNTO_VENTA_5);
@@ -119,5 +135,20 @@ public class PuntoVentaServiceImplTest {
         List<PuntoVenta> puntosVenta = service.getAllPuntosVenta();
         assertEquals(9, puntosVenta.size());
         assertTrue(puntosVenta.stream().noneMatch(p -> p.getId().equals(idAEliminar)));
+    }
+
+    @Test
+    void deletePuntoVenta_ThrowsIllegalArgumentException_WhenIdNotExists() {
+        // Arrange
+        Long idInexistente = 999L;
+
+        when(puntoVentaRepository.existsById(idInexistente)).thenReturn(false);
+
+        // Act & Assert
+        Exception ex = assertThrows(IllegalArgumentException.class, () ->
+                service.deletePuntoVenta(idInexistente)
+        );
+
+        assertEquals(PUNTO_VENTA_NOT_FOUND, ex.getMessage());
     }
 }

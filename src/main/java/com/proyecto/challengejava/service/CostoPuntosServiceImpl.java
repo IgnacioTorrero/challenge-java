@@ -3,6 +3,7 @@ package com.proyecto.challengejava.service;
 import com.proyecto.challengejava.dto.CostoPuntosResponse;
 import com.proyecto.challengejava.entity.CostoPuntos;
 import com.proyecto.challengejava.entity.PuntoVenta;
+import com.proyecto.challengejava.exception.PuntoVentaNotFoundException;
 import com.proyecto.challengejava.repository.CostoRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
@@ -95,7 +96,7 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
     public void removeCostoPuntos(Long idA, Long idB) {
         List<PuntoVenta> puntos = puntoVentaService.getAllPuntosVenta();
         if (!puntoVentaExists(puntos, idA) || !puntoVentaExists(puntos, idB)) {
-            throw new IllegalArgumentException(PUNTO_VENTA_NOT_FOUND);
+            throw new PuntoVentaNotFoundException(PUNTO_VENTA_NOT_FOUND);
         }
 
         String key = generateKey(idA, idB);
@@ -225,5 +226,9 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
                 costoRepository.delete(costo);
             }
         }
+    }
+
+    public Map<String, Double> getCache() {
+        return cache;
     }
 }
