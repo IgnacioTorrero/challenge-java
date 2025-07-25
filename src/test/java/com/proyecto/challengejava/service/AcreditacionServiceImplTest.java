@@ -14,7 +14,7 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.proyecto.challengejava.constants.ConstantesTest.*;
+import static com.proyecto.challengejava.constants.ConstantsTest.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;

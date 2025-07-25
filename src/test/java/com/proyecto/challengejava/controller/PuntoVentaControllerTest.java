@@ -17,13 +17,13 @@ import org.springframework.http.ResponseEntity;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.proyecto.challengejava.constants.ConstantesTest.*;
+import static com.proyecto.challengejava.constants.ConstantsTest.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Test unitario para {@link PuntoVentaController}.
- * Valida el correcto funcionamiento de los endpoints relacionados con puntos de venta.
+ * Unit test for {@link PuntoVentaController}.
+ * Validates the correct behavior of endpoints related to sales points.
  */
 public class PuntoVentaControllerTest {
 
@@ -44,7 +44,7 @@ public class PuntoVentaControllerTest {
     private final PuntoVentaRequest request = new PuntoVentaRequest();
 
     /**
-     * Inicializa los mocks y datos comunes antes de cada test.
+     * Initializes mocks and common test data before each test.
      */
     @BeforeEach
     void setUp() {
@@ -59,8 +59,8 @@ public class PuntoVentaControllerTest {
     }
 
     /**
-     * Verifica que el metodo {@code getAllPuntosVenta} retorne correctamente
-     * una lista de puntos de venta convertida en CollectionModel.
+     * Verifies that the {@code getAllPuntosVenta} method correctly returns
+     * a list of sales points converted to a CollectionModel.
      */
     @Test
     void getAllPuntosVenta_ReturnsCollectionModelOfPuntoVentaResponses() {
@@ -92,8 +92,8 @@ public class PuntoVentaControllerTest {
     }
 
     /**
-     * Verifica que el metodo {@code addPuntoVenta} retorne una respuesta 200 OK
-     * y que invoque el servicio para crear un nuevo punto de venta.
+     * Verifies that the {@code addPuntoVenta} method returns HTTP 200 OK
+     * and invokes the service to create a new sales point.
      */
     @Test
     void addPuntoVenta_ReturnsResponseOk() {
@@ -104,8 +104,8 @@ public class PuntoVentaControllerTest {
     }
 
     /**
-     * Verifica que el metodo {@code updatePuntoVenta} actualice correctamente
-     * el nombre del punto de venta indicado.
+     * Verifies that the {@code updatePuntoVenta} method correctly updates
+     * the name of the given sales point.
      */
     @Test
     void updatePuntoVenta_ReturnsResponseOk() {
@@ -116,8 +116,8 @@ public class PuntoVentaControllerTest {
     }
 
     /**
-     * Verifica que el metodo {@code deletePuntoVenta} elimine correctamente un punto de venta
-     * junto con sus costos asociados.
+     * Verifies that the {@code deletePuntoVenta} method properly deletes a sales point
+     * along with its associated costs.
      */
     @Test
     void deletePuntoVenta_ReturnsResponseOk() {
