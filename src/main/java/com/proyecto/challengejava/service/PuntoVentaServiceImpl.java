@@ -33,10 +33,11 @@ public class PuntoVentaServiceImpl implements PuntoVentaService {
             precargarCache();
         }
     }
-
+    /*
     private void cargarCacheDesdeDB() {
         puntoVentaRepository.findAll().forEach(p -> cache.put(p.getId(), p.getNombre()));
     }
+     */
 
     /*
         Carga los datos en la db local.

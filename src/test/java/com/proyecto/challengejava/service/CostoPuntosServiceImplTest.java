@@ -12,6 +12,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static com.proyecto.challengejava.constants.ConstantesTest.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,6 +20,9 @@ import static org.mockito.Mockito.*;
 
 public class CostoPuntosServiceImplTest {
 
+    @Mock
+    private PuntoVentaService puntoVentaService;
+    
     @Mock
     private PuntoVentaServiceImpl puntoVentaServiceImpl;
 
@@ -239,5 +243,35 @@ public class CostoPuntosServiceImplTest {
         assertEquals(idRelacionado, costos.get(0).getIdB());
         assertEquals(5.5, costos.get(0).getCosto());
         assertEquals("Punto 1", costos.get(0).getNombrePuntoB());
+    }
+
+    @Test
+    void saveCostoToDB_actualizaCostoExistente() {
+        // Arrange
+        Long idA = 1L;
+        Long idB = 2L;
+        Double nuevoCosto = 15.0;
+        Long menor = Math.min(idA, idB);
+        Long mayor = Math.max(idA, idB);
+
+        CostoPuntos existente = new CostoPuntos();
+        existente.setIdA(menor);
+        existente.setIdB(mayor);
+        existente.setCosto(10.0);
+
+        when(costoRepository.findByIdAAndIdB(menor, mayor)).thenReturn(Optional.of(existente));
+
+        // Act
+        // Forzamos el llamado indirectamente usando addCostoPuntos
+        when(puntoVentaService.getAllPuntosVenta()).thenReturn(List.of(
+                new PuntoVenta(idA, "A"),
+                new PuntoVenta(idB, "B")
+        ));
+
+        costoPuntosServiceImpl.addCostoPuntos(idA, idB, nuevoCosto);
+
+        // Assert
+        assertEquals(nuevoCosto, existente.getCosto());
+        verify(costoRepository).save(existente);
     }
 }
