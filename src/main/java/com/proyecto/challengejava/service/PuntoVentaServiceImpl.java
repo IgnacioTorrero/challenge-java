@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -30,8 +29,7 @@ public class PuntoVentaServiceImpl implements PuntoVentaService {
     @PostConstruct
     public void init() {
 //        precargarPuntosVentaSiNoExisten();
-        String activeProfile = System.getProperty("spring.profiles.active", "");
-        if (!activeProfile.equals("test")) {
+        if (!Arrays.asList(env.getActiveProfiles()).contains("test")) {
             precargarCache();
         }
     }
