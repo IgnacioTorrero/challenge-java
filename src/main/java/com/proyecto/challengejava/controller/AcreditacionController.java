@@ -18,6 +18,9 @@ import java.util.stream.StreamSupport;
 
 import static com.proyecto.challengejava.mapper.AcreditacionMapper.mapToResponse;
 
+/**
+ * Controlador REST para manejar operaciones relacionadas con acreditaciones.
+ */
 @RestController
 @RequestMapping("/api/acreditaciones")
 public class AcreditacionController {
@@ -25,15 +28,23 @@ public class AcreditacionController {
     private final AcreditacionService service;
     private final AcreditacionModelAssembler acreditacionAssembler;
 
+    /**
+     * Constructor que inyecta las dependencias necesarias.
+     *
+     * @param service               Servicio encargado de la lógica de negocio para acreditaciones.
+     * @param acreditacionAssembler Ensamblador para convertir respuestas en modelos HATEOAS.
+     */
     @Autowired
     public AcreditacionController(AcreditacionService service, AcreditacionModelAssembler acreditacionAssembler) {
         this.service = service;
         this.acreditacionAssembler = acreditacionAssembler;
     }
 
-    /*
-     * Metodo encargado de recibir la acreditacion para determinado idPuntoVenta, con su
-     * respectivo importe, y luego almacenarlo en la BBDD.
+    /**
+     * Endpoint para recibir una acreditación y almacenarla en la base de datos.
+     *
+     * @param request Objeto con los datos de la acreditación, incluyendo importe e ID del punto de venta.
+     * @return Respuesta HTTP con el modelo HATEOAS de la acreditación creada.
      */
     @PostMapping
     public ResponseEntity<AcreditacionResponse> recibirAcreditacion(@RequestBody @Valid AcreditacionRequest request) {
@@ -42,8 +53,10 @@ public class AcreditacionController {
         return ResponseEntity.ok(acreditacionAssembler.toModel(response));
     }
 
-    /*
-     * Metodo encargado de obtener todas las acreditaciones disponibles en la BBDD.
+    /**
+     * Endpoint para obtener todas las acreditaciones registradas en la base de datos.
+     *
+     * @return Respuesta HTTP con una colección de modelos HATEOAS de acreditaciones.
      */
     @GetMapping
     public ResponseEntity<CollectionModel<AcreditacionResponse>> obtenerAcreditaciones() {
