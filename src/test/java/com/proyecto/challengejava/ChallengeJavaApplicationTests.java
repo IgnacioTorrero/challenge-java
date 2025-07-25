@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-@SpringBootTest(classes = com.proyecto.challengejava.ChallengeJavaApplication.class)
+@SpringBootTest
 @ActiveProfiles("test")
 class ChallengeJavaApplicationTests {
 
