@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 
-import static com.proyecto.challengejava.constants.Constantes.PUNTO_VENTA_NOT_FOUND;
+import static com.proyecto.challengejava.constants.Constantes.*;
 
 @Service
 public class AcreditacionServiceImpl implements AcreditacionService {

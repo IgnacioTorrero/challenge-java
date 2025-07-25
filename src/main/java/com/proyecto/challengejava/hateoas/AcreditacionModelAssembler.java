@@ -7,6 +7,8 @@ import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
 
+import static com.proyecto.challengejava.constants.Constantes.*;
+
 @Component
 public class AcreditacionModelAssembler implements RepresentationModelAssembler<AcreditacionResponse, AcreditacionResponse> {
 
@@ -15,12 +17,12 @@ public class AcreditacionModelAssembler implements RepresentationModelAssembler<
         entity.add(WebMvcLinkBuilder.linkTo(
                 WebMvcLinkBuilder.methodOn(PuntoVentaController.class)
                         .getAllPuntosVenta()
-        ).withRel("ver-todos-los-puntos-venta"));
+        ).withRel(VER_TODOS_PUNTOS_DE_VENTA));
 
         entity.add(WebMvcLinkBuilder.linkTo(
                 WebMvcLinkBuilder.methodOn(AcreditacionController.class)
                         .obtenerAcreditaciones()
-        ).withRel("ver-todas-las-acreditaciones"));
+        ).withRel(VER_TODAS_ACREDITACIONES));
 
         return entity;
     }

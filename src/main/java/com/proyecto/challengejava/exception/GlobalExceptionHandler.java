@@ -12,7 +12,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.proyecto.challengejava.constants.Constantes.INTERNAL_SERVER_ERROR;
+import static com.proyecto.challengejava.constants.Constantes.*;
 
 /*
  * Clase utilizada para manejar los errores relacionados a la validacion de cada metodo.
@@ -25,17 +25,14 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
-    /*
-     * Maneja excepciones cuando un punto de venta no existe.
-     */
+    // Maneja excepciones cuando un punto de venta no existe.
     @ExceptionHandler(PuntoVentaNotFoundException.class)
     public ResponseEntity<Map<String, String>> handlePuntoVentaNotFoundException(PuntoVentaNotFoundException ex) {
         return buildErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage());
     }
 
-    /*
-     * Maneja cualquier otra excepción no contemplada.
-     */
+
+    // Maneja cualquier otra excepción no contemplada.
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, String>> handleGeneralException(Exception ex) {
         Map<String, String> response = new HashMap<>();
@@ -43,9 +40,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
 
-    /*
-     * Metodo auxiliar para construir la respuesta de error.
-     */
+
+    // Metodo auxiliar para construir la respuesta de error.
     private ResponseEntity<Map<String, String>> buildErrorResponse(HttpStatus status, String message) {
         Map<String, String> response = new HashMap<>();
         response.put("error", message);
@@ -61,9 +57,8 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
-    /*
-    * Manejo de excepciones cuando un parámetro requerido está ausente o mal formado
-     */
+
+    // Manejo de excepciones cuando un parámetro requerido está ausente o mal formado
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseEntity<Map<String, String>> handleMissingServletRequestParameterException(MissingServletRequestParameterException ex) {
         Map<String, String> errorResponse = new HashMap<>();
@@ -83,7 +78,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<Map<String, String>> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
         Map<String, String> errorResponse = new HashMap<>();
-        errorResponse.put("error", "Formato inválido en la solicitud. Verifica los valores enviados.");
+        errorResponse.put("error", FORMATO_INVALIDO);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 }

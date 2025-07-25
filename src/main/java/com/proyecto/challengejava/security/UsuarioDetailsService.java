@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.Service;
 
+import static com.proyecto.challengejava.constants.Constantes.*;
+
 @Service
 public class UsuarioDetailsService implements UserDetailsService {
 
@@ -19,7 +21,7 @@ public class UsuarioDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Usuario usuario = usuarioRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado con email: " + email));
+                .orElseThrow(() -> new UsernameNotFoundException(USUARIO_NO_ENCONTRADO + email));
 
         return User.withUsername(usuario.getEmail())
                 .password(usuario.getPassword())
