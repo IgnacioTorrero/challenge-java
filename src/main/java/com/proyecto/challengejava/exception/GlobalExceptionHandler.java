@@ -12,7 +12,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.proyecto.challengejava.constants.Constantes.*;
+import static com.proyecto.challengejava.constants.Constants.*;
 
 /*
  * Clase utilizada para manejar los errores relacionados a la validacion de cada metodo.

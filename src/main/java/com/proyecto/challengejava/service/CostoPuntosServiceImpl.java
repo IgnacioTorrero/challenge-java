@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.proyecto.challengejava.constants.Constantes.*;
+import static com.proyecto.challengejava.constants.Constants.*;
 import static com.proyecto.challengejava.util.CostoPuntosUtil.*;
 
 /**

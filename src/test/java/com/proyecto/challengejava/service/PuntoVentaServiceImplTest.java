@@ -13,9 +13,9 @@ import org.mockito.quality.Strictness;
 
 import java.util.*;
 
-import static com.proyecto.challengejava.constants.Constantes.PUNTO_VENTA_ALREADY_EXISTS;
+import static com.proyecto.challengejava.constants.Constants.PUNTO_VENTA_ALREADY_EXISTS;
 import static com.proyecto.challengejava.constants.ConstantesTest.*;
-import static com.proyecto.challengejava.constants.Constantes.PUNTO_VENTA_NOT_FOUND;
+import static com.proyecto.challengejava.constants.Constants.PUNTO_VENTA_NOT_FOUND;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 

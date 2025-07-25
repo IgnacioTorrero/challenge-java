@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.proyecto.challengejava.constants.Constantes.*;
+import static com.proyecto.challengejava.constants.Constants.*;
 
 /**
  * Controlador REST para gestionar los costos entre puntos de venta y calcular rutas óptimas.

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 
-import static com.proyecto.challengejava.constants.Constantes.*;
+import static com.proyecto.challengejava.constants.Constants.*;
 
 /**
  * Implementación del servicio de acreditaciones.

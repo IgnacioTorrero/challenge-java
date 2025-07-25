@@ -6,7 +6,7 @@ import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
 
-import static com.proyecto.challengejava.constants.Constantes.*;
+import static com.proyecto.challengejava.constants.Constants.*;
 
 @Component
 public class PuntoVentaModelAssembler implements RepresentationModelAssembler<PuntoVentaResponse, PuntoVentaResponse> {
