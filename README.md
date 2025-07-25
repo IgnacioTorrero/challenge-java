@@ -182,6 +182,24 @@ Body:
 
 ---
 
+## 🧪 Tests
+
+Este proyecto incluye pruebas unitarias y de integración utilizando **JUnit 5** y **Mockito**.
+
+- Se testean controllers como `PuntoVentaController`, `CostoPuntosController` y `AcreditacionController`.
+- Se testean servicios como `PuntoVentaServiceImpl`, `CostoPuntosServiceImpl` y `AcreditacionServiceImpl`.
+- Se mockean dependencias con Mockito (`@Mock`, `@InjectMocks`).
+- Se verifica la lógica de negocio, validaciones y manejo de excepciones.
+- Coberturas del 100%.
+
+### 🔧 Cómo correr los tests
+
+Desde la raíz del proyecto:
+```bash
+mvn test
+```
+
+---
 ## Extras y detalles técnicos
 
 - El token JWT tiene una duración de 10 horas.
