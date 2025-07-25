@@ -213,9 +213,9 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
 
             Double costo = cache.get(key);
             if (!cache.containsKey(key)) {
-                System.err.println("❌ Missing key in cache: " + key);
-                System.err.println("📦 Available cache: " + cache);
-                throw new IllegalStateException("Missing cost between " + idA + " and " + idB);
+                System.err.println("❌ Key faltante en cache: " + key);
+                System.err.println("📦 Cache disponible: " + cache);
+                throw new IllegalStateException("Falta costo entre " + idA + " y " + idB);
             }
 
             costoTotal += costo;
