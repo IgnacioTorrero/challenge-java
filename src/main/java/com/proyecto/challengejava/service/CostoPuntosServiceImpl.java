@@ -15,8 +15,8 @@ import static com.proyecto.challengejava.constants.Constants.*;
 import static com.proyecto.challengejava.util.CostoPuntosUtil.*;
 
 /**
- * Implementación del servicio que gestiona los costos entre puntos de venta,
- * utilizando un cache en memoria y persistencia en base de datos.
+ * Implementation of the service that manages connection costs between sales points,
+ * using an in-memory cache and database persistence.
  */
 @Service
 public class CostoPuntosServiceImpl implements CostoPuntosService {
@@ -26,10 +26,10 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
     private final CostoRepository costoRepository;
 
     /**
-     * Constructor que inyecta los servicios necesarios.
+     * Constructor that injects the required services.
      *
-     * @param puntoVentaService Servicio de puntos de venta.
-     * @param costoRepository   Repositorio para persistencia de costos.
+     * @param puntoVentaService Service for managing sales points.
+     * @param costoRepository   Repository for persisting costs.
      */
     public CostoPuntosServiceImpl(PuntoVentaService puntoVentaService, CostoRepository costoRepository) {
         this.puntoVentaService = puntoVentaService;
@@ -37,19 +37,19 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
     }
 
     /**
-     * Inicializa la cache cargando los datos desde la base de datos.
-     * Este metodo se ejecuta automáticamente después de la construcción del bean.
+     * Initializes the cache by loading data from the database.
+     * This method is automatically executed after the bean is constructed.
      */
     @PostConstruct
     public void init() {
-        // Esperar a que se hayan precargado los puntos de venta
+        // Wait for sales points to be preloaded
         List<PuntoVenta> puntos = puntoVentaService.getAllPuntosVenta();
-        // Se podría precargar costos iniciales aquí, si fuera necesario.
+        // Initial cost preloading could be done here if needed
         cargarCacheDesdeDB();
     }
 
     /**
-     * Carga todos los costos desde la base de datos y los almacena en la cache.
+     * Loads all costs from the database and stores them in the cache.
      */
     public void cargarCacheDesdeDB() {
         costoRepository.findAll().forEach(costo -> {
@@ -58,17 +58,17 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
             Double importe = costo.getCosto();
             String key = generateKey(idA, idB);
             cache.putIfAbsent(key, importe);
-            System.out.println("✅ Cache cargada con key: " + key + " => " + importe);
+            System.out.println("✅ Cache loaded with key: " + key + " => " + importe);
         });
     }
 
     /**
-     * Agrega o actualiza el costo entre dos puntos de venta.
+     * Adds or updates the cost between two sales points.
      *
-     * @param idA   ID del primer punto.
-     * @param idB   ID del segundo punto.
-     * @param costo Valor del costo entre ambos puntos.
-     * @throws IllegalArgumentException si el costo es negativo o algún punto no existe.
+     * @param idA   ID of the first point.
+     * @param idB   ID of the second point.
+     * @param costo Cost value between the two points.
+     * @throws IllegalArgumentException if the cost is negative or any point doesn't exist.
      */
     public void addCostoPuntos(Long idA, Long idB, Double costo) {
         if (costo < 0) {
@@ -86,11 +86,11 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
     }
 
     /**
-     * Elimina el costo entre dos puntos de venta, reemplazando su valor por 0 en cache.
+     * Removes the cost between two sales points by replacing its value with 0 in the cache.
      *
-     * @param idA ID del primer punto.
-     * @param idB ID del segundo punto.
-     * @throws PuntoVentaNotFoundException si alguno de los puntos no existe.
+     * @param idA ID of the first point.
+     * @param idB ID of the second point.
+     * @throws PuntoVentaNotFoundException if any of the points do not exist.
      */
     public void removeCostoPuntos(Long idA, Long idB) {
         List<PuntoVenta> puntos = puntoVentaService.getAllPuntosVenta();
@@ -103,11 +103,11 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
     }
 
     /**
-     * Obtiene todos los costos asociados a un punto de venta.
+     * Retrieves all connection costs from a specific sales point.
      *
-     * @param idA ID del punto de venta de origen.
-     * @return Lista de respuestas con información de costos desde ese punto.
-     * @throws IllegalArgumentException si el punto no existe.
+     * @param idA ID of the origin sales point.
+     * @return List of responses with cost information from that point.
+     * @throws IllegalArgumentException if the point does not exist.
      */
     public List<CostoPuntosResponse> getCostosDesdePunto(Long idA) {
         List<PuntoVenta> puntos = puntoVentaService.getAllPuntosVenta();
@@ -136,11 +136,11 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
     }
 
     /**
-     * Obtiene el nombre de un punto de venta a partir de su ID.
+     * Retrieves the name of a sales point by its ID.
      *
-     * @param id     ID del punto.
-     * @param puntos Lista de puntos de venta.
-     * @return Nombre del punto o un valor por defecto si no se encuentra.
+     * @param id     ID of the point.
+     * @param puntos List of sales points.
+     * @return Name of the point or a default value if not found.
      */
     private String getNombrePuntoVenta(Long id, List<PuntoVenta> puntos) {
         return puntos.stream()
@@ -151,12 +151,12 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
     }
 
     /**
-     * Calcula la ruta de menor costo entre dos puntos de venta utilizando Dijkstra.
+     * Calculates the lowest cost route between two sales points using Dijkstra's algorithm.
      *
-     * @param puntoA ID del punto de origen.
-     * @param puntoB ID del punto de destino.
-     * @return Lista de IDs de puntos que representan la ruta óptima.
-     * @throws IllegalArgumentException si alguno de los puntos no existe.
+     * @param puntoA ID of the origin point.
+     * @param puntoB ID of the destination point.
+     * @return List of point IDs representing the optimal route.
+     * @throws IllegalArgumentException if any of the points do not exist.
      */
     public List<Long> calcularRutaMinima(Long puntoA, Long puntoB) {
         Map<Long, Double> distancias = new HashMap<>();
@@ -197,11 +197,11 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
     }
 
     /**
-     * Calcula el costo total de una ruta compuesta por IDs de puntos de venta.
+     * Calculates the total cost of a route composed of sales point IDs.
      *
-     * @param ruta Lista de IDs de la ruta.
-     * @return Suma total de los costos entre cada par de puntos consecutivos.
-     * @throws IllegalStateException si falta algún costo en la cache.
+     * @param ruta List of IDs representing the route.
+     * @return Total sum of costs between each pair of consecutive points.
+     * @throws IllegalStateException if any cost is missing in the cache.
      */
     public Double calcularCostoTotalRuta(List<Long> ruta) {
         double costoTotal = 0.0;
@@ -213,9 +213,9 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
 
             Double costo = cache.get(key);
             if (!cache.containsKey(key)) {
-                System.err.println("❌ Key faltante en cache: " + key);
-                System.err.println("📦 Cache disponible: " + cache);
-                throw new IllegalStateException("Falta costo entre " + idA + " y " + idB);
+                System.err.println("❌ Missing key in cache: " + key);
+                System.err.println("📦 Available cache: " + cache);
+                throw new IllegalStateException("Missing cost between " + idA + " and " + idB);
             }
 
             costoTotal += costo;
@@ -225,11 +225,11 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
     }
 
     /**
-     * Guarda o actualiza el costo entre dos puntos de venta en la base de datos.
+     * Saves or updates the cost between two sales points in the database.
      *
-     * @param idA   ID del primer punto.
-     * @param idB   ID del segundo punto.
-     * @param costo Costo entre ambos.
+     * @param idA   ID of the first point.
+     * @param idB   ID of the second point.
+     * @param costo Cost between them.
      */
     private void saveCostoToDB(Long idA, Long idB, Double costo) {
         Long menor = Math.min(idA, idB);
@@ -250,9 +250,9 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
     }
 
     /**
-     * Elimina todos los costos en cache y base de datos que estén relacionados al punto indicado.
+     * Removes all cached and persisted costs related to the specified point.
      *
-     * @param id ID del punto de venta a eliminar.
+     * @param id ID of the sales point to delete.
      */
     public void eliminarCostosRelacionadosA(Long id) {
         cache.keySet().removeIf(key -> {
@@ -269,9 +269,9 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
     }
 
     /**
-     * Devuelve el contenido actual de la cache de costos.
+     * Returns the current content of the cost cache.
      *
-     * @return Mapa con claves formadas por ID_A-ID_B y valores de costos.
+     * @return Map with keys formatted as ID_A-ID_B and values as cost amounts.
      */
     public Map<String, Double> getCache() {
         return cache;

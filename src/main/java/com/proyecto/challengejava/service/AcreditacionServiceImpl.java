@@ -11,8 +11,8 @@ import java.time.LocalDate;
 import static com.proyecto.challengejava.constants.Constants.*;
 
 /**
- * Implementación del servicio de acreditaciones.
- * Encargado de registrar nuevas acreditaciones y consultar las existentes.
+ * Implementation of the accreditation service.
+ * Responsible for registering new accreditations and querying existing ones.
  */
 @Service
 public class AcreditacionServiceImpl implements AcreditacionService {
@@ -21,10 +21,10 @@ public class AcreditacionServiceImpl implements AcreditacionService {
     private final PuntoVentaService puntoVentaService;
 
     /**
-     * Constructor que inyecta los repositorios y servicios requeridos.
+     * Constructor that injects the required repositories and services.
      *
-     * @param repository          Repositorio de acreditaciones.
-     * @param puntoVentaService   Servicio para gestionar puntos de venta.
+     * @param repository        Repository for accreditations.
+     * @param puntoVentaService Service for managing sales points.
      */
     public AcreditacionServiceImpl(AcreditacionRepository repository, PuntoVentaService puntoVentaService) {
         this.repository = repository;
@@ -32,12 +32,12 @@ public class AcreditacionServiceImpl implements AcreditacionService {
     }
 
     /**
-     * Registra una nueva acreditación para un punto de venta específico.
+     * Registers a new accreditation for a specific sales point.
      *
-     * @param importe        Importe recibido.
-     * @param idPuntoVenta   ID del punto de venta que recibe la acreditación.
-     * @return Objeto {@link Acreditacion} persistido en la base de datos.
-     * @throws PuntoVentaNotFoundException si el punto de venta no existe.
+     * @param importe        Amount received.
+     * @param idPuntoVenta   ID of the sales point receiving the accreditation.
+     * @return {@link Acreditacion} object persisted in the database.
+     * @throws PuntoVentaNotFoundException if the sales point does not exist.
      */
     public Acreditacion recibirAcreditacion(Double importe, Long idPuntoVenta) {
         if (!puntoVentaExists(idPuntoVenta)) {
@@ -60,19 +60,19 @@ public class AcreditacionServiceImpl implements AcreditacionService {
     }
 
     /**
-     * Verifica si existe un punto de venta con el ID especificado.
+     * Checks whether a sales point with the specified ID exists.
      *
-     * @param id ID del punto de venta a verificar.
-     * @return {@code true} si existe, {@code false} en caso contrario.
+     * @param id ID of the sales point to verify.
+     * @return {@code true} if it exists, {@code false} otherwise.
      */
     private boolean puntoVentaExists(Long id) {
         return puntoVentaService.getAllPuntosVenta().stream().anyMatch(p -> p.getId().equals(id));
     }
 
     /**
-     * Obtiene todas las acreditaciones almacenadas en la base de datos.
+     * Retrieves all accreditations stored in the database.
      *
-     * @return Iterable de objetos {@link Acreditacion}.
+     * @return Iterable of {@link Acreditacion} objects.
      */
     public Iterable<Acreditacion> obtenerAcreditaciones() {
         return repository.findAll();
