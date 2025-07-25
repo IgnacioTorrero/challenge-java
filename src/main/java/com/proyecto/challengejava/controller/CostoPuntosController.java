@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.proyecto.challengejava.constants.Constantes.*;
+import static com.proyecto.challengejava.constants.Constants.*;
 
 /**
- * Controlador REST para gestionar los costos entre puntos de venta y calcular rutas óptimas.
+ * REST controller for managing connection costs between sales points and calculating optimal routes.
  */
 @RestController
 @RequestMapping("/api/costos")
@@ -29,11 +29,11 @@ public class CostoPuntosController {
     private final RutaCostoMinimoModelAssembler rutaCostoMinimoModelAssembler;
 
     /**
-     * Constructor que inyecta los servicios y ensambladores necesarios.
+     * Constructor that injects required services and assemblers.
      *
-     * @param service                     Servicio de lógica de negocio para costos entre puntos.
-     * @param costoPuntosModelAssembler  Ensamblador HATEOAS para respuestas de costos.
-     * @param rutaCostoMinimoModelAssembler Ensamblador HATEOAS para la ruta de costo mínimo.
+     * @param service                     Service handling business logic for point-to-point costs.
+     * @param costoPuntosModelAssembler  HATEOAS assembler for cost responses.
+     * @param rutaCostoMinimoModelAssembler HATEOAS assembler for minimum cost route responses.
      */
     @Autowired
     public CostoPuntosController(CostoPuntosService service, CostoPuntosModelAssembler costoPuntosModelAssembler,
@@ -44,11 +44,11 @@ public class CostoPuntosController {
     }
 
     /**
-     * Endpoint para agregar un costo entre dos puntos de venta.
+     * Endpoint to add a connection cost between two sales points.
      *
-     * @param request Objeto con los IDs de los puntos A y B.
-     * @param costo   Valor del costo entre los puntos.
-     * @return Respuesta HTTP 200 OK si se agregó correctamente.
+     * @param request Object containing the IDs of points A and B.
+     * @param costo   Cost value between the points.
+     * @return HTTP 200 OK response if added successfully.
      */
     @PostMapping
     public ResponseEntity<Void> addCostoPuntos(@RequestBody @Valid CostoPuntosRequest request,
@@ -59,10 +59,10 @@ public class CostoPuntosController {
     }
 
     /**
-     * Endpoint para eliminar el costo entre dos puntos de venta.
+     * Endpoint to remove the connection cost between two sales points.
      *
-     * @param request Objeto con los IDs de los puntos A y B.
-     * @return Respuesta HTTP 200 OK si se eliminó correctamente.
+     * @param request Object containing the IDs of points A and B.
+     * @return HTTP 200 OK response if removed successfully.
      */
     @DeleteMapping
     public ResponseEntity<Void> removeCostoPuntos(@RequestBody @Valid CostoPuntosRequest request) {
@@ -72,10 +72,10 @@ public class CostoPuntosController {
     }
 
     /**
-     * Endpoint para obtener todos los costos desde un punto de venta específico.
+     * Endpoint to retrieve all connection costs from a specific sales point.
      *
-     * @param idA ID del punto de venta origen.
-     * @return Colección HATEOAS de costos desde el punto especificado.
+     * @param idA ID of the origin sales point.
+     * @return HATEOAS collection of costs from the specified point.
      */
     @GetMapping("/{idA}")
     public ResponseEntity<CollectionModel<CostoPuntosResponse>> getCostosDesdePunto(@PathVariable Long idA) {
@@ -87,12 +87,12 @@ public class CostoPuntosController {
     }
 
     /**
-     * Endpoint para calcular la ruta de costo mínimo entre dos puntos de venta.
+     * Endpoint to calculate the minimum cost route between two sales points.
      *
-     * <p>Se usa POST en lugar de GET por limitaciones de Swagger UI para enviar body en GET.</p>
+     * <p>POST is used instead of GET due to Swagger UI limitations with GET requests that contain a body.</p>
      *
-     * @param request Objeto con los IDs de los puntos A y B.
-     * @return Modelo HATEOAS con la ruta y el costo total.
+     * @param request Object containing the IDs of points A and B.
+     * @return HATEOAS model with the route and total cost.
      */
     @PostMapping("/minimo")
     public ResponseEntity<RutaCostoMinimoResponse> calcularCostoMinimo(@RequestBody @Valid CostoPuntosRequest request) {
@@ -106,11 +106,11 @@ public class CostoPuntosController {
     }
 
     /**
-     * Metodo auxiliar para validar que los IDs de los puntos de venta no sean iguales.
+     * Helper method to validate that the sales point IDs are not equal.
      *
-     * @param idA ID del punto A.
-     * @param idB ID del punto B.
-     * @throws IllegalArgumentException si ambos IDs son iguales.
+     * @param idA ID of point A.
+     * @param idB ID of point B.
+     * @throws IllegalArgumentException if both IDs are the same.
      */
     private void validarParametros(Long idA, Long idB) {
         if (idA.equals(idB)) {

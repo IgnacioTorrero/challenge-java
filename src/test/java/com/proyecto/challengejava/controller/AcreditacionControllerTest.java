@@ -14,14 +14,14 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.Arrays;
 
-import static com.proyecto.challengejava.constants.ConstantesTest.*;
+import static com.proyecto.challengejava.constants.ConstantsTest.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
 /**
- * Test unitario para {@link AcreditacionController}.
- * Verifica el correcto comportamiento de los endpoints relacionados a acreditaciones.
+ * Unit test for {@link AcreditacionController}.
+ * Verifies correct behavior of endpoints related to accreditations.
  */
 public class AcreditacionControllerTest {
 
@@ -37,7 +37,7 @@ public class AcreditacionControllerTest {
     private final AcreditacionRequest request = new AcreditacionRequest();
 
     /**
-     * Inicializa los mocks antes de cada test.
+     * Initializes the mocks before each test.
      */
     @BeforeEach
     void setUp() {
@@ -48,12 +48,12 @@ public class AcreditacionControllerTest {
     }
 
     /**
-     * Test para verificar que el método {@code recibirAcreditacion} retorne correctamente
-     * una respuesta con los datos esperados.
+     * Test to verify that the {@code recibirAcreditacion} method
+     * returns a response with the expected data.
      */
     @Test
     void recibirAcreditacion_ReturnsAcreditacionResponse() {
-        // Arrange: se simula la acreditación devuelta por el servicio
+        // Arrange: simulate the accreditation returned by the service
         Acreditacion acreditacion = new Acreditacion();
         acreditacion.setId(ID_PUNTO_VENTA);
         acreditacion.setImporte(IMPORTE);
@@ -74,22 +74,22 @@ public class AcreditacionControllerTest {
         when(acreditacionServiceImpl.recibirAcreditacion(IMPORTE, ID_PUNTO_VENTA)).thenReturn(acreditacion);
         when(acreditacionAssembler.toModel(responseSinLinks)).thenReturn(responseSinLinks);
 
-        // Act: se llama al controlador
+        // Act: call the controller
         ResponseEntity<AcreditacionResponse> response = acreditacionController.recibirAcreditacion(request);
 
-        // Assert: se verifica la respuesta
+        // Assert: verify the response
         assertEquals(SUCCESS_RESPONSE, response.getStatusCodeValue());
         assertEquals(responseSinLinks.getImporte(), response.getBody().getImporte());
         assertEquals(responseSinLinks.getIdPuntoVenta(), response.getBody().getIdPuntoVenta());
     }
 
     /**
-     * Test para verificar que el método {@code obtenerAcreditaciones}
-     * retorne una lista de acreditaciones correctamente transformadas.
+     * Test to verify that the {@code obtenerAcreditaciones} method
+     * returns a list of accreditations correctly transformed.
      */
     @Test
     void obtenerAcreditaciones_ReturnsCollectionModelOfAcreditacionResponses() {
-        // Arrange: se simulan dos acreditaciones devueltas por el servicio
+        // Arrange: simulate two accreditations returned by the service
         Acreditacion acreditacion1 = new Acreditacion();
         acreditacion1.setId(ID_PUNTO_VENTA);
         acreditacion1.setImporte(IMPORTE);
@@ -115,10 +115,10 @@ public class AcreditacionControllerTest {
         when(acreditacionAssembler.toModel(response1)).thenReturn(response1);
         when(acreditacionAssembler.toModel(response2)).thenReturn(response2);
 
-        // Act: se llama al controlador
+        // Act: call the controller
         ResponseEntity<?> response = acreditacionController.obtenerAcreditaciones();
 
-        // Assert: se verifica la respuesta
+        // Assert: verify the response
         assertEquals(SUCCESS_RESPONSE, response.getStatusCodeValue());
         assertNotNull(response.getBody());
     }

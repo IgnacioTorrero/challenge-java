@@ -12,10 +12,10 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.proyecto.challengejava.constants.Constantes.*;
+import static com.proyecto.challengejava.constants.Constants.*;
 
 /*
- * Clase utilizada para manejar los errores relacionados a la validacion de cada metodo.
+ * Class used to handle validation-related errors for each method.
  */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -25,23 +25,21 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
-    // Maneja excepciones cuando un punto de venta no existe.
+    // Handles exceptions when a sales point does not exist.
     @ExceptionHandler(PuntoVentaNotFoundException.class)
     public ResponseEntity<Map<String, String>> handlePuntoVentaNotFoundException(PuntoVentaNotFoundException ex) {
         return buildErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage());
     }
 
-
-    // Maneja cualquier otra excepción no contemplada.
+    // Handles any other uncaught exceptions.
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, String>> handleGeneralException(Exception ex) {
         Map<String, String> response = new HashMap<>();
-        response.put("error", ex.getMessage()); // Muestra el mensaje real del error
+        response.put("error", ex.getMessage()); // Displays the actual error message
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
 
-
-    // Metodo auxiliar para construir la respuesta de error.
+    // Helper method to build a structured error response.
     private ResponseEntity<Map<String, String>> buildErrorResponse(HttpStatus status, String message) {
         Map<String, String> response = new HashMap<>();
         response.put("error", message);
@@ -57,24 +55,23 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
-
-    // Manejo de excepciones cuando un parámetro requerido está ausente o mal formado
+    // Handles exceptions when a required parameter is missing or malformed
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseEntity<Map<String, String>> handleMissingServletRequestParameterException(MissingServletRequestParameterException ex) {
         Map<String, String> errorResponse = new HashMap<>();
-        errorResponse.put("error", "El parámetro '" + ex.getParameterName() + "' es requerido y no puede estar vacío.");
+        errorResponse.put("error", "The parameter '" + ex.getParameterName() + "' is required and cannot be empty.");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
-    // Manejo de excepción cuando el parámetro tiene un tipo de dato inválido
+    // Handles exceptions when a parameter has an invalid data type
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<Map<String, String>> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex) {
         Map<String, String> errorResponse = new HashMap<>();
-        errorResponse.put("error", "El parámetro '" + ex.getName() + "' debe ser un número válido.");
+        errorResponse.put("error", "The parameter '" + ex.getName() + "' must be a valid number.");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
-    // Captura errores de conversión de tipos en el cuerpo de la solicitud
+    // Handles type conversion errors in the request body
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<Map<String, String>> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
         Map<String, String> errorResponse = new HashMap<>();

@@ -2,8 +2,8 @@ package com.proyecto.challengejava.constants;
 
 import java.util.List;
 
-/* Clase utilizada para almacenar todas las constantes de los test */
-public class ConstantesTest {
+/* Class used to store all constants */
+public class ConstantsTest {
 
     public static final List<String> PUNTOS_VENTA = List.of("CABA", "GBA_1", "GBA_2", "Santa Fe", "Córdoba", "Misiones", "Salta",
             "Chubut", "Santa Cruz", "Catamarca");
@@ -26,7 +26,7 @@ public class ConstantesTest {
     public static final double IMPORTE = 100.0;
     public static final double IMPORTE2 = 200.0;
 
-    /* Mensajes de error */
+    /* Error messages */
     public static final String PUNTO_VENTA_NOT_FOUND = "Punto/s de venta no encontrado/s";
     public static final String COSTO_PUNTOS_LESS_THAN_ZERO = "El costo no puede ser menor a cero";
     public static final String INVALID_ID_EXCEPTION = "Ambos IDs no pueden ser iguales";

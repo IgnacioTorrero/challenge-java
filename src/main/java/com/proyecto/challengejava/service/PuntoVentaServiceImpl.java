@@ -12,11 +12,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.proyecto.challengejava.constants.Constantes.*;
+import static com.proyecto.challengejava.constants.Constants.*;
 
 /**
- * Implementación del servicio de puntos de venta.
- * Gestiona operaciones CRUD y una cache en memoria.
+ * Implementation of the sales point service.
+ * Manages CRUD operations and an in-memory cache.
  */
 @Service
 public class PuntoVentaServiceImpl implements PuntoVentaService {
@@ -28,17 +28,17 @@ public class PuntoVentaServiceImpl implements PuntoVentaService {
     private Environment env;
 
     /**
-     * Constructor que inyecta el repositorio de puntos de venta.
+     * Constructor that injects the sales point repository.
      *
-     * @param puntoVentaRepository Repositorio JPA para persistencia de puntos de venta.
+     * @param puntoVentaRepository JPA repository for persisting sales points.
      */
     public PuntoVentaServiceImpl(PuntoVentaRepository puntoVentaRepository) {
         this.puntoVentaRepository = puntoVentaRepository;
     }
 
     /**
-     * Inicializa la cache si no se está ejecutando en el entorno de test.
-     * Se ejecuta automáticamente después de construir el bean.
+     * Initializes the cache unless running in the test environment.
+     * Automatically executed after the bean is constructed.
      */
     @PostConstruct
     public void init() {
@@ -49,16 +49,16 @@ public class PuntoVentaServiceImpl implements PuntoVentaService {
     }
 
     /*
-     * Método alternativo para cargar cache desde la base de datos.
-     * Actualmente no utilizado.
+     * Alternative method to load cache from the database.
+     * Currently unused.
      */
 //    private void cargarCacheDesdeDB() {
 //        puntoVentaRepository.findAll().forEach(p -> cache.put(p.getId(), p.getNombre()));
 //    }
 
     /*
-     * Precarga puntos de venta en la base si no existen.
-     * Comentado porque solo se usa la base del contenedor.
+     * Preloads sales points into the database if they do not exist.
+     * Commented out because the containerized database is used instead.
      */
 //    private void precargarPuntosVentaSiNoExisten() {
 //        if (puntoVentaRepository.count() == 0) {
@@ -73,16 +73,16 @@ public class PuntoVentaServiceImpl implements PuntoVentaService {
 //    }
 
     /**
-     * Obtiene todos los puntos de venta registrados en la base de datos.
+     * Retrieves all sales points registered in the database.
      *
-     * @return Lista de entidades {@link PuntoVenta}.
+     * @return List of {@link PuntoVenta} entities.
      */
     public List<PuntoVenta> getAllPuntosVenta() {
         return puntoVentaRepository.findAll();
     }
 
     /**
-     * Precarga la cache en memoria con todos los puntos de venta existentes en la base.
+     * Preloads the in-memory cache with all sales points from the database.
      */
     private void precargarCache() {
         List<PuntoVenta> puntos = puntoVentaRepository.findAll();
@@ -92,10 +92,10 @@ public class PuntoVentaServiceImpl implements PuntoVentaService {
     }
 
     /**
-     * Agrega un nuevo punto de venta si no existe otro con el mismo nombre.
+     * Adds a new sales point if no other exists with the same name.
      *
-     * @param nombre Nombre del punto de venta a crear.
-     * @throws IllegalArgumentException si ya existe un punto con el mismo nombre.
+     * @param nombre Name of the sales point to create.
+     * @throws IllegalArgumentException if a point with the same name already exists.
      */
     @Override
     public void addPuntoVenta(String nombre) {
@@ -109,11 +109,11 @@ public class PuntoVentaServiceImpl implements PuntoVentaService {
     }
 
     /**
-     * Actualiza el nombre de un punto de venta existente.
+     * Updates the name of an existing sales point.
      *
-     * @param id     ID del punto de venta a modificar.
-     * @param nombre Nuevo nombre para el punto de venta.
-     * @throws IllegalArgumentException si el ID no corresponde a un punto existente.
+     * @param id     ID of the sales point to update.
+     * @param nombre New name for the sales point.
+     * @throws IllegalArgumentException if the ID does not correspond to an existing point.
      */
     public void updatePuntoVenta(Long id, String nombre) {
         PuntoVenta puntoVenta = puntoVentaRepository.findById(id)
@@ -124,10 +124,10 @@ public class PuntoVentaServiceImpl implements PuntoVentaService {
     }
 
     /**
-     * Elimina un punto de venta tanto de la base de datos como del cache.
+     * Deletes a sales point from both the database and the cache.
      *
-     * @param id ID del punto de venta a eliminar.
-     * @throws IllegalArgumentException si el ID no existe en la base.
+     * @param id ID of the sales point to delete.
+     * @throws IllegalArgumentException if the ID does not exist in the database.
      */
     public void deletePuntoVenta(Long id) {
         if (!puntoVentaRepository.existsById(id)) {

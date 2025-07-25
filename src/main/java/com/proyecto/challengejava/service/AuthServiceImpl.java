@@ -15,7 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
- * Implementación del servicio de autenticación y registro de usuarios.
+ * Implementation of the authentication and user registration service.
  */
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -26,12 +26,12 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
 
     /**
-     * Constructor que inyecta las dependencias necesarias para autenticación.
+     * Constructor that injects the dependencies required for authentication.
      *
-     * @param usuarioRepository       Repositorio de usuarios.
-     * @param jwtService              Servicio para generación de tokens JWT.
-     * @param authenticationManager   Administrador de autenticación de Spring Security.
-     * @param passwordEncoder         Codificador de contraseñas.
+     * @param usuarioRepository       Repository for users.
+     * @param jwtService              Service for generating JWT tokens.
+     * @param authenticationManager   Spring Security authentication manager.
+     * @param passwordEncoder         Password encoder.
      */
     @Autowired
     public AuthServiceImpl(UsuarioRepository usuarioRepository,
@@ -45,10 +45,10 @@ public class AuthServiceImpl implements AuthService {
     }
 
     /**
-     * Registra un nuevo usuario con rol USER y retorna un token JWT.
+     * Registers a new user with the USER role and returns a JWT token.
      *
-     * @param request Datos de registro del usuario (nombre, email, contraseña).
-     * @return {@link AuthResponse} que contiene el token generado.
+     * @param request User registration data (name, email, password).
+     * @return {@link AuthResponse} containing the generated token.
      */
     @Override
     public AuthResponse register(RegisterRequest request) {
@@ -66,10 +66,10 @@ public class AuthServiceImpl implements AuthService {
     }
 
     /**
-     * Autentica un usuario existente y retorna un token JWT si las credenciales son válidas.
+     * Authenticates an existing user and returns a JWT token if the credentials are valid.
      *
-     * @param request Datos de autenticación (email y contraseña).
-     * @return {@link AuthResponse} que contiene el token generado.
+     * @param request Authentication data (email and password).
+     * @return {@link AuthResponse} containing the generated token.
      */
     @Override
     public AuthResponse login(AuthRequest request) {

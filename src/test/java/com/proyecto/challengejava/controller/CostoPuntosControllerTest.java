@@ -17,15 +17,15 @@ import org.springframework.http.ResponseEntity;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.proyecto.challengejava.constants.ConstantesTest.*;
+import static com.proyecto.challengejava.constants.ConstantsTest.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 /**
- * Test unitario para {@link CostoPuntosController}.
- * Verifica el comportamiento de los endpoints relacionados con los costos entre puntos de venta.
+ * Unit test for {@link CostoPuntosController}.
+ * Verifies the behavior of endpoints related to connection costs between sales points.
  */
 public class CostoPuntosControllerTest {
 
@@ -44,7 +44,7 @@ public class CostoPuntosControllerTest {
     private final CostoPuntosRequest request = new CostoPuntosRequest(ID_PUNTO_VENTA, ID_PUNTO_VENTA2);
 
     /**
-     * Inicializa los mocks antes de cada prueba.
+     * Initializes mocks before each test.
      */
     @BeforeEach
     void setUp() {
@@ -54,8 +54,8 @@ public class CostoPuntosControllerTest {
     }
 
     /**
-     * Verifica que el metodo {@code addCostoPuntos} retorne una respuesta HTTP 200 OK
-     * y que invoque correctamente el servicio.
+     * Verifies that the {@code addCostoPuntos} method returns HTTP 200 OK
+     * and correctly invokes the service.
      */
     @Test
     void addCostoPuntos_ReturnsOk() {
@@ -66,8 +66,8 @@ public class CostoPuntosControllerTest {
     }
 
     /**
-     * Verifica que el metodo {@code removeCostoPuntos} retorne una respuesta HTTP 200 OK
-     * y que invoque el servicio para eliminar el costo.
+     * Verifies that the {@code removeCostoPuntos} method returns HTTP 200 OK
+     * and invokes the service to remove the cost.
      */
     @Test
     void removeCostoPuntos_ReturnsOk() {
@@ -78,8 +78,8 @@ public class CostoPuntosControllerTest {
     }
 
     /**
-     * Verifica que el metodo {@code getCostosDesdePunto} devuelva correctamente
-     * los costos desde un punto de venta en formato HATEOAS.
+     * Verifies that the {@code getCostosDesdePunto} method correctly returns
+     * the costs from a sales point in HATEOAS format.
      */
     @Test
     void getCostosDesdePunto_ReturnsCollectionModelOfCostos() {
@@ -116,8 +116,8 @@ public class CostoPuntosControllerTest {
     }
 
     /**
-     * Verifica que el metodo {@code calcularCostoMinimo} retorne la ruta y costo total esperados
-     * con los enlaces HATEOAS correspondientes.
+     * Verifies that the {@code calcularCostoMinimo} method returns the expected route and total cost,
+     * with the corresponding HATEOAS links.
      */
     @Test
     void calcularCostoMinimo_ReturnsRutaCostoMinimoResponse() {
@@ -156,8 +156,8 @@ public class CostoPuntosControllerTest {
     }
 
     /**
-     * Verifica que si se envía un request con IDs iguales, el metodo {@code addCostoPuntos}
-     * arroje una excepción {@link IllegalArgumentException}.
+     * Verifies that if a request with equal IDs is sent, the {@code addCostoPuntos}
+     * method throws an {@link IllegalArgumentException}.
      */
     @Test
     void addCostoPuntos_SameId_ThrowsException() {
