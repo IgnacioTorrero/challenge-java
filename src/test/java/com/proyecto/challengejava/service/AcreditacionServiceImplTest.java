@@ -19,6 +19,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+/**
+ * Unit test for {@link AcreditacionServiceImpl}.
+ * Validates logic related to accreditation creation and retrieval.
+ */
 public class AcreditacionServiceImplTest {
 
     @Mock
@@ -35,6 +39,10 @@ public class AcreditacionServiceImplTest {
         MockitoAnnotations.openMocks(this);
     }
 
+    /**
+     * Verifies that {@code recibirAcreditacion} correctly saves and returns an accreditation
+     * when the sales point exists.
+     */
     @Test
     void recibirAcreditacion_SavesAndReturnsAcreditacion() {
         PuntoVenta puntoVenta = new PuntoVenta();
@@ -61,6 +69,10 @@ public class AcreditacionServiceImplTest {
         verify(acreditacionRepository, times(1)).save(any(Acreditacion.class));
     }
 
+    /**
+     * Verifies that {@code recibirAcreditacion} throws a {@link PuntoVentaNotFoundException}
+     * when the sales point does not exist.
+     */
     @Test
     void recibirAcreditacion_ThrowsIllegalArgumentException() {
         when(puntoVentaServiceImpl.getAllPuntosVenta()).thenReturn(List.of());
@@ -71,6 +83,10 @@ public class AcreditacionServiceImplTest {
         verify(acreditacionRepository, never()).save(any(Acreditacion.class));
     }
 
+    /**
+     * Verifies that {@code obtenerAcreditaciones} returns all accreditations
+     * from the repository.
+     */
     @Test
     void obtenerAcreditaciones_ReturnsAllAcreditaciones() {
         Acreditacion acreditacion1 = new Acreditacion();
