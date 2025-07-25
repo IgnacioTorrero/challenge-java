@@ -1,130 +1,142 @@
 # Challenge Java
 
-Este proyecto es una API REST construida con Spring Boot para la gestión de puntos de venta, acreditaciones y costos de conexión entre dichos puntos, incorporando JWT para autenticación, Swagger UI para documentación, y Docker/Podman para el despliegue.
+> This project demonstrates a professional-grade backend architecture using Spring Boot, designed for scalable RESTful APIs with secure JWT authentication, HATEOAS support, and containerized deployment.
 
-🌐 Este README también está disponible en [English 🇬🇧](README.md)
+🌐 This README is also available in [Spanish 🇪🇸](README.es.md)
 ---
 
-## 📖 Módulo teórico
+## 📖 Theoretical Module
 
-### 1) Tecnologías utilizadas
+### 1) Technologies Used
 
-- **Lenguaje principal:** Java 17
+- **Main language:** Java 17
 - **Framework:** Spring Boot 3.4.1
-- **Base de datos:** MySQL 8 (contenedorizado)
+- **Database:** MySQL 8 (containerized)
 - **ORM:** Spring Data JPA + Hibernate
 - **Migrations:** Flyway
-- **Autenticación y Seguridad:** Spring Security + JWT (con firma HS256)
-- **Documentación:** Swagger UI (vía Springdoc OpenAPI)
-- **Contenedores:** Podman (alternativa a Docker)
+- **Authentication & Security:** Spring Security + JWT (HS256 signature)
+- **Documentation:** Swagger UI (via Springdoc OpenAPI)
+- **Containers:** Podman (Docker alternative)
 - **Build Tool:** Maven 3.9.6
 - **Testing:** JUnit 5 + Mockito
 
-### 2) Patrones de diseño utilizados
+### 2) Design Patterns Used
 
-- **Controller-Service-Repository (C-S-R):** organización en capas separadas para manejar responsabilidades.
-- **DTO (Data Transfer Object):** para separar entidad y vista, y reducir acoplamiento.
-- **Factory Method (en `mapToResponse()`):** para la transformación entre entidades y DTOs.
-- **Singleton (con beans Spring):** servicios y repositorios funcionan como singleton gestionados por el contenedor Spring.
-- **Builder (parcialmente en JWT):** generación fluida de tokens con la API de `Jwts.builder()`.
+- **Controller-Service-Repository (C-S-R):** a layered architecture for separation of concerns.
+- **DTO (Data Transfer Object):** to separate entity and view, and reduce coupling.
+- **Factory Method (in `mapToResponse()`):** used for mapping entities to DTOs.
+- **Singleton (with Spring beans):** services and repositories are singleton beans managed by the Spring container.
+- **Builder (partially in JWT):** fluent token generation using the `Jwts.builder()` API.
 
-### 3) Arquitectura utilizada
+### 3) Architecture Used
 
-- Arquitectura **monolítica** basada en REST.
-- **Capas bien definidas:**
-   - `controller`: expone los endpoints.
-   - `service`: contiene la lógica de negocio.
-   - `repository`: accede a la base de datos.
-   - `entity`: representa las tablas.
-   - `dto`: datos que viajan por la red.
-   - `security`: manejo de autenticación JWT y configuración de filtros.
-   - `exception`: manejo global de errores.
-   - `hateoas`: soporte para enlaces RESTful enriquecidos.
+- **Monolithic** REST-based architecture.
+- **Well-defined layers:**
+    - `controller`: exposes the endpoints.
+    - `service`: contains the business logic.
+    - `repository`: accesses the database.
+    - `entity`: represents the tables.
+    - `dto`: data transmitted over the network.
+    - `security`: handles JWT authentication and filter configuration.
+    - `exception`: global error handling.
+    - `hateoas`: support for enriched RESTful links.
 
-### 4) Resumen de endpoints
+### 4) Endpoint Summary
 
-#### Autenticación (`/api/auth`)
-- `POST /register`: Registrar un nuevo usuario.
-- `POST /login`: Iniciar sesión. Devuelve un token JWT.
+#### Authentication (`/api/auth`)
+- `POST /register`: Register a new user.
+- `POST /login`: Login. Returns a JWT token.
 
-#### Puntos de venta (`/api/puntos-venta`)
-- `GET /`: Listar puntos de venta (token requerido).
-- `POST /`: Crear un punto de venta.
-- `PUT /{id}`: Actualizar nombre del punto.
-- `DELETE /{id}`: Eliminar un punto y sus costos relacionados.
+#### Sales Points (`/api/puntos-venta`)
+- `GET /`: List sales points (token required).
+- `POST /`: Create a sales point.
+- `PUT /{id}`: Update point name.
+- `DELETE /{id}`: Delete a point and its related costs.
 
-#### Costos (`/api/costos`)
-- `POST /`: Agregar costo entre dos puntos (requiere `costo` en query param).
-- `DELETE /`: Eliminar el costo entre dos puntos.
-- `GET /{idA}`: Listar todos los costos desde un punto A.
-- `POST /minimo`: Calcular ruta de costo mínimo entre dos puntos (usando algoritmo de Dijkstra).
+#### Costs (`/api/costos`)
+- `POST /`: Add cost between two points (requires `costo` as query param).
+- `DELETE /`: Delete the cost between two points.
+- `GET /{idA}`: List all costs from point A.
+- `POST /minimo`: Calculate minimum cost route between two points (using Dijkstra’s algorithm).
 
-#### Acreditaciones (`/api/acreditaciones`)
-- `GET /`: Listar todas las acreditaciones registradas.
-- `POST /`: Recibir y guardar una nueva acreditación.
+#### Accreditations (`/api/acreditaciones`)
+- `GET /`: List all registered accreditations.
+- `POST /`: Receive and store a new accreditation.
+
+## 🧩 Architecture Diagram
+
+![Architecture Diagram](docs/architecture.png)
 
 ---
 
-## 📝 Módulo práctico
+## 📝 Practical Module
 
-### 5) ¿Cómo montar la aplicación desde cero?
+### 5) How to Set Up the Application from Scratch?
 
-**Tecnologías necesarias a instalar en el entorno:**
-- [Java 17 SDK](https://jdk.java.net/17/) (específicamente esta versión, ya que el proyecto está construido con Java 17)
-- [Apache Maven 3.9.x](https://maven.apache.org/download.cgi) (para compilar y gestionar dependencias)
-- [IntelliJ IDEA](https://www.jetbrains.com/idea/) (recomendado como entorno de desarrollo)
-- [Spring Boot](https://spring.io/projects/spring-boot) *(no requiere instalación manual)*: todas las dependencias necesarias se descargan automáticamente desde el `pom.xml` al compilar con Maven.
-- [Podman](https://podman.io/) (alternativa a Docker, utilizado para levantar los servicios en contenedores)
-- [podman-compose](https://github.com/containers/podman-compose) (equivalente a docker-compose, permite orquestar contenedores)
-- [MySQL Workbench](https://dev.mysql.com/downloads/workbench/) (opcional, para visualizar y gestionar la base de datos de forma gráfica)
-- Conexión a internet para que Maven pueda descargar automáticamente las dependencias del proyecto (Spring Boot, Hibernate, JWT, etc).
+**Required technologies to install in your environment:**
+- [Java 17 SDK](https://jdk.java.net/17/) (specifically this version, as the project is built with Java 17)
+- [Apache Maven 3.9.x](https://maven.apache.org/download.cgi) (for building and managing dependencies)
+- [IntelliJ IDEA](https://www.jetbrains.com/idea/) (recommended as IDE)
+- [Spring Boot](https://spring.io/projects/spring-boot) *(no manual installation required)*: all necessary dependencies are downloaded automatically from `pom.xml` when building with Maven.
+- [Podman](https://podman.io/) (Docker alternative, used to launch containerized services)
+- [podman-compose](https://github.com/containers/podman-compose) (Docker Compose equivalent, allows orchestrating containers)
+- [MySQL Workbench](https://dev.mysql.com/downloads/workbench/) (optional, for graphical visualization and management of the database)
+- Internet connection so Maven can automatically download the project dependencies (Spring Boot, Hibernate, JWT, etc).
 
-**Pasos para montar y ejecutar el proyecto:**
-1. Abrir el proyecto en IntelliJ IDEA.
-2. Configurar el SDK de Java 17.
-3. Verificar que Maven esté activo (usando el archivo `pom.xml`).
-4. Asegurarse de que `application.properties` utilice las variables de entorno necesarias (ya están configuradas para usarse con Podman).
-5. Ejecutar los siguientes comandos desde la terminal en el directorio raíz del proyecto:
+**Steps to set up and run the project:**
+1. Open the project in IntelliJ IDEA.
+2. Set up the Java 17 SDK.
+3. Ensure Maven is active (via the `pom.xml` file).
+4. Make sure `application.properties` uses the required environment variables (already configured to work with Podman).
+5. From the project root, run the following terminal commands:
 
 ```bash
-podman machine init #Para iniciar el podman
-podman machine start #Para activar el podman
-podman-compose up --detach #Para levantar el proyecto
-podman-compose down #Para frenar el proyecto
-podman-compose build #Para buildear el proyecto después de un cambio
+podman machine init #To initialize podman
+podman machine start #To start podman
+podman-compose up --detach #To launch the project
+podman-compose down #To stop the project
+podman-compose build #To build the project after a change
 ```
-El orden para levantar de cero sería:
-1) podman machine init
-2) podman machine start
-2) podman-compose build
-3) podman-compose up --detach
-### 6) ¿Cómo visualizar y testear Swagger UI?
 
-**Desde IntelliJ:**
-- Plugin `OpenAPI (Swagger) Editor`
-- `Tools > OpenAPI (Swagger) Editor > Show Open API Preview`
+The correct execution order is:
 
-### 7) ¿Cómo testear cada endpoint en Postman?
+1. `podman machine init`
+2. `podman machine start`
+3. `podman-compose build`
+4. `podman-compose up --detach`
 
-**Paso a paso:**
-1. Enviar `POST /api/auth/login` con mail y password:
+---
+
+### 6) How to Visualize and Test Swagger UI?
+
+**From IntelliJ:**
+
+- Plugin: `OpenAPI (Swagger) Editor`
+- Menu: `Tools > OpenAPI (Swagger) Editor > Show Open API Preview`
+
+---
+
+### 7) How to Test Each Endpoint in Postman?
+
+**Step by Step:**
+
+1. Send `POST /api/auth/login` with email and password:
 ```json
 {
    "email": "usuario@mail.com",
    "password": "1234"
 }
 ```
-2. Copiar el token devuelto en la propiedad `token`.
-3. En Postman, ir a la sección `Authorization` > `Bearer Token` y pegar el token:
+2. Copy the returned token into the `token` property.
+3. In Postman, go to the `Authorization` > `Bearer Token` section and paste the token:
 ```
 Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6...
 ```
-4. Usar cualquier endpoint desde la sección `Request` con el token incluido.
+4. Use any endpoint from the `Request` section with the included token.
 
-**Listado de endpoints con ejemplos para testear:**
+**List of endpoints with examples for testing:**
 
-#### 🛡️ Autenticación
-
+#### 🛡️ Authentication
 ```http
 POST /api/auth/register
 Body:
@@ -134,8 +146,7 @@ POST /api/auth/login
 Body:
 { "email": "juan@mail.com", "password": "1234" }
 ```
-
-#### 🏬 Puntos de Venta
+#### 🏬 Points of Sale
 
 ```http
 GET /api/puntos-venta
@@ -148,8 +159,7 @@ Body: { "nombre": "Capital Federal" }
 
 DELETE /api/puntos-venta/1
 ```
-
-#### 💸 Costos entre Puntos
+#### 💸 Costs between Points
 
 ```http
 POST /api/costos?costo=10
@@ -164,7 +174,7 @@ POST /api/costos/minimo
 Body: { "idA": 1, "idB": 5 }
 ```
 
-#### 🧾 Acreditaciones
+#### 🧾 Accreditations
 
 ```http
 GET /api/acreditaciones
@@ -173,23 +183,88 @@ POST /api/acreditaciones
 Body:
 { "importe": 1500.00, "idPuntoVenta": 2 }
 ```
+💡 All endpoints except `/auth/register` and `/auth/login` require the JWT token.
 
-💡 Todos los endpoints salvo `/auth/register` y `/auth/login` requieren el token JWT.
+---
+## 🧪 Tests
+This project includes unit and integration tests using **JUnit 5** and **Mockito**.
+- Controllers and services are tested.
+- Business logic, validations, and exception handling are verified.
+- Dependencies are mocked using Mockito.
+- Code coverage is close to 100%.
 
 ---
 
-## Extras y detalles técnicos
+## 🔄 CI/CD
 
-- El token JWT tiene una duración de 10 horas.
-- Todos los errores están manejados globalmente desde `GlobalExceptionHandler`.
-- Swagger está configurado para persistir autorización JWT (`springdoc.swagger-ui.persistAuthorization=true`).
-- Se permite CORS desde `localhost` para facilitar pruebas en entorno local.
+This project integrates **GitHub Actions** as a Continuous Integration (CI) tool to ensure code quality and stability on every push or pull request.
+
+### ✅ CI Workflow Overview
+
+- **Trigger:** On every push or pull request to the `main` branch.
+- **Steps:**
+  - Set up Java 17 environment.
+  - Install project dependencies via Maven.
+  - Run unit and integration tests using JUnit 5 and Mockito.
+  - Verify build success and report test results.
+
+You can find the workflow definition in the `.github/workflows/` directory.
+
+
+---
+## Extras and Technical Details
+
+- The JWT token has a lifetime of 10 hours.
+- All errors are handled globally via the `GlobalExceptionHandler`.
+- Swagger is configured to persist JWT authorization (`springdoc.swagger-ui.persistAuthorization=true`).
+- CORS is allowed from `localhost` to facilitate local testing.
 
 ---
 
-Si algo no funciona, lo primero que deberías revisar es:
-- ⚡ Que el contenedor de MySQL esté corriendo y haya sido creado correctamente.
-- 🔐 Que el token JWT sea válido y no esté vencido.
-- ✉ Que los datos requeridos (como `nombre`, `importe`, `idA`, `idB`, etc) estén bien formateados en las requests.
+If something isn't working, the first thing you should check is:
+- ⚡ That the MySQL container is running and has been created correctly.
+- 🔐 That the JWT token is valid and hasn't expired.
+- ✉ That the required data (such as `nombre`, `monto`, `idA`, `idB`, etc.) is properly formatted in the requests.
 
-Cualquier duda extra, el código está completamente documentado y modularizado, con ejemplos y convenciones claras.
+If you have any additional questions, the code is fully documented and modularized, with clear examples and conventions.
+
+---
+## **Contribution and License**
+
+This project was developed as a technical challenge and is intended as a professional example of Java RESTful architecture with Spring Boot.
+
+If you'd like to suggest improvements, open an issue, or make a pull request, you're welcome!
+
+---
+
+## 📄 License
+
+You are free to use, modify, and distribute this project under the terms of the MIT License.
+
+---
+
+## 🔐 Environment and Configuration Variables
+
+The variables required for connecting to MySQL and JWT are defined in `application.properties`.
+
+```properties
+spring.application.name=challenge-java
+spring.datasource.url=${SPRING_DATASOURCE_URL}
+spring.datasource.username=${SPRING_DATASOURCE_USERNAME}
+spring.datasource.password=${SPRING_DATASOURCE_PASSWORD}
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+logging.level.org.flywaydb=DEBUG
+spring.flyway.enabled=true
+spring.flyway.locations=classpath:db/migration
+spring.flyway.baseline-on-migrate=true
+logging.level.org.springdoc=DEBUG
+logging.level.org.springframework.web=DEBUG
+springdoc.swagger-ui.operationsSorter=method
+springdoc.swagger-ui.defaultModelsExpandDepth=-1
+springdoc.swagger-ui.docExpansion=none
+springdoc.swagger-ui.persistAuthorization=true
+springdoc.api-docs.path=/v3/api-docs
