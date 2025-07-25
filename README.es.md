@@ -2,7 +2,7 @@
 
 Este proyecto es una API REST construida con Spring Boot para la gestión de puntos de venta, acreditaciones y costos de conexión entre dichos puntos, incorporando JWT para autenticación, Swagger UI para documentación, y Docker/Podman para el despliegue.
 
-🌐 Este README también está disponible en [English 🇬🇧](README.es.md)
+🌐 Este README también está disponible en [English](README.es.md)
 ---
 
 ## 📖 Módulo teórico
@@ -191,13 +191,6 @@ Este proyecto incluye pruebas unitarias y de integración utilizando **JUnit 5**
 - Se mockean dependencias con Mockito (`@Mock`, `@InjectMocks`).
 - Se verifica la lógica de negocio, validaciones y manejo de excepciones.
 - Coberturas del 100%.
-
-### 🔧 Cómo correr los tests
-
-Desde la raíz del proyecto:
-```bash
-mvn test
-```
 
 ---
 ## Extras y detalles técnicos
