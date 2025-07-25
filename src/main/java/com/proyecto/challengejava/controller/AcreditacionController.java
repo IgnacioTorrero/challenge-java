@@ -19,7 +19,7 @@ import java.util.stream.StreamSupport;
 import static com.proyecto.challengejava.mapper.AcreditacionMapper.mapToResponse;
 
 /**
- * Controlador REST para manejar operaciones relacionadas con acreditaciones.
+ * REST controller for handling operations related to accreditations.
  */
 @RestController
 @RequestMapping("/api/acreditaciones")
@@ -29,10 +29,10 @@ public class AcreditacionController {
     private final AcreditacionModelAssembler acreditacionAssembler;
 
     /**
-     * Constructor que inyecta las dependencias necesarias.
+     * Constructor that injects the required dependencies.
      *
-     * @param service               Servicio encargado de la lógica de negocio para acreditaciones.
-     * @param acreditacionAssembler Ensamblador para convertir respuestas en modelos HATEOAS.
+     * @param service               Service responsible for the business logic of accreditations.
+     * @param acreditacionAssembler Assembler to convert responses into HATEOAS models.
      */
     @Autowired
     public AcreditacionController(AcreditacionService service, AcreditacionModelAssembler acreditacionAssembler) {
@@ -41,10 +41,10 @@ public class AcreditacionController {
     }
 
     /**
-     * Endpoint para recibir una acreditación y almacenarla en la base de datos.
+     * Endpoint to receive an accreditation and store it in the database.
      *
-     * @param request Objeto con los datos de la acreditación, incluyendo importe e ID del punto de venta.
-     * @return Respuesta HTTP con el modelo HATEOAS de la acreditación creada.
+     * @param request Object containing the accreditation data, including amount and sales point ID.
+     * @return HTTP response with the HATEOAS model of the created accreditation.
      */
     @PostMapping
     public ResponseEntity<AcreditacionResponse> recibirAcreditacion(@RequestBody @Valid AcreditacionRequest request) {
@@ -54,9 +54,9 @@ public class AcreditacionController {
     }
 
     /**
-     * Endpoint para obtener todas las acreditaciones registradas en la base de datos.
+     * Endpoint to retrieve all accreditations stored in the database.
      *
-     * @return Respuesta HTTP con una colección de modelos HATEOAS de acreditaciones.
+     * @return HTTP response with a collection of HATEOAS models of accreditations.
      */
     @GetMapping
     public ResponseEntity<CollectionModel<AcreditacionResponse>> obtenerAcreditaciones() {

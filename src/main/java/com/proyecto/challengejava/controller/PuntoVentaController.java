@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Controlador REST para la gestión de puntos de venta.
+ * REST controller for managing sales points.
  */
 @RestController
 @RequestMapping("/api/puntos-venta")
@@ -26,11 +26,11 @@ public class PuntoVentaController {
     private final PuntoVentaModelAssembler assembler;
 
     /**
-     * Constructor que inyecta los servicios y ensamblador necesarios.
+     * Constructor that injects the required services and assembler.
      *
-     * @param service   Servicio principal de operaciones sobre puntos de venta.
-     * @param manager   Componente encargado de operaciones complejas y eliminación con relaciones.
-     * @param assembler Ensamblador HATEOAS para respuestas de puntos de venta.
+     * @param service   Main service for operations on sales points.
+     * @param manager   Component responsible for complex operations and deletion with relationships.
+     * @param assembler HATEOAS assembler for sales point responses.
      */
     @Autowired
     public PuntoVentaController(PuntoVentaService service, PuntoVentaManager manager,
@@ -41,9 +41,9 @@ public class PuntoVentaController {
     }
 
     /**
-     * Endpoint para obtener todos los puntos de venta existentes.
+     * Endpoint to retrieve all existing sales points.
      *
-     * @return Colección HATEOAS con los puntos de venta registrados.
+     * @return HATEOAS collection with the registered sales points.
      */
     @GetMapping
     public ResponseEntity<CollectionModel<PuntoVentaResponse>> getAllPuntosVenta() {
@@ -56,10 +56,10 @@ public class PuntoVentaController {
     }
 
     /**
-     * Endpoint para registrar un nuevo punto de venta.
+     * Endpoint to register a new sales point.
      *
-     * @param request Objeto con el nombre del nuevo punto de venta.
-     * @return Respuesta HTTP 200 OK si fue agregado correctamente.
+     * @param request Object containing the name of the new sales point.
+     * @return HTTP 200 OK response if added successfully.
      */
     @PostMapping
     public ResponseEntity<Void> addPuntoVenta(@RequestBody @Valid PuntoVentaRequest request) {
@@ -68,11 +68,11 @@ public class PuntoVentaController {
     }
 
     /**
-     * Endpoint para actualizar el nombre de un punto de venta existente.
+     * Endpoint to update the name of an existing sales point.
      *
-     * @param id      ID del punto de venta a modificar.
-     * @param request Objeto con el nuevo nombre.
-     * @return Respuesta HTTP 200 OK si fue actualizado correctamente.
+     * @param id      ID of the sales point to be updated.
+     * @param request Object containing the new name.
+     * @return HTTP 200 OK response if updated successfully.
      */
     @PutMapping("/{id}")
     public ResponseEntity<Void> updatePuntoVenta(@PathVariable Long id, @RequestBody @Valid PuntoVentaRequest request) {
@@ -81,10 +81,10 @@ public class PuntoVentaController {
     }
 
     /**
-     * Endpoint para eliminar un punto de venta y sus relaciones asociadas.
+     * Endpoint to delete a sales point and its associated relationships.
      *
-     * @param id ID del punto de venta a eliminar.
-     * @return Respuesta HTTP 200 OK si fue eliminado correctamente.
+     * @param id ID of the sales point to be deleted.
+     * @return HTTP 200 OK response if deleted successfully.
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePuntoVenta(@PathVariable Long id) {

@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * Controlador REST para manejo de autenticación y registro de usuarios.
+ * REST controller for handling user authentication and registration.
  */
 @RestController
 @RequestMapping("/api/auth")
@@ -18,9 +18,9 @@ public class AuthController {
     private final AuthService authService;
 
     /**
-     * Constructor que inyecta el servicio de autenticación.
+     * Constructor that injects the authentication service.
      *
-     * @param authService Servicio encargado de la lógica de autenticación y registro.
+     * @param authService Service responsible for authentication and registration logic.
      */
     @Autowired
     public AuthController(AuthService authService) {
@@ -28,10 +28,10 @@ public class AuthController {
     }
 
     /**
-     * Endpoint para registrar un nuevo usuario.
+     * Endpoint to register a new user.
      *
-     * @param request Objeto con los datos de registro (nombre, email, contraseña).
-     * @return Respuesta con los datos del usuario autenticado y el token JWT.
+     * @param request Object containing registration data (name, email, password).
+     * @return Response with authenticated user data and the JWT token.
      */
     @PostMapping("/register")
     public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest request) {
@@ -39,10 +39,10 @@ public class AuthController {
     }
 
     /**
-     * Endpoint para autenticar un usuario existente.
+     * Endpoint to authenticate an existing user.
      *
-     * @param request Objeto con las credenciales del usuario (email y contraseña).
-     * @return Respuesta con los datos del usuario autenticado y el token JWT.
+     * @param request Object containing user credentials (email and password).
+     * @return Response with authenticated user data and the JWT token.
      */
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {

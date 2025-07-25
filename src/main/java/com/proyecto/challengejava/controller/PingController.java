@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /*
-    Clase de prueba para confirmar el funcionamiento del Podman en el navegador.
+    Test class to confirm Podman is running correctly in the browser.
  */
 @RestController
 public class PingController {
