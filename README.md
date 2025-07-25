@@ -1,6 +1,6 @@
 # Challenge Java
 
-This project is a REST API built with Spring Boot for managing sales points, accreditations, and connection costs between them, incorporating JWT for authentication, Swagger UI for documentation, and Docker/Podman for deployment.
+> This project demonstrates a professional-grade backend architecture using Spring Boot, designed for scalable RESTful APIs with secure JWT authentication, HATEOAS support, and containerized deployment.
 
 🌐 This README is also available in [Spanish 🇪🇸](README.es.md)
 ---
@@ -22,10 +22,10 @@ This project is a REST API built with Spring Boot for managing sales points, acc
 
 ### 2) Design Patterns Used
 
-- **Controller-Service-Repository (C-S-R):** layered organization to handle responsibilities.
+- **Controller-Service-Repository (C-S-R):** a layered architecture for separation of concerns.
 - **DTO (Data Transfer Object):** to separate entity and view, and reduce coupling.
-- **Factory Method (in `mapToResponse()`):** for transforming between entities and DTOs.
-- **Singleton (with Spring beans):** services and repositories function as singletons managed by the Spring container.
+- **Factory Method (in `mapToResponse()`):** used for mapping entities to DTOs.
+- **Singleton (with Spring beans):** services and repositories are singleton beans managed by the Spring container.
 - **Builder (partially in JWT):** fluent token generation using the `Jwts.builder()` API.
 
 ### 3) Architecture Used
@@ -65,7 +65,7 @@ This project is a REST API built with Spring Boot for managing sales points, acc
 
 ## 🧩 Architecture Diagram
 
-![Architecture Diagram](docs/arquitecture.png)
+![Architecture Diagram](docs/architecture.png)
 
 ---
 
@@ -88,7 +88,7 @@ This project is a REST API built with Spring Boot for managing sales points, acc
 2. Set up the Java 17 SDK.
 3. Ensure Maven is active (via the `pom.xml` file).
 4. Make sure `application.properties` uses the required environment variables (already configured to work with Podman).
-5. Run the following commands in the terminal from the project root:
+5. From the project root, run the following terminal commands:
 
 ```bash
 podman machine init #To initialize podman
@@ -193,6 +193,23 @@ This project includes unit and integration tests using **JUnit 5** and **Mockito
 - Dependencies are mocked using Mockito.
 - Code coverage is close to 100%.
 
+---
+
+## 🔄 CI/CD
+
+This project integrates **GitHub Actions** as a Continuous Integration (CI) tool to ensure code quality and stability on every push or pull request.
+
+### ✅ CI Workflow Overview
+
+- **Trigger:** On every push or pull request to the `main` branch.
+- **Steps:**
+  - Set up Java 17 environment.
+  - Install project dependencies via Maven.
+  - Run unit and integration tests using JUnit 5 and Mockito.
+  - Verify build success and report test results.
+
+You can find the workflow definition in the `.github/workflows/` directory.
+
 
 ---
 ## Extras and Technical Details
@@ -239,7 +256,7 @@ spring.jpa.hibernate.ddl-auto=update
 spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 spring.jpa.show-sql=true
-spring.jpa.properties.hibernate.form t_sql=true
+spring.jpa.properties.hibernate.format_sql=true
 logging.level.org.flywaydb=DEBUG
 spring.flyway.enabled=true
 spring.flyway.locations=classpath:db/migration

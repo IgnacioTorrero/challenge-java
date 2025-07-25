@@ -191,6 +191,22 @@ Este proyecto incluye pruebas unitarias y de integración utilizando **JUnit 5**
 - Se mockean dependencias con Mockito (`@Mock`, `@InjectMocks`).
 - Se verifica la lógica de negocio, validaciones y manejo de excepciones.
 - Coberturas del 100%.
+---
+
+## 🔄 CI/CD
+
+Este proyecto integra **GitHub Actions** como herramienta de Integración Continua (CI) para asegurar la calidad y estabilidad del código en cada push o pull request.
+
+### ✅ Descripción del flujo CI
+
+- **Disparador:** Ante cada push o pull request hacia la rama `main`.
+- **Pasos:**
+  - Configurar el entorno con Java 17.
+  - Instalar dependencias del proyecto usando Maven.
+  - Ejecutar tests unitarios e integrados con JUnit 5 y Mockito.
+  - Verificar que el build se complete exitosamente y reportar los resultados de los tests.
+
+Podés encontrar la definición del workflow en el directorio `.github/workflows/`.
 
 ---
 ## Extras y detalles técnicos
