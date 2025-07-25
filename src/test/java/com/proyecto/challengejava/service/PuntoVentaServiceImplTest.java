@@ -69,6 +69,21 @@ public class PuntoVentaServiceImplTest {
     }
 
     @Test
+    void precargarCache_CargaDatosEnElCache() throws Exception {
+        var method = PuntoVentaServiceImpl.class.getDeclaredMethod("precargarCache");
+        method.setAccessible(true);
+        method.invoke(service);
+
+        var field = PuntoVentaServiceImpl.class.getDeclaredField("cache");
+        field.setAccessible(true);
+        Map<Long, String> cache = (Map<Long, String>) field.get(service);
+
+        assertEquals(10, cache.size());
+        assertEquals("Punto 1", cache.get(1L));
+        assertEquals("Punto 10", cache.get(10L));
+    }
+
+    @Test
     void getAllPuntosVenta_ReturnListOfPuntosVenta() {
         List<PuntoVenta> puntosVenta = service.getAllPuntosVenta();
 

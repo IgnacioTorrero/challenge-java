@@ -29,4 +29,5 @@ public class ConstantesTest {
     /* Mensajes de error */
     public static final String PUNTO_VENTA_NOT_FOUND = "Punto/s de venta no encontrado/s";
     public static final String COSTO_PUNTOS_LESS_THAN_ZERO = "El costo no puede ser menor a cero";
+    public static final String INVALID_ID_EXCEPTION = "Ambos IDs no pueden ser iguales";
 }

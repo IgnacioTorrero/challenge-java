@@ -132,4 +132,18 @@ public class CostoPuntosControllerTest {
         verify(service, times(1)).calcularCostoTotalRuta(anyList());
         verify(rutaAssembler, times(1)).toModel(any());
     }
+
+    @Test
+    void addCostoPuntos_SameId_ThrowsException() {
+        // Arrange
+        Long id = 5L;
+        CostoPuntosRequest requestConIdsIguales = new CostoPuntosRequest(id, id);
+
+        // Act & Assert
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            controller.addCostoPuntos(requestConIdsIguales, 100.0);
+        });
+
+        assertEquals(INVALID_ID_EXCEPTION, exception.getMessage());
+    }
 }
