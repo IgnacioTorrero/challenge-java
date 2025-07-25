@@ -2,7 +2,7 @@
 
 Este proyecto es una API REST construida con Spring Boot para la gestión de puntos de venta, acreditaciones y costos de conexión entre dichos puntos, incorporando JWT para autenticación, Swagger UI para documentación, y Docker/Podman para el despliegue.
 
-🌐 Este README también está disponible en [English 🇬🇧](README.md)
+🌐 Este README también está disponible en [English 🇬🇧](README.es.md)
 ---
 
 ## 📖 Módulo teórico
@@ -215,3 +215,48 @@ Si algo no funciona, lo primero que deberías revisar es:
 - ✉ Que los datos requeridos (como `nombre`, `importe`, `idA`, `idB`, etc) estén bien formateados en las requests.
 
 Cualquier duda extra, el código está completamente documentado y modularizado, con ejemplos y convenciones claras.
+
+---
+
+## **Contribución y Licencia**
+
+
+
+Este proyecto fue realizado como challenge técnico y está pensado como ejemplo profesional de arquitectura Java RESTful con Spring Boot.
+
+Si deseás sugerir mejoras, abrir un issue o realizar un pull request, ¡bienvenido!
+
+---
+
+## 📄 Licencia
+
+Este proyecto se distribuye bajo la licencia MIT. Podés utilizarlo, modificarlo y compartirlo libremente.
+Y agregás un archivo LICENSE con la licencia MIT, si querés formalizarlo.
+---
+
+## 🔐 Variables de entorno y configuración
+
+Las variables necesarias para la conexión a MySQL y JWT están definidas en `application.properties`.
+
+
+```properties
+spring.application.name=challenge-java
+spring.datasource.url=${SPRING_DATASOURCE_URL}
+spring.datasource.username=${SPRING_DATASOURCE_USERNAME}
+spring.datasource.password=${SPRING_DATASOURCE_PASSWORD}
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+logging.level.org.flywaydb=DEBUG
+spring.flyway.enabled=true
+spring.flyway.locations=classpath:db/migration
+spring.flyway.baseline-on-migrate=true
+logging.level.org.springdoc=DEBUG
+logging.level.org.springframework.web=DEBUG
+springdoc.swagger-ui.operationsSorter=method
+springdoc.swagger-ui.defaultModelsExpandDepth=-1
+springdoc.swagger-ui.docExpansion=none
+springdoc.swagger-ui.persistAuthorization=true
+springdoc.api-docs.path=/v3/api-docs
