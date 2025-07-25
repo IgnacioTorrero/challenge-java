@@ -63,6 +63,10 @@ Este proyecto es una API REST construida con Spring Boot para la gestión de pun
 - `GET /`: Listar todas las acreditaciones registradas.
 - `POST /`: Recibir y guardar una nueva acreditación.
 
+## 🧩 Diagrama de arquitectura
+
+![Diagrama de arquitectura](docs/arquitectura.png)
+
 ---
 
 ## 📝 Módulo práctico
