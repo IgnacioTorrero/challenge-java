@@ -14,6 +14,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+/**
+ * Implementación del servicio de autenticación y registro de usuarios.
+ */
 @Service
 public class AuthServiceImpl implements AuthService {
 
@@ -22,6 +25,14 @@ public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
 
+    /**
+     * Constructor que inyecta las dependencias necesarias para autenticación.
+     *
+     * @param usuarioRepository       Repositorio de usuarios.
+     * @param jwtService              Servicio para generación de tokens JWT.
+     * @param authenticationManager   Administrador de autenticación de Spring Security.
+     * @param passwordEncoder         Codificador de contraseñas.
+     */
     @Autowired
     public AuthServiceImpl(UsuarioRepository usuarioRepository,
                            JwtService jwtService,
@@ -33,6 +44,12 @@ public class AuthServiceImpl implements AuthService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    /**
+     * Registra un nuevo usuario con rol USER y retorna un token JWT.
+     *
+     * @param request Datos de registro del usuario (nombre, email, contraseña).
+     * @return {@link AuthResponse} que contiene el token generado.
+     */
     @Override
     public AuthResponse register(RegisterRequest request) {
         Usuario usuario = new Usuario();
@@ -48,6 +65,12 @@ public class AuthServiceImpl implements AuthService {
         return new AuthResponse(token);
     }
 
+    /**
+     * Autentica un usuario existente y retorna un token JWT si las credenciales son válidas.
+     *
+     * @param request Datos de autenticación (email y contraseña).
+     * @return {@link AuthResponse} que contiene el token generado.
+     */
     @Override
     public AuthResponse login(AuthRequest request) {
         Authentication auth = authenticationManager.authenticate(
