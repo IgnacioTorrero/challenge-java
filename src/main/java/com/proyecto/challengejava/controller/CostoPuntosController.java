@@ -17,6 +17,9 @@ import java.util.stream.Collectors;
 
 import static com.proyecto.challengejava.constants.Constantes.*;
 
+/**
+ * Controlador REST para gestionar los costos entre puntos de venta y calcular rutas óptimas.
+ */
 @RestController
 @RequestMapping("/api/costos")
 public class CostoPuntosController {
@@ -25,6 +28,13 @@ public class CostoPuntosController {
     private final CostoPuntosModelAssembler costoPuntosModelAssembler;
     private final RutaCostoMinimoModelAssembler rutaCostoMinimoModelAssembler;
 
+    /**
+     * Constructor que inyecta los servicios y ensambladores necesarios.
+     *
+     * @param service                     Servicio de lógica de negocio para costos entre puntos.
+     * @param costoPuntosModelAssembler  Ensamblador HATEOAS para respuestas de costos.
+     * @param rutaCostoMinimoModelAssembler Ensamblador HATEOAS para la ruta de costo mínimo.
+     */
     @Autowired
     public CostoPuntosController(CostoPuntosService service, CostoPuntosModelAssembler costoPuntosModelAssembler,
                                  RutaCostoMinimoModelAssembler rutaCostoMinimoModelAssembler) {
@@ -33,8 +43,12 @@ public class CostoPuntosController {
         this.rutaCostoMinimoModelAssembler = rutaCostoMinimoModelAssembler;
     }
 
-    /*
-     * Metodo encargado de agregar el costo entre punto de venta A y punto de venta B.
+    /**
+     * Endpoint para agregar un costo entre dos puntos de venta.
+     *
+     * @param request Objeto con los IDs de los puntos A y B.
+     * @param costo   Valor del costo entre los puntos.
+     * @return Respuesta HTTP 200 OK si se agregó correctamente.
      */
     @PostMapping
     public ResponseEntity<Void> addCostoPuntos(@RequestBody @Valid CostoPuntosRequest request,
@@ -44,8 +58,11 @@ public class CostoPuntosController {
         return ResponseEntity.ok().build();
     }
 
-    /*
-     * Metodo encargado de eliminar el costo entre punto de venta A y punto de venta B.
+    /**
+     * Endpoint para eliminar el costo entre dos puntos de venta.
+     *
+     * @param request Objeto con los IDs de los puntos A y B.
+     * @return Respuesta HTTP 200 OK si se eliminó correctamente.
      */
     @DeleteMapping
     public ResponseEntity<Void> removeCostoPuntos(@RequestBody @Valid CostoPuntosRequest request) {
@@ -54,9 +71,11 @@ public class CostoPuntosController {
         return ResponseEntity.ok().build();
     }
 
-    /*
-     * Metodo encargado de traer una lista de todos los puntos de venta y costos relacionados
-     * al punto de venta A.
+    /**
+     * Endpoint para obtener todos los costos desde un punto de venta específico.
+     *
+     * @param idA ID del punto de venta origen.
+     * @return Colección HATEOAS de costos desde el punto especificado.
      */
     @GetMapping("/{idA}")
     public ResponseEntity<CollectionModel<CostoPuntosResponse>> getCostosDesdePunto(@PathVariable Long idA) {
@@ -67,12 +86,13 @@ public class CostoPuntosController {
         return ResponseEntity.ok(CollectionModel.of(responseList));
     }
 
-    /*
-    * Metodo encargado de calcular la ruta y el costo minimo entre dos puntos de venta.
-    *
-    * Este endpoint técnicamente es un GET, porque no modifica datos.
-    * Pero se define como POST para que Swagger UI pueda enviarlo correctamente,
-    * ya que no permite body en métodos GET (según restricciones del protocolo HTTP)
+    /**
+     * Endpoint para calcular la ruta de costo mínimo entre dos puntos de venta.
+     *
+     * <p>Se usa POST en lugar de GET por limitaciones de Swagger UI para enviar body en GET.</p>
+     *
+     * @param request Objeto con los IDs de los puntos A y B.
+     * @return Modelo HATEOAS con la ruta y el costo total.
      */
     @PostMapping("/minimo")
     public ResponseEntity<RutaCostoMinimoResponse> calcularCostoMinimo(@RequestBody @Valid CostoPuntosRequest request) {
@@ -85,8 +105,12 @@ public class CostoPuntosController {
         return ResponseEntity.ok(rutaCostoMinimoModelAssembler.toModel(response));
     }
 
-    /*
-     * Metodo auxiliar para validar si ambos IDs son identicos
+    /**
+     * Metodo auxiliar para validar que los IDs de los puntos de venta no sean iguales.
+     *
+     * @param idA ID del punto A.
+     * @param idB ID del punto B.
+     * @throws IllegalArgumentException si ambos IDs son iguales.
      */
     private void validarParametros(Long idA, Long idB) {
         if (idA.equals(idB)) {

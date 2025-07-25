@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.proyecto.challengejava.constants.Constantes.REGEX;
+import static com.proyecto.challengejava.constants.Constantes.*;
 
 public class CostoPuntosUtil {
 

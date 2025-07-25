@@ -7,6 +7,8 @@ import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
 
+import static com.proyecto.challengejava.constants.Constantes.*;
+
 @Component
 public class RutaCostoMinimoModelAssembler implements RepresentationModelAssembler<RutaCostoMinimoResponse, RutaCostoMinimoResponse> {
 
@@ -20,14 +22,14 @@ public class RutaCostoMinimoModelAssembler implements RepresentationModelAssembl
             response.add(WebMvcLinkBuilder.linkTo(
                     WebMvcLinkBuilder.methodOn(CostoPuntosController.class)
                             .calcularCostoMinimo(request)
-            ).withRel("recalcular-ruta"));
+            ).withRel(RECALCULAR_RUTA));
         }
 
         response.getRuta().forEach(id ->
                 response.add(WebMvcLinkBuilder.linkTo(
                         WebMvcLinkBuilder.methodOn(CostoPuntosController.class)
                                 .getCostosDesdePunto(id)
-                ).withRel("ver-costos-desde-" + id))
+                ).withRel(VER_COSTOS_DESDE + id))
         );
 
         return response;

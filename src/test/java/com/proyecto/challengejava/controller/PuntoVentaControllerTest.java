@@ -21,6 +21,10 @@ import static com.proyecto.challengejava.constants.ConstantesTest.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * Test unitario para {@link PuntoVentaController}.
+ * Valida el correcto funcionamiento de los endpoints relacionados con puntos de venta.
+ */
 public class PuntoVentaControllerTest {
 
     @Mock
@@ -39,6 +43,9 @@ public class PuntoVentaControllerTest {
     private final PuntoVenta punto2 = new PuntoVenta();
     private final PuntoVentaRequest request = new PuntoVentaRequest();
 
+    /**
+     * Inicializa los mocks y datos comunes antes de cada test.
+     */
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -51,6 +58,10 @@ public class PuntoVentaControllerTest {
         request.setNombre(PUNTO_VENTA_3);
     }
 
+    /**
+     * Verifica que el metodo {@code getAllPuntosVenta} retorne correctamente
+     * una lista de puntos de venta convertida en CollectionModel.
+     */
     @Test
     void getAllPuntosVenta_ReturnsCollectionModelOfPuntoVentaResponses() {
         // Arrange
@@ -80,6 +91,10 @@ public class PuntoVentaControllerTest {
         verify(service, times(1)).getAllPuntosVenta();
     }
 
+    /**
+     * Verifica que el metodo {@code addPuntoVenta} retorne una respuesta 200 OK
+     * y que invoque el servicio para crear un nuevo punto de venta.
+     */
     @Test
     void addPuntoVenta_ReturnsResponseOk() {
         ResponseEntity<Void> response = controller.addPuntoVenta(request);
@@ -88,7 +103,10 @@ public class PuntoVentaControllerTest {
         verify(service, times(1)).addPuntoVenta(PUNTO_VENTA_3);
     }
 
-
+    /**
+     * Verifica que el metodo {@code updatePuntoVenta} actualice correctamente
+     * el nombre del punto de venta indicado.
+     */
     @Test
     void updatePuntoVenta_ReturnsResponseOk() {
         ResponseEntity<Void> response = controller.updatePuntoVenta(ID_PUNTO_VENTA5, request);
@@ -97,6 +115,10 @@ public class PuntoVentaControllerTest {
         verify(service, times(1)).updatePuntoVenta(ID_PUNTO_VENTA5, PUNTO_VENTA_3);
     }
 
+    /**
+     * Verifica que el metodo {@code deletePuntoVenta} elimine correctamente un punto de venta
+     * junto con sus costos asociados.
+     */
     @Test
     void deletePuntoVenta_ReturnsResponseOk() {
         ResponseEntity<Void> response = controller.deletePuntoVenta(ID_PUNTO_VENTA4);

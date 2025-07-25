@@ -14,6 +14,11 @@ public class PuntoVentaManager {
         this.costoPuntosService = costoPuntosService;
     }
 
+    /**
+     * Elimina un punto de venta junto con todos los costos asociados a él.
+     *
+     * @param id ID del punto de venta a eliminar.
+     */
     public void eliminarPuntoVentaConCostos(Long id) {
         costoPuntosService.eliminarCostosRelacionadosA(id);
         puntoVentaService.deletePuntoVenta(id);

@@ -23,6 +23,10 @@ import static org.mockito.Mockito.*;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+/**
+ * Test unitario para {@link CostoPuntosController}.
+ * Verifica el comportamiento de los endpoints relacionados con los costos entre puntos de venta.
+ */
 public class CostoPuntosControllerTest {
 
     @Mock
@@ -39,14 +43,20 @@ public class CostoPuntosControllerTest {
 
     private final CostoPuntosRequest request = new CostoPuntosRequest(ID_PUNTO_VENTA, ID_PUNTO_VENTA2);
 
+    /**
+     * Inicializa los mocks antes de cada prueba.
+     */
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-
         request.setIdA(ID_PUNTO_VENTA5);
         request.setIdB(ID_PUNTO_VENTA2);
     }
 
+    /**
+     * Verifica que el metodo {@code addCostoPuntos} retorne una respuesta HTTP 200 OK
+     * y que invoque correctamente el servicio.
+     */
     @Test
     void addCostoPuntos_ReturnsOk() {
         ResponseEntity<Void> response = controller.addCostoPuntos(request, IMPORTE);
@@ -55,6 +65,10 @@ public class CostoPuntosControllerTest {
         verify(service, times(1)).addCostoPuntos(ID_PUNTO_VENTA5, ID_PUNTO_VENTA2, IMPORTE);
     }
 
+    /**
+     * Verifica que el metodo {@code removeCostoPuntos} retorne una respuesta HTTP 200 OK
+     * y que invoque el servicio para eliminar el costo.
+     */
     @Test
     void removeCostoPuntos_ReturnsOk() {
         ResponseEntity<Void> response = controller.removeCostoPuntos(request);
@@ -63,6 +77,10 @@ public class CostoPuntosControllerTest {
         verify(service, times(1)).removeCostoPuntos(ID_PUNTO_VENTA5, ID_PUNTO_VENTA2);
     }
 
+    /**
+     * Verifica que el metodo {@code getCostosDesdePunto} devuelva correctamente
+     * los costos desde un punto de venta en formato HATEOAS.
+     */
     @Test
     void getCostosDesdePunto_ReturnsCollectionModelOfCostos() {
         // Arrange
@@ -97,6 +115,10 @@ public class CostoPuntosControllerTest {
         verify(service, times(1)).getCostosDesdePunto(ID_PUNTO_VENTA);
     }
 
+    /**
+     * Verifica que el metodo {@code calcularCostoMinimo} retorne la ruta y costo total esperados
+     * con los enlaces HATEOAS correspondientes.
+     */
     @Test
     void calcularCostoMinimo_ReturnsRutaCostoMinimoResponse() {
         List<Long> ruta = Arrays.asList(1L, 2L, 3L);
@@ -133,6 +155,10 @@ public class CostoPuntosControllerTest {
         verify(rutaAssembler, times(1)).toModel(any());
     }
 
+    /**
+     * Verifica que si se envía un request con IDs iguales, el metodo {@code addCostoPuntos}
+     * arroje una excepción {@link IllegalArgumentException}.
+     */
     @Test
     void addCostoPuntos_SameId_ThrowsException() {
         // Arrange
