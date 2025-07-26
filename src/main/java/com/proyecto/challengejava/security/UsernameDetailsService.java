@@ -1,6 +1,6 @@
 package com.proyecto.challengejava.security;
 
-import com.proyecto.challengejava.entity.Usuario;
+import com.proyecto.challengejava.entity.Username;
 import com.proyecto.challengejava.repository.UsernameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.*;
@@ -20,7 +20,7 @@ public class UsernameDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Usuario username = usernameRepository.findByEmail(email)
+        Username username = usernameRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND + email));
 
         return User.withUsername(username.getEmail())

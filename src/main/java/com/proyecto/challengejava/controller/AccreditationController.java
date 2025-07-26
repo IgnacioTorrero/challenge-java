@@ -22,7 +22,7 @@ import static com.proyecto.challengejava.mapper.AccreditationMapper.mapToRespons
  * REST controller for handling operations related to accreditations.
  */
 @RestController
-@RequestMapping("/api/acreditaciones")
+@RequestMapping("/api/accreditations")
 public class AccreditationController {
 
     private final AccreditationService service;

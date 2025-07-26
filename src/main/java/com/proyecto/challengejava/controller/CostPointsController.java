@@ -21,7 +21,7 @@ import static com.proyecto.challengejava.constants.Constants.*;
  * REST controller for managing connection costs between sales points and calculating optimal routes.
  */
 @RestController
-@RequestMapping("/api/costos")
+@RequestMapping("/api/costs")
 public class CostPointsController {
 
     private final CostPointsService service;
@@ -94,7 +94,7 @@ public class CostPointsController {
      * @param request Object containing the IDs of points A and B.
      * @return HATEOAS model with the route and total cost.
      */
-    @PostMapping("/minimo")
+    @PostMapping("/min")
     public ResponseEntity<MinCostRouteResponse> calculateMinCost(@RequestBody @Valid CostPointsRequest request) {
         validateParameters(request.getIdA(), request.getIdB());
 

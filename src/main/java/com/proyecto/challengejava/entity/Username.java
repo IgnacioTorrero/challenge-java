@@ -4,7 +4,7 @@ import com.proyecto.challengejava.enums.Role;
 import jakarta.persistence.*;
 
 @Entity
-public class Usuario {
+public class Username {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

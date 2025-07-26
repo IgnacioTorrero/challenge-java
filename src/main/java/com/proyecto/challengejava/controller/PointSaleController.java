@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
  * REST controller for managing sales points.
  */
 @RestController
-@RequestMapping("/api/puntos-venta")
+@RequestMapping("/api/sale-points")
 public class PointSaleController {
 
     private final PointSaleService service;

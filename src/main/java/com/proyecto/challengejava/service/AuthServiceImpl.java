@@ -3,7 +3,7 @@ package com.proyecto.challengejava.service;
 import com.proyecto.challengejava.dto.AuthRequest;
 import com.proyecto.challengejava.dto.AuthResponse;
 import com.proyecto.challengejava.dto.RegisterRequest;
-import com.proyecto.challengejava.entity.Usuario;
+import com.proyecto.challengejava.entity.Username;
 import com.proyecto.challengejava.enums.Role;
 import com.proyecto.challengejava.repository.UsernameRepository;
 import com.proyecto.challengejava.security.JwtService;
@@ -52,7 +52,7 @@ public class AuthServiceImpl implements AuthService {
      */
     @Override
     public AuthResponse register(RegisterRequest request) {
-        Usuario username = new Usuario();
+        Username username = new Username();
         username.setName(request.getName());
         username.setEmail(request.getEmail());
         username.setPassword(passwordEncoder.encode(request.getPassword()));
