@@ -3,7 +3,7 @@ package com.proyecto.challengejava.service;
 import com.proyecto.challengejava.dto.CostPointsResponse;
 import com.proyecto.challengejava.entity.CostPoints;
 import com.proyecto.challengejava.entity.PointSale;
-import com.proyecto.challengejava.exception.PuntoVentaNotFoundException;
+import com.proyecto.challengejava.exception.PointSaleNotFoundException;
 import com.proyecto.challengejava.repository.CostoRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
@@ -90,12 +90,12 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
      *
      * @param idA ID of the first point.
      * @param idB ID of the second point.
-     * @throws PuntoVentaNotFoundException if any of the points do not exist.
+     * @throws PointSaleNotFoundException if any of the points do not exist.
      */
     public void removeCostoPuntos(Long idA, Long idB) {
         List<PointSale> puntos = puntoVentaService.getAllPuntosVenta();
         if (!puntoVentaExists(puntos, idA) || !puntoVentaExists(puntos, idB)) {
-            throw new PuntoVentaNotFoundException(PUNTO_VENTA_NOT_FOUND);
+            throw new PointSaleNotFoundException(PUNTO_VENTA_NOT_FOUND);
         }
 
         String key = generateKey(idA, idB);

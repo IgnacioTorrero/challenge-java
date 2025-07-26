@@ -2,7 +2,7 @@ package com.proyecto.challengejava.service;
 
 import com.proyecto.challengejava.entity.Accreditation;
 import com.proyecto.challengejava.entity.PointSale;
-import com.proyecto.challengejava.exception.PuntoVentaNotFoundException;
+import com.proyecto.challengejava.exception.PointSaleNotFoundException;
 import com.proyecto.challengejava.repository.AcreditacionRepository;
 import org.springframework.stereotype.Service;
 
@@ -37,11 +37,11 @@ public class AcreditacionServiceImpl implements AcreditacionService {
      * @param importe        Amount received.
      * @param idPuntoVenta   ID of the sales point receiving the accreditation.
      * @return {@link Accreditation} object persisted in the database.
-     * @throws PuntoVentaNotFoundException if the sales point does not exist.
+     * @throws PointSaleNotFoundException if the sales point does not exist.
      */
     public Accreditation recibirAcreditacion(Double importe, Long idPuntoVenta) {
         if (!puntoVentaExists(idPuntoVenta)) {
-            throw new PuntoVentaNotFoundException(PUNTO_VENTA_NOT_FOUND + ": " + idPuntoVenta);
+            throw new PointSaleNotFoundException(PUNTO_VENTA_NOT_FOUND + ": " + idPuntoVenta);
         }
 
         String nombrePuntoVenta = puntoVentaService.getAllPuntosVenta().stream()

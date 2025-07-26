@@ -3,7 +3,7 @@ package com.proyecto.challengejava.service;
 import com.proyecto.challengejava.dto.CostPointsResponse;
 import com.proyecto.challengejava.entity.CostPoints;
 import com.proyecto.challengejava.entity.PointSale;
-import com.proyecto.challengejava.exception.PuntoVentaNotFoundException;
+import com.proyecto.challengejava.exception.PointSaleNotFoundException;
 import com.proyecto.challengejava.repository.CostoRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -144,7 +144,7 @@ public class CostPointsServiceImplTest {
      */
     @Test
     void removeCostoPuntos_ThrowsIllegalArgumentException() {
-        Exception exception = assertThrows(PuntoVentaNotFoundException.class, () ->
+        Exception exception = assertThrows(PointSaleNotFoundException.class, () ->
                 costoPuntosServiceImpl.removeCostoPuntos(INVALID_ID, INVALID_ID2)
         );
         assertEquals(PUNTO_VENTA_NOT_FOUND, exception.getMessage());

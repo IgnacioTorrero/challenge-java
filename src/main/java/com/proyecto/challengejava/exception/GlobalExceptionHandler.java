@@ -26,8 +26,8 @@ public class GlobalExceptionHandler {
     }
 
     // Handles exceptions when a sales point does not exist.
-    @ExceptionHandler(PuntoVentaNotFoundException.class)
-    public ResponseEntity<Map<String, String>> handlePuntoVentaNotFoundException(PuntoVentaNotFoundException ex) {
+    @ExceptionHandler(PointSaleNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handlePuntoVentaNotFoundException(PointSaleNotFoundException ex) {
         return buildErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage());
     }
 
