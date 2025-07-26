@@ -72,11 +72,11 @@ public class CostPointsServiceImpl implements CostPointsService {
      */
     public void addCostPoints(Long idA, Long idB, Double cost) {
         if (cost < 0) {
-            throw new IllegalArgumentException(COSTO_PUNTOS_LESS_THAN_ZERO);
+            throw new IllegalArgumentException(COST_POINTS_LESS_THAN_ZERO);
         }
         List<PointSale> puntos = pointSaleService.getAllPointSale();
         if (!pointSaleExists(puntos, idA) || !pointSaleExists(puntos, idB)) {
-            throw new IllegalArgumentException(PUNTO_VENTA_NOT_FOUND);
+            throw new IllegalArgumentException(POINT_OF_SALE_NOT_FOUND);
         }
 
         String key = generateKey(idA, idB);
@@ -95,7 +95,7 @@ public class CostPointsServiceImpl implements CostPointsService {
     public void removeCostPoints(Long idA, Long idB) {
         List<PointSale> points = pointSaleService.getAllPointSale();
         if (!pointSaleExists(points, idA) || !pointSaleExists(points, idB)) {
-            throw new PointSaleNotFoundException(PUNTO_VENTA_NOT_FOUND);
+            throw new PointSaleNotFoundException(POINT_OF_SALE_NOT_FOUND);
         }
 
         String key = generateKey(idA, idB);
@@ -112,7 +112,7 @@ public class CostPointsServiceImpl implements CostPointsService {
     public List<CostPointsResponse> getCostsFromPoint(Long idA) {
         List<PointSale> points = pointSaleService.getAllPointSale();
         if (!pointSaleExists(points, idA)) {
-            throw new IllegalArgumentException(PUNTO_VENTA_NOT_FOUND);
+            throw new IllegalArgumentException(POINT_OF_SALE_NOT_FOUND);
         }
         List<CostPointsResponse> costs = new ArrayList<>();
         cache.forEach((key, value) -> {
@@ -165,7 +165,7 @@ public class CostPointsServiceImpl implements CostPointsService {
 
         List<PointSale> points = pointSaleService.getAllPointSale();
         if (!pointSaleExists(points, pointA) || !pointSaleExists(points, pointB)) {
-            throw new IllegalArgumentException(PUNTO_VENTA_NOT_FOUND);
+            throw new IllegalArgumentException(POINT_OF_SALE_NOT_FOUND);
         }
 
         pointSaleService.getAllPointSale().forEach(p -> distances.put(p.getId(), Double.MAX_VALUE));

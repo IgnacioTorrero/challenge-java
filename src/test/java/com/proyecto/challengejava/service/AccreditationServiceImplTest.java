@@ -46,25 +46,25 @@ public class AccreditationServiceImplTest {
     @Test
     void receiveAccreditation() {
         PointSale pointSale = new PointSale();
-        pointSale.setId(ID_PUNTO_VENTA);
-        pointSale.setName(PUNTO_VENTA_1);
+        pointSale.setId(ID_POINT_SALE1);
+        pointSale.setName(POINT_SALE_1);
 
         when(puntoVentaServiceImpl.getAllPointSale()).thenReturn(List.of(pointSale));
 
         Accreditation accreditation = new Accreditation();
-        accreditation.setId(ID_PUNTO_VENTA);
-        accreditation.setAmount(IMPORTE);
-        accreditation.setIdPointSale(ID_PUNTO_VENTA);
-        accreditation.setPointSaleName(PUNTO_VENTA_1);
+        accreditation.setId(ID_POINT_SALE1);
+        accreditation.setAmount(AMOUNT);
+        accreditation.setIdPointSale(ID_POINT_SALE1);
+        accreditation.setPointSaleName(POINT_SALE_1);
         accreditation.setDateReception(LocalDate.now());
 
         when(accreditationRepository.save(any(Accreditation.class))).thenReturn(accreditation);
-        Accreditation result = acreditacionServiceImpl.receiveAccreditation(IMPORTE, ID_PUNTO_VENTA);
+        Accreditation result = acreditacionServiceImpl.receiveAccreditation(AMOUNT, ID_POINT_SALE1);
 
         assertNotNull(result);
-        assertEquals(IMPORTE, result.getAmount());
-        assertEquals(ID_PUNTO_VENTA, result.getIdPointSale());
-        assertEquals(PUNTO_VENTA_1, result.getPointSaleName());
+        assertEquals(AMOUNT, result.getAmount());
+        assertEquals(ID_POINT_SALE1, result.getIdPointSale());
+        assertEquals(POINT_SALE_1, result.getPointSaleName());
         assertEquals(LocalDate.now(), result.getDateReception());
         verify(accreditationRepository, times(1)).save(any(Accreditation.class));
     }
@@ -78,8 +78,8 @@ public class AccreditationServiceImplTest {
         when(puntoVentaServiceImpl.getAllPointSale()).thenReturn(List.of());
 
         Exception exception = assertThrows(PointSaleNotFoundException.class,
-                () -> acreditacionServiceImpl.receiveAccreditation(IMPORTE, INVALID_ID));
-        assertEquals(PUNTO_VENTA_NOT_FOUND + ": 99", exception.getMessage());
+                () -> acreditacionServiceImpl.receiveAccreditation(AMOUNT, INVALID_ID));
+        assertEquals(POINT_SALE_NOT_FOUND + ": 99", exception.getMessage());
         verify(accreditationRepository, never()).save(any(Accreditation.class));
     }
 
@@ -90,12 +90,12 @@ public class AccreditationServiceImplTest {
     @Test
     void getAccreditations() {
         Accreditation accreditation1 = new Accreditation();
-        accreditation1.setId(ID_PUNTO_VENTA);
-        accreditation1.setAmount(IMPORTE);
+        accreditation1.setId(ID_POINT_SALE1);
+        accreditation1.setAmount(AMOUNT);
 
         Accreditation accreditation2 = new Accreditation();
-        accreditation2.setId(ID_PUNTO_VENTA2);
-        accreditation2.setAmount(IMPORTE2);
+        accreditation2.setId(ID_POINT_SALE2);
+        accreditation2.setAmount(AMOUNT2);
 
         when(accreditationRepository.findAll()).thenReturn(Arrays.asList(accreditation1, accreditation2));
         Iterable<Accreditation> result = acreditacionServiceImpl.getAccreditations();

@@ -41,14 +41,14 @@ public class AccreditationServiceImpl implements AccreditationService {
      */
     public Accreditation receiveAccreditation(Double amount, Long idPointSale) {
         if (!pointSaleExists(idPointSale)) {
-            throw new PointSaleNotFoundException(PUNTO_VENTA_NOT_FOUND + ": " + idPointSale);
+            throw new PointSaleNotFoundException(POINT_OF_SALE_NOT_FOUND + ": " + idPointSale);
         }
 
         String nombrePuntoVenta = pointSaleService.getAllPointSale().stream()
                 .filter(p -> p.getId().equals(idPointSale))
                 .map(PointSale::getName)
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException(PUNTO_VENTA_NOT_FOUND));
+                .orElseThrow(() -> new IllegalArgumentException(POINT_OF_SALE_NOT_FOUND));
 
         Accreditation accreditation = new Accreditation();
         accreditation.setAmount(amount);

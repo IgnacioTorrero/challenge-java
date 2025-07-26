@@ -5,11 +5,11 @@ import java.util.List;
 /* Class used to store all constants */
 public class Constants {
 
-    public static final List<String> PUNTOS_VENTA = List.of("CABA", "GBA_1", "GBA_2", "Santa Fe", "Córdoba", "Misiones", "Salta",
+    public static final List<String> POINTS_OF_SALE = List.of("CABA", "GBA_1", "GBA_2", "Santa Fe", "Córdoba", "Misiones", "Salta",
             "Chubut", "Santa Cruz", "Catamarca");
     public static final String REGEX = "-";
     public static final String UNKNOWN = "Desconocido";
-    public static final String AUTORIZATION = "Authorization";
+    public static final String AUTHORIZATION = "Authorization";
     public static final String OPTIONS = "OPTIONS";
     public static final String BEARER = "Bearer ";
 
@@ -24,10 +24,10 @@ public class Constants {
     public static final String VER_COSTOS_DESDE = "ver-costos-desde-";
 
     /* Error messages */
-    public static final String PUNTO_VENTA_NOT_FOUND = "Punto/s de venta no encontrado/s";
-    public static final String COSTO_PUNTOS_LESS_THAN_ZERO = "El costo no puede ser menor a cero";
+    public static final String POINT_OF_SALE_NOT_FOUND = "Punto/s de venta no encontrado/s";
+    public static final String COST_POINTS_LESS_THAN_ZERO = "El costo no puede ser menor a cero";
     public static final String INVALID_ID_EXCEPTION = "Ambos IDs no pueden ser iguales";
-    public static final String PUNTO_VENTA_ALREADY_EXISTS = "El punto de venta ya existe";
-    public static final String FORMATO_INVALIDO = "Formato inválido en la solicitud. Verifica los valores enviados.";
-    public static final String USUARIO_NO_ENCONTRADO = "Usuario no encontrado con email: ";
+    public static final String POINT_OF_SALE_ALREADY_EXISTS = "El punto de venta ya existe";
+    public static final String INVALID_FORMAT = "Formato inválido en la solicitud. Verifica los valores enviados.";
+    public static final String USER_NOT_FOUND = "Usuario no encontrado con email: ";
 }

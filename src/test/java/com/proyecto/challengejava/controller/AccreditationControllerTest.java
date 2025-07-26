@@ -43,8 +43,8 @@ public class AccreditationControllerTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        request.setAmount(IMPORTE);
-        request.setIdPointSale(ID_PUNTO_VENTA);
+        request.setAmount(AMOUNT);
+        request.setIdPointSale(ID_POINT_SALE1);
     }
 
     /**
@@ -55,13 +55,13 @@ public class AccreditationControllerTest {
     void receiveAccreditationResponse() {
         // Arrange: simulate the accreditation returned by the service
         Accreditation accreditation = new Accreditation();
-        accreditation.setId(ID_PUNTO_VENTA);
-        accreditation.setAmount(IMPORTE);
-        accreditation.setIdPointSale(ID_PUNTO_VENTA);
+        accreditation.setId(ID_POINT_SALE1);
+        accreditation.setAmount(AMOUNT);
+        accreditation.setIdPointSale(ID_POINT_SALE1);
 
         AccreditationRequest request = new AccreditationRequest();
-        request.setAmount(IMPORTE);
-        request.setIdPointSale(ID_PUNTO_VENTA);
+        request.setAmount(AMOUNT);
+        request.setIdPointSale(ID_POINT_SALE1);
 
         AccreditationResponse responseSinLinks = new AccreditationResponse(
                 accreditation.getId(),
@@ -71,7 +71,7 @@ public class AccreditationControllerTest {
                 accreditation.getDateReception()
         );
 
-        when(acreditacionServiceImpl.receiveAccreditation(IMPORTE, ID_PUNTO_VENTA)).thenReturn(accreditation);
+        when(acreditacionServiceImpl.receiveAccreditation(AMOUNT, ID_POINT_SALE1)).thenReturn(accreditation);
         when(acreditacionAssembler.toModel(responseSinLinks)).thenReturn(responseSinLinks);
 
         // Act: call the controller
@@ -91,12 +91,12 @@ public class AccreditationControllerTest {
     void getAccreditations_ReturnsCollectionModelOfAccreditationsResponses() {
         // Arrange: simulate two accreditations returned by the service
         Accreditation accreditation1 = new Accreditation();
-        accreditation1.setId(ID_PUNTO_VENTA);
-        accreditation1.setAmount(IMPORTE);
+        accreditation1.setId(ID_POINT_SALE1);
+        accreditation1.setAmount(AMOUNT);
 
         Accreditation accreditation2 = new Accreditation();
-        accreditation2.setId(ID_PUNTO_VENTA2);
-        accreditation2.setAmount(IMPORTE2);
+        accreditation2.setId(ID_POINT_SALE2);
+        accreditation2.setAmount(AMOUNT2);
 
         Iterable<Accreditation> accreditations = Arrays.asList(accreditation1, accreditation2);
 

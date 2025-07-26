@@ -41,7 +41,7 @@ public class CostPointsControllerTest {
     @InjectMocks
     private CostPointsController controller;
 
-    private final CostPointsRequest request = new CostPointsRequest(ID_PUNTO_VENTA, ID_PUNTO_VENTA2);
+    private final CostPointsRequest request = new CostPointsRequest(ID_POINT_SALE1, ID_POINT_SALE2);
 
     /**
      * Initializes mocks before each test.
@@ -49,8 +49,8 @@ public class CostPointsControllerTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        request.setIdA(ID_PUNTO_VENTA5);
-        request.setIdB(ID_PUNTO_VENTA2);
+        request.setIdA(ID_POINT_SALE5);
+        request.setIdB(ID_POINT_SALE2);
     }
 
     /**
@@ -59,10 +59,10 @@ public class CostPointsControllerTest {
      */
     @Test
     void addCostPoints_ReturnsOk() {
-        ResponseEntity<Void> response = controller.addCostPoints(request, IMPORTE);
+        ResponseEntity<Void> response = controller.addCostPoints(request, AMOUNT);
 
         assertEquals(SUCCESS_RESPONSE, response.getStatusCodeValue());
-        verify(service, times(1)).addCostPoints(ID_PUNTO_VENTA5, ID_PUNTO_VENTA2, IMPORTE);
+        verify(service, times(1)).addCostPoints(ID_POINT_SALE5, ID_POINT_SALE2, AMOUNT);
     }
 
     /**
@@ -74,7 +74,7 @@ public class CostPointsControllerTest {
         ResponseEntity<Void> response = controller.removeCostPoints(request);
 
         assertEquals(200, response.getStatusCodeValue());
-        verify(service, times(1)).removeCostPoints(ID_PUNTO_VENTA5, ID_PUNTO_VENTA2);
+        verify(service, times(1)).removeCostPoints(ID_POINT_SALE5, ID_POINT_SALE2);
     }
 
     /**
@@ -89,11 +89,11 @@ public class CostPointsControllerTest {
                 new CostPointsResponse(1L, 3L, 150.0, "GBA_2")
         );
 
-        when(service.getCostsFromPoint(ID_PUNTO_VENTA)).thenReturn(costs);
+        when(service.getCostsFromPoint(ID_POINT_SALE1)).thenReturn(costs);
         when(assembler.toModel(any())).thenAnswer(invocation -> invocation.getArgument(0));
 
         // Act
-        ResponseEntity<CollectionModel<CostPointsResponse>> response = controller.getCostsFromPoint(ID_PUNTO_VENTA);
+        ResponseEntity<CollectionModel<CostPointsResponse>> response = controller.getCostsFromPoint(ID_POINT_SALE1);
 
         // Assert
         assertEquals(SUCCESS_RESPONSE, response.getStatusCodeValue());
@@ -112,7 +112,7 @@ public class CostPointsControllerTest {
             ));
         }
 
-        verify(service, times(1)).getCostsFromPoint(ID_PUNTO_VENTA);
+        verify(service, times(1)).getCostsFromPoint(ID_POINT_SALE1);
     }
 
     /**

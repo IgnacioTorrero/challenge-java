@@ -100,7 +100,7 @@ public class PointSaleServiceImpl implements PointSaleService {
     @Override
     public void addPointSale(String name) {
         if (pointSaleRepository.existsByNombre(name)) {
-            throw new IllegalArgumentException(PUNTO_VENTA_ALREADY_EXISTS);
+            throw new IllegalArgumentException(POINT_OF_SALE_ALREADY_EXISTS);
         }
         PointSale pointSale = new PointSale();
         pointSale.setName(name);
@@ -117,7 +117,7 @@ public class PointSaleServiceImpl implements PointSaleService {
      */
     public void updatePointSale(Long id, String name) {
         PointSale pointSale = pointSaleRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException(PUNTO_VENTA_NOT_FOUND));
+                .orElseThrow(() -> new IllegalArgumentException(POINT_OF_SALE_NOT_FOUND));
         pointSale.setName(name);
         pointSaleRepository.save(pointSale);
         cache.put(id, name);
@@ -131,7 +131,7 @@ public class PointSaleServiceImpl implements PointSaleService {
      */
     public void deletePointSale(Long id) {
         if (!pointSaleRepository.existsById(id)) {
-            throw new IllegalArgumentException(PUNTO_VENTA_NOT_FOUND);
+            throw new IllegalArgumentException(POINT_OF_SALE_NOT_FOUND);
         }
         pointSaleRepository.deleteById(id);
         cache.remove(id);

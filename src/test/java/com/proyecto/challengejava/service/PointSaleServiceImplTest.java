@@ -13,9 +13,9 @@ import org.mockito.quality.Strictness;
 
 import java.util.*;
 
-import static com.proyecto.challengejava.constants.Constants.PUNTO_VENTA_ALREADY_EXISTS;
+import static com.proyecto.challengejava.constants.Constants.POINT_OF_SALE_ALREADY_EXISTS;
 import static com.proyecto.challengejava.constants.ConstantsTest.*;
-import static com.proyecto.challengejava.constants.Constants.PUNTO_VENTA_NOT_FOUND;
+import static com.proyecto.challengejava.constants.Constants.POINT_OF_SALE_NOT_FOUND;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -116,14 +116,14 @@ public class PointSaleServiceImplTest {
     @Test
     void addPointSale_AddsNewPointSale() {
         // Act
-        service.addPointSale(PUNTO_VENTA_3);
+        service.addPointSale(POINT_SALE_3);
 
         // Assert
         List<PointSale> salePoints = service.getAllPointSale();
         assertEquals(11, salePoints.size());
 
         PointSale aggregatedPoint = salePoints.stream()
-                .filter(p -> PUNTO_VENTA_3.equals(p.getName()))
+                .filter(p -> POINT_SALE_3.equals(p.getName()))
                 .findFirst()
                 .orElse(null);
         assertNotNull(aggregatedPoint);
@@ -142,7 +142,7 @@ public class PointSaleServiceImplTest {
         Exception ex = assertThrows(IllegalArgumentException.class, () ->
                 service.addPointSale(duplicatedName)
         );
-        assertEquals(PUNTO_VENTA_ALREADY_EXISTS, ex.getMessage());
+        assertEquals(POINT_OF_SALE_ALREADY_EXISTS, ex.getMessage());
     }
 
     /**
@@ -152,7 +152,7 @@ public class PointSaleServiceImplTest {
     void updatePointSale_UpdatesExistingPointSale() {
         // Act
         Long idForUpdate = 2L;
-        service.updatePointSale(idForUpdate, PUNTO_VENTA_5);
+        service.updatePointSale(idForUpdate, POINT_SALE_5);
 
         // Assert
         PointSale updated = service.getAllPointSale().stream()
@@ -160,7 +160,7 @@ public class PointSaleServiceImplTest {
                 .findFirst()
                 .orElse(null);
         assertNotNull(updated);
-        assertEquals(PUNTO_VENTA_5, updated.getName());
+        assertEquals(POINT_SALE_5, updated.getName());
     }
 
     /**
@@ -170,8 +170,8 @@ public class PointSaleServiceImplTest {
     void updatePointSale_ThrowsIllegalArgumentException() {
         // Act & Assert
         Exception ex = assertThrows(IllegalArgumentException.class, () ->
-                service.updatePointSale(INVALID_ID, PUNTO_VENTA_6));
-        assertEquals(PUNTO_VENTA_NOT_FOUND, ex.getMessage());
+                service.updatePointSale(INVALID_ID, POINT_SALE_6));
+        assertEquals(POINT_OF_SALE_NOT_FOUND, ex.getMessage());
     }
 
     /**
@@ -202,6 +202,6 @@ public class PointSaleServiceImplTest {
         Exception ex = assertThrows(IllegalArgumentException.class, () ->
                 service.deletePointSale(nonExistingId)
         );
-        assertEquals(PUNTO_VENTA_NOT_FOUND, ex.getMessage());
+        assertEquals(POINT_OF_SALE_NOT_FOUND, ex.getMessage());
     }
 }
