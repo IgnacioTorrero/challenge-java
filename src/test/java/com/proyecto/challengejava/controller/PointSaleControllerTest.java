@@ -4,8 +4,8 @@ import com.proyecto.challengejava.dto.PointSaleRequest;
 import com.proyecto.challengejava.dto.PointSaleResponse;
 import com.proyecto.challengejava.entity.PointSale;
 import com.proyecto.challengejava.hateoas.PointSaleModelAssembler;
-import com.proyecto.challengejava.service.PuntoVentaManager;
-import com.proyecto.challengejava.service.PuntoVentaServiceImpl;
+import com.proyecto.challengejava.service.PointSaleManager;
+import com.proyecto.challengejava.service.PointSaleServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -28,10 +28,10 @@ import static org.mockito.Mockito.*;
 public class PointSaleControllerTest {
 
     @Mock
-    private PuntoVentaServiceImpl service;
+    private PointSaleServiceImpl service;
 
     @Mock
-    private PuntoVentaManager puntoVentaManager;
+    private PointSaleManager pointSaleManager;
 
     @Mock
     private PointSaleModelAssembler assembler;
@@ -124,6 +124,6 @@ public class PointSaleControllerTest {
         ResponseEntity<Void> response = controller.deletePuntoVenta(ID_PUNTO_VENTA4);
 
         assertEquals(SUCCESS_RESPONSE, response.getStatusCodeValue());
-        verify(puntoVentaManager, times(1)).eliminarPuntoVentaConCostos(ID_PUNTO_VENTA4);
+        verify(pointSaleManager, times(1)).eliminarPuntoVentaConCostos(ID_PUNTO_VENTA4);
     }
 }

@@ -5,7 +5,7 @@ import com.proyecto.challengejava.dto.CostPointsResponse;
 import com.proyecto.challengejava.dto.MinCostRouteResponse;
 import com.proyecto.challengejava.hateoas.CostPointsModelAssembler;
 import com.proyecto.challengejava.hateoas.MinCostRouteModelAssembler;
-import com.proyecto.challengejava.service.CostoPuntosService;
+import com.proyecto.challengejava.service.CostPointsService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
@@ -24,7 +24,7 @@ import static com.proyecto.challengejava.constants.Constants.*;
 @RequestMapping("/api/costos")
 public class CostPointsController {
 
-    private final CostoPuntosService service;
+    private final CostPointsService service;
     private final CostPointsModelAssembler costPointsModelAssembler;
     private final MinCostRouteModelAssembler minCostRouteModelAssembler;
 
@@ -36,7 +36,7 @@ public class CostPointsController {
      * @param minCostRouteModelAssembler HATEOAS assembler for minimum cost route responses.
      */
     @Autowired
-    public CostPointsController(CostoPuntosService service, CostPointsModelAssembler costPointsModelAssembler,
+    public CostPointsController(CostPointsService service, CostPointsModelAssembler costPointsModelAssembler,
                                 MinCostRouteModelAssembler minCostRouteModelAssembler) {
         this.service = service;
         this.costPointsModelAssembler = costPointsModelAssembler;

@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Unit test for {@link PuntoVentaServiceImpl}.
+ * Unit test for {@link PointSaleServiceImpl}.
  * Validates business logic related to sales point operations: add, update, delete, fetch and cache.
  */
 @ExtendWith(MockitoExtension.class)
@@ -31,7 +31,7 @@ public class PointSaleServiceImplTest {
     private PointSaleRepository pointSaleRepository;
 
     @InjectMocks
-    private PuntoVentaServiceImpl service;
+    private PointSaleServiceImpl service;
 
     private List<PointSale> datosMock;
 
@@ -81,11 +81,11 @@ public class PointSaleServiceImplTest {
     @Test
     void precargarCache_CargaDatosEnElCache() throws Exception {
         // Act
-        var method = PuntoVentaServiceImpl.class.getDeclaredMethod("precargarCache");
+        var method = PointSaleServiceImpl.class.getDeclaredMethod("precargarCache");
         method.setAccessible(true);
         method.invoke(service);
 
-        var field = PuntoVentaServiceImpl.class.getDeclaredField("cache");
+        var field = PointSaleServiceImpl.class.getDeclaredField("cache");
         field.setAccessible(true);
         Map<Long, String> cache = (Map<Long, String>) field.get(service);
 

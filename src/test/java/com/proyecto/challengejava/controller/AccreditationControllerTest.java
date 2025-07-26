@@ -4,7 +4,7 @@ import com.proyecto.challengejava.dto.AccreditationRequest;
 import com.proyecto.challengejava.dto.AccreditationResponse;
 import com.proyecto.challengejava.entity.Accreditation;
 import com.proyecto.challengejava.hateoas.AccreditationModelAssembler;
-import com.proyecto.challengejava.service.AcreditacionServiceImpl;
+import com.proyecto.challengejava.service.AccreditationServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -26,7 +26,7 @@ import static org.mockito.Mockito.when;
 public class AccreditationControllerTest {
 
     @Mock
-    private AcreditacionServiceImpl acreditacionServiceImpl;
+    private AccreditationServiceImpl acreditacionServiceImpl;
 
     @Mock
     private AccreditationModelAssembler acreditacionAssembler;

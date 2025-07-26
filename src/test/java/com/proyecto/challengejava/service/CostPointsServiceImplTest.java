@@ -19,18 +19,18 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Unit test for {@link CostoPuntosServiceImpl}.
+ * Unit test for {@link CostPointsServiceImpl}.
  * Validates business logic related to cost management between sales points.
  */
 public class CostPointsServiceImplTest {
 
     @Mock
-    private PuntoVentaService puntoVentaService;
+    private PointSaleService pointSaleService;
 
     @Mock
-    private PuntoVentaServiceImpl puntoVentaServiceImpl;
+    private PointSaleServiceImpl puntoVentaServiceImpl;
 
-    private CostoPuntosServiceImpl costoPuntosServiceImpl;
+    private CostPointsServiceImpl costoPuntosServiceImpl;
 
     @Mock
     private CostRepository costRepository;
@@ -62,7 +62,7 @@ public class CostPointsServiceImplTest {
                 new CostPoints() {{ setIdA(1L); setIdB(4L); setCosto(4.0); }}
         ));
 
-        costoPuntosServiceImpl = new CostoPuntosServiceImpl(puntoVentaServiceImpl, costRepository);
+        costoPuntosServiceImpl = new CostPointsServiceImpl(puntoVentaServiceImpl, costRepository);
 
         // Preload cache
         costoPuntosServiceImpl.cargarCacheDesdeDB();
@@ -302,7 +302,7 @@ public class CostPointsServiceImplTest {
         when(costRepository.findByIdAAndIdB(menor, mayor)).thenReturn(Optional.of(existente));
 
         // Act
-        when(puntoVentaService.getAllPuntosVenta()).thenReturn(List.of(
+        when(pointSaleService.getAllPuntosVenta()).thenReturn(List.of(
                 new PointSale(idA, "A"),
                 new PointSale(idB, "B")
         ));

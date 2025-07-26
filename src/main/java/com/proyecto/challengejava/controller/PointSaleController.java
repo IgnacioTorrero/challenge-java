@@ -3,8 +3,8 @@ package com.proyecto.challengejava.controller;
 import com.proyecto.challengejava.dto.PointSaleRequest;
 import com.proyecto.challengejava.dto.PointSaleResponse;
 import com.proyecto.challengejava.hateoas.PointSaleModelAssembler;
-import com.proyecto.challengejava.service.PuntoVentaManager;
-import com.proyecto.challengejava.service.PuntoVentaService;
+import com.proyecto.challengejava.service.PointSaleManager;
+import com.proyecto.challengejava.service.PointSaleService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
@@ -21,8 +21,8 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/puntos-venta")
 public class PointSaleController {
 
-    private final PuntoVentaService service;
-    private final PuntoVentaManager manager;
+    private final PointSaleService service;
+    private final PointSaleManager manager;
     private final PointSaleModelAssembler assembler;
 
     /**
@@ -33,7 +33,7 @@ public class PointSaleController {
      * @param assembler HATEOAS assembler for sales point responses.
      */
     @Autowired
-    public PointSaleController(PuntoVentaService service, PuntoVentaManager manager,
+    public PointSaleController(PointSaleService service, PointSaleManager manager,
                                PointSaleModelAssembler assembler) {
         this.service = service;
         this.manager = manager;

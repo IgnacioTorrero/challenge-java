@@ -20,7 +20,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 /**
- * Unit test for {@link AcreditacionServiceImpl}.
+ * Unit test for {@link AccreditationServiceImpl}.
  * Validates logic related to accreditation creation and retrieval.
  */
 public class AccreditationServiceImplTest {
@@ -29,10 +29,10 @@ public class AccreditationServiceImplTest {
     private AccreditationRepository accreditationRepository;
 
     @Mock
-    private PuntoVentaServiceImpl puntoVentaServiceImpl;
+    private PointSaleServiceImpl puntoVentaServiceImpl;
 
     @InjectMocks
-    private AcreditacionServiceImpl acreditacionServiceImpl;
+    private AccreditationServiceImpl acreditacionServiceImpl;
 
     @BeforeEach
     void setUp() {

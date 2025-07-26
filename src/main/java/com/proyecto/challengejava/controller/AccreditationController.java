@@ -5,7 +5,7 @@ import com.proyecto.challengejava.dto.AccreditationResponse;
 import com.proyecto.challengejava.entity.Accreditation;
 import com.proyecto.challengejava.hateoas.AccreditationModelAssembler;
 import com.proyecto.challengejava.mapper.AccreditationMapper;
-import com.proyecto.challengejava.service.AcreditacionService;
+import com.proyecto.challengejava.service.AccreditationService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
@@ -25,7 +25,7 @@ import static com.proyecto.challengejava.mapper.AccreditationMapper.mapToRespons
 @RequestMapping("/api/acreditaciones")
 public class AccreditationController {
 
-    private final AcreditacionService service;
+    private final AccreditationService service;
     private final AccreditationModelAssembler acreditacionAssembler;
 
     /**
@@ -35,7 +35,7 @@ public class AccreditationController {
      * @param acreditacionAssembler Assembler to convert responses into HATEOAS models.
      */
     @Autowired
-    public AccreditationController(AcreditacionService service, AccreditationModelAssembler acreditacionAssembler) {
+    public AccreditationController(AccreditationService service, AccreditationModelAssembler acreditacionAssembler) {
         this.service = service;
         this.acreditacionAssembler = acreditacionAssembler;
     }

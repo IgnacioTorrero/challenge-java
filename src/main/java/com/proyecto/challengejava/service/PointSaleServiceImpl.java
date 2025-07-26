@@ -19,7 +19,7 @@ import static com.proyecto.challengejava.constants.Constants.*;
  * Manages CRUD operations and an in-memory cache.
  */
 @Service
-public class PuntoVentaServiceImpl implements PuntoVentaService {
+public class PointSaleServiceImpl implements PointSaleService {
 
     private final Map<Long, String> cache = new ConcurrentHashMap<>();
     private final PointSaleRepository pointSaleRepository;
@@ -32,7 +32,7 @@ public class PuntoVentaServiceImpl implements PuntoVentaService {
      *
      * @param pointSaleRepository JPA repository for persisting sales points.
      */
-    public PuntoVentaServiceImpl(PointSaleRepository pointSaleRepository) {
+    public PointSaleServiceImpl(PointSaleRepository pointSaleRepository) {
         this.pointSaleRepository = pointSaleRepository;
     }
 

@@ -19,20 +19,20 @@ import static com.proyecto.challengejava.util.CostoPuntosUtil.*;
  * using an in-memory cache and database persistence.
  */
 @Service
-public class CostoPuntosServiceImpl implements CostoPuntosService {
+public class CostPointsServiceImpl implements CostPointsService {
 
     private final ConcurrentHashMap<String, Double> cache = new ConcurrentHashMap<>();
-    private final PuntoVentaService puntoVentaService;
+    private final PointSaleService pointSaleService;
     private final CostRepository costRepository;
 
     /**
      * Constructor that injects the required services.
      *
-     * @param puntoVentaService Service for managing sales points.
+     * @param pointSaleService Service for managing sales points.
      * @param costRepository   Repository for persisting costs.
      */
-    public CostoPuntosServiceImpl(PuntoVentaService puntoVentaService, CostRepository costRepository) {
-        this.puntoVentaService = puntoVentaService;
+    public CostPointsServiceImpl(PointSaleService pointSaleService, CostRepository costRepository) {
+        this.pointSaleService = pointSaleService;
         this.costRepository = costRepository;
     }
 
@@ -43,7 +43,7 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
     @PostConstruct
     public void init() {
         // Wait for sales points to be preloaded
-        List<PointSale> puntos = puntoVentaService.getAllPuntosVenta();
+        List<PointSale> puntos = pointSaleService.getAllPuntosVenta();
         // Initial cost preloading could be done here if needed
         cargarCacheDesdeDB();
     }
@@ -74,7 +74,7 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
         if (costo < 0) {
             throw new IllegalArgumentException(COSTO_PUNTOS_LESS_THAN_ZERO);
         }
-        List<PointSale> puntos = puntoVentaService.getAllPuntosVenta();
+        List<PointSale> puntos = pointSaleService.getAllPuntosVenta();
         if (!puntoVentaExists(puntos, idA) || !puntoVentaExists(puntos, idB)) {
             throw new IllegalArgumentException(PUNTO_VENTA_NOT_FOUND);
         }
@@ -93,7 +93,7 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
      * @throws PointSaleNotFoundException if any of the points do not exist.
      */
     public void removeCostoPuntos(Long idA, Long idB) {
-        List<PointSale> puntos = puntoVentaService.getAllPuntosVenta();
+        List<PointSale> puntos = pointSaleService.getAllPuntosVenta();
         if (!puntoVentaExists(puntos, idA) || !puntoVentaExists(puntos, idB)) {
             throw new PointSaleNotFoundException(PUNTO_VENTA_NOT_FOUND);
         }
@@ -110,7 +110,7 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
      * @throws IllegalArgumentException if the point does not exist.
      */
     public List<CostPointsResponse> getCostosDesdePunto(Long idA) {
-        List<PointSale> puntos = puntoVentaService.getAllPuntosVenta();
+        List<PointSale> puntos = pointSaleService.getAllPuntosVenta();
         if (!puntoVentaExists(puntos, idA)) {
             throw new IllegalArgumentException(PUNTO_VENTA_NOT_FOUND);
         }
@@ -163,12 +163,12 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
         Map<Long, Long> predecesores = new HashMap<>();
         PriorityQueue<Map.Entry<Long, Double>> pq = new PriorityQueue<>(Comparator.comparing(Map.Entry::getValue));
 
-        List<PointSale> puntos = puntoVentaService.getAllPuntosVenta();
+        List<PointSale> puntos = pointSaleService.getAllPuntosVenta();
         if (!puntoVentaExists(puntos, puntoA) || !puntoVentaExists(puntos, puntoB)) {
             throw new IllegalArgumentException(PUNTO_VENTA_NOT_FOUND);
         }
 
-        puntoVentaService.getAllPuntosVenta().forEach(p -> distancias.put(p.getId(), Double.MAX_VALUE));
+        pointSaleService.getAllPuntosVenta().forEach(p -> distancias.put(p.getId(), Double.MAX_VALUE));
         distancias.put(puntoA, 0.0);
 
         pq.add(new AbstractMap.SimpleEntry<>(puntoA, 0.0));

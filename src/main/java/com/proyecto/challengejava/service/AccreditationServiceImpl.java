@@ -15,20 +15,20 @@ import static com.proyecto.challengejava.constants.Constants.*;
  * Responsible for registering new accreditations and querying existing ones.
  */
 @Service
-public class AcreditacionServiceImpl implements AcreditacionService {
+public class AccreditationServiceImpl implements AccreditationService {
 
     private final AccreditationRepository repository;
-    private final PuntoVentaService puntoVentaService;
+    private final PointSaleService pointSaleService;
 
     /**
      * Constructor that injects the required repositories and services.
      *
      * @param repository        Repository for accreditations.
-     * @param puntoVentaService Service for managing sales points.
+     * @param pointSaleService Service for managing sales points.
      */
-    public AcreditacionServiceImpl(AccreditationRepository repository, PuntoVentaService puntoVentaService) {
+    public AccreditationServiceImpl(AccreditationRepository repository, PointSaleService pointSaleService) {
         this.repository = repository;
-        this.puntoVentaService = puntoVentaService;
+        this.pointSaleService = pointSaleService;
     }
 
     /**
@@ -44,7 +44,7 @@ public class AcreditacionServiceImpl implements AcreditacionService {
             throw new PointSaleNotFoundException(PUNTO_VENTA_NOT_FOUND + ": " + idPuntoVenta);
         }
 
-        String nombrePuntoVenta = puntoVentaService.getAllPuntosVenta().stream()
+        String nombrePuntoVenta = pointSaleService.getAllPuntosVenta().stream()
                 .filter(p -> p.getId().equals(idPuntoVenta))
                 .map(PointSale::getNombre)
                 .findFirst()
@@ -66,7 +66,7 @@ public class AcreditacionServiceImpl implements AcreditacionService {
      * @return {@code true} if it exists, {@code false} otherwise.
      */
     private boolean puntoVentaExists(Long id) {
-        return puntoVentaService.getAllPuntosVenta().stream().anyMatch(p -> p.getId().equals(id));
+        return pointSaleService.getAllPuntosVenta().stream().anyMatch(p -> p.getId().equals(id));
     }
 
     /**

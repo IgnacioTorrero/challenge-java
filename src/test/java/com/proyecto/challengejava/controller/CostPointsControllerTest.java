@@ -5,7 +5,7 @@ import com.proyecto.challengejava.dto.CostPointsResponse;
 import com.proyecto.challengejava.dto.MinCostRouteResponse;
 import com.proyecto.challengejava.hateoas.CostPointsModelAssembler;
 import com.proyecto.challengejava.hateoas.MinCostRouteModelAssembler;
-import com.proyecto.challengejava.service.CostoPuntosServiceImpl;
+import com.proyecto.challengejava.service.CostPointsServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -30,7 +30,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class CostPointsControllerTest {
 
     @Mock
-    private CostoPuntosServiceImpl service;
+    private CostPointsServiceImpl service;
 
     @Mock
     private CostPointsModelAssembler assembler;
