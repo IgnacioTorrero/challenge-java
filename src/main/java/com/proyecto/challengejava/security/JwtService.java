@@ -10,10 +10,10 @@ import java.util.Date;
 @Service
 public class JwtService {
 
-    // Clave secreta para firmar el token (debe tener al menos 256 bits si usás HS256)
-    private static final String SECRET_KEY = "clave-supersecreta-para-jwt-de-al-menos-256-bits";
+    // Secret key to sign the token (must be at least 256 bits if using HS256)
+    private static final String SECRET_KEY = "super-secret-key-for-jwt-at-least-256-bits";
 
-    // Duración del token: 10 horas
+    // Token duration: 10 hours
     private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 10;
 
     private Key getSignKey() {

@@ -1,24 +1,24 @@
 package com.proyecto.challengejava.dto;
 
 public class RegisterRequest {
-    private String nombre;
+    private String name;
     private String email;
     private String password;
 
     public RegisterRequest() {}
 
-    public RegisterRequest(String nombre, String email, String password) {
-        this.nombre = nombre;
+    public RegisterRequest(String name, String email, String password) {
+        this.name = name;
         this.email = email;
         this.password = password;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getName() {
+        return name;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {

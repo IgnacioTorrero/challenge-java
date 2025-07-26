@@ -1,7 +1,7 @@
 package com.proyecto.challengejava.config;
 
 import com.proyecto.challengejava.security.JwtAuthFilter;
-import com.proyecto.challengejava.security.UsuarioDetailsService;
+import com.proyecto.challengejava.security.UsernameDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,7 +27,7 @@ public class SecurityConfig {
     private JwtAuthFilter jwtAuthFilter;
 
     @Autowired
-    private UsuarioDetailsService usuarioDetailsService;
+    private UsernameDetailsService usernameDetailsService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -44,7 +44,7 @@ public class SecurityConfig {
                                 "/webjars/**").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .userDetailsService(usuarioDetailsService)
+                .userDetailsService(usernameDetailsService)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }

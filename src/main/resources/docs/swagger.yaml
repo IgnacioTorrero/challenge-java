@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: API Challenge Java
-  description: API para autenticación, puntos de venta, costos entre puntos y acreditaciones.
+  description: API for authentication, sales points, costs between points, and accreditations.
   version: 1.0.0
 servers:
   - url: http://localhost:8080/api
@@ -9,7 +9,7 @@ servers:
 paths:
   /auth/register:
     post:
-      summary: Registrar nuevo usuario
+      summary: Register new user
       requestBody:
         required: true
         content:
@@ -18,7 +18,7 @@ paths:
               $ref: '#/components/schemas/RegisterRequest'
       responses:
         '200':
-          description: Usuario registrado correctamente
+          description: User successfully registered
           content:
             application/json:
               schema:
@@ -26,7 +26,7 @@ paths:
 
   /auth/login:
     post:
-      summary: Iniciar sesión
+      summary: Log in
       requestBody:
         required: true
         content:
@@ -35,29 +35,29 @@ paths:
               $ref: '#/components/schemas/AuthRequest'
       responses:
         '200':
-          description: Login exitoso
+          description: Successful login
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthResponse'
 
-  /puntos-venta:
+  /sale-points:
     get:
-      summary: Listar puntos de venta
+      summary: List sales points
       security:
         - bearerAuth: []
       responses:
         '200':
-          description: Lista de puntos de venta
+          description: List of sales points
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/PuntoVentaResponse'
+                  $ref: '#/components/schemas/PointSaleResponse'
 
     post:
-      summary: Agregar nuevo punto de venta
+      summary: Add new sales point
       security:
         - bearerAuth: []
       requestBody:
@@ -65,14 +65,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PuntoVentaRequest'
+              $ref: '#/components/schemas/PointSaleRequest'
       responses:
         '200':
-          description: Punto de venta agregado
+          description: Sales point successfully added
 
-  /puntos-venta/{id}:
+  /sale-points/{id}:
     put:
-      summary: Actualizar punto de venta
+      summary: Update sales point
       security:
         - bearerAuth: []
       parameters:
@@ -86,13 +86,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PuntoVentaRequest'
+              $ref: '#/components/schemas/PointSaleRequest'
       responses:
         '200':
-          description: Punto de venta actualizado
+          description: Sales point successfully updated
 
     delete:
-      summary: Eliminar punto de venta
+      summary: Delete sales point
       security:
         - bearerAuth: []
       parameters:
@@ -103,16 +103,16 @@ paths:
             type: integer
       responses:
         '200':
-          description: Punto de venta eliminado
+          description: Sales point successfully deleted
 
-  /costos:
+  /costs:
     post:
-      summary: Agregar costo entre puntos
+      summary: Add cost between sales points
       security:
         - bearerAuth: []
       parameters:
         - in: query
-          name: costo
+          name: cost
           required: true
           schema:
             type: number
@@ -121,13 +121,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CostoPuntosRequest'
+              $ref: '#/components/schemas/CostPointsRequest'
       responses:
         '200':
-          description: Costo agregado
+          description: Cost successfully added
 
     delete:
-      summary: Eliminar costo entre puntos
+      summary: Delete cost between sales points
       security:
         - bearerAuth: []
       requestBody:
@@ -135,14 +135,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CostoPuntosRequest'
+              $ref: '#/components/schemas/CostPointsRequest'
       responses:
         '200':
-          description: Costo eliminado
+          description: Cost successfully deleted
 
-  /costos/{idA}:
+  /costs/{idA}:
     get:
-      summary: Listar costos desde punto de venta
+      summary: List costs from sales point
       security:
         - bearerAuth: []
       parameters:
@@ -153,55 +153,55 @@ paths:
             type: integer
       responses:
         '200':
-          description: Lista de costos
+          description: List of costs
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/CostoPuntosResponse'
+                  $ref: '#/components/schemas/CostPointsResponse'
 
-  /costos/minimo:
+  /costs/min:
     post:
-      summary: Calcular ruta de costo mínimo
+      summary: Calculate minimum cost route
       security:
         - bearerAuth: []
       description: |
-        ⚠️ IMPORTANTE:
-        Este endpoint técnicamente es un GET, porque no modifica datos.
-        Pero se define como POST para que Swagger UI pueda enviarlo correctamente,
-        ya que no permite body en métodos GET (según restricciones del protocolo HTTP).
+        ⚠️ IMPORTANT:
+        Technically, this endpoint should be a GET because it doesn't modify data.
+        However, it's defined as POST so Swagger UI can handle it properly,
+        since GET methods are not allowed to have a request body (according to HTTP protocol restrictions).
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CostoPuntosRequest'
+              $ref: '#/components/schemas/CostPointsRequest'
       responses:
         '200':
-          description: Ruta y costo mínimo
+          description: Route and minimum cost
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RutaCostoMinimoResponse'
+                $ref: '#/components/schemas/MinCostRouteResponse'
 
-  /acreditaciones:
+  /accreditations:
     get:
-      summary: Obtener todas las acreditaciones
+      summary: Get all accreditations
       security:
         - bearerAuth: []
       responses:
         '200':
-          description: Lista de acreditaciones
+          description: List of accreditations
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/AcreditacionResponse'
+                  $ref: '#/components/schemas/AccreditationsResponse'
 
     post:
-      summary: Recibir nueva acreditación
+      summary: Receive new accreditation
       security:
         - bearerAuth: []
       requestBody:
@@ -209,14 +209,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AcreditacionRequest'
+              $ref: '#/components/schemas/AccreditationsRequest'
       responses:
         '200':
-          description: Acreditación registrada
+          description: Accreditation successfully registered
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AcreditacionResponse'
+                $ref: '#/components/schemas/AccreditationsResponse'
 
 components:
   securitySchemes:
@@ -243,28 +243,28 @@ components:
     RegisterRequest:
       type: object
       properties:
-        nombre:
+        name:
           type: string
         email:
           type: string
         password:
           type: string
 
-    PuntoVentaRequest:
+    PointSaleRequest:
       type: object
       properties:
-        nombre:
+        name:
           type: string
 
-    PuntoVentaResponse:
+    PointSaleResponse:
       type: object
       properties:
         id:
           type: integer
-        nombre:
+        name:
           type: string
 
-    CostoPuntosRequest:
+    CostPointsRequest:
       type: object
       properties:
         idA:
@@ -272,47 +272,47 @@ components:
         idB:
           type: integer
 
-    CostoPuntosResponse:
+    CostPointsResponse:
       type: object
       properties:
         idA:
           type: integer
         idB:
           type: integer
-        costo:
+        cost:
           type: number
-        nombrePuntoVenta:
+        pointSaleName:
           type: string
 
-    RutaCostoMinimoResponse:
+    MinCostRouteResponse:
       type: object
       properties:
         ruta:
           type: array
           items:
             type: integer
-        costoTotal:
+        totalCost:
           type: number
 
-    AcreditacionRequest:
+    AccreditationsRequest:
       type: object
       properties:
-        importe:
+        amount:
           type: number
-        idPuntoVenta:
+        pointSaleId:
           type: integer
 
-    AcreditacionResponse:
+    AccreditationsResponse:
       type: object
       properties:
         id:
           type: integer
-        importe:
+        amount:
           type: number
-        idPuntoVenta:
+        pointSaleId:
           type: integer
-        nombrePuntoVenta:
+        pointSaleName:
           type: string
-        fechaRecepcion:
+        dateReception:
           type: string
           format: date
