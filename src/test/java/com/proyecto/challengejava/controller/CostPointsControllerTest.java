@@ -62,7 +62,7 @@ public class CostPointsControllerTest {
         ResponseEntity<Void> response = controller.addCostPoints(request, IMPORTE);
 
         assertEquals(SUCCESS_RESPONSE, response.getStatusCodeValue());
-        verify(service, times(1)).addCostoPuntos(ID_PUNTO_VENTA5, ID_PUNTO_VENTA2, IMPORTE);
+        verify(service, times(1)).addCostPoints(ID_PUNTO_VENTA5, ID_PUNTO_VENTA2, IMPORTE);
     }
 
     /**
@@ -74,7 +74,7 @@ public class CostPointsControllerTest {
         ResponseEntity<Void> response = controller.removeCostPoints(request);
 
         assertEquals(200, response.getStatusCodeValue());
-        verify(service, times(1)).removeCostoPuntos(ID_PUNTO_VENTA5, ID_PUNTO_VENTA2);
+        verify(service, times(1)).removeCostPoints(ID_PUNTO_VENTA5, ID_PUNTO_VENTA2);
     }
 
     /**
@@ -89,7 +89,7 @@ public class CostPointsControllerTest {
                 new CostPointsResponse(1L, 3L, 150.0, "GBA_2")
         );
 
-        when(service.getCostosDesdePunto(ID_PUNTO_VENTA)).thenReturn(costos);
+        when(service.getCostsFromPoint(ID_PUNTO_VENTA)).thenReturn(costos);
         when(assembler.toModel(any())).thenAnswer(invocation -> invocation.getArgument(0));
 
         // Act
@@ -112,7 +112,7 @@ public class CostPointsControllerTest {
             ));
         }
 
-        verify(service, times(1)).getCostosDesdePunto(ID_PUNTO_VENTA);
+        verify(service, times(1)).getCostsFromPoint(ID_PUNTO_VENTA);
     }
 
     /**
@@ -131,8 +131,8 @@ public class CostPointsControllerTest {
         responseConLinks.add(linkTo(methodOn(CostPointsController.class).getCostsFromPoint(3L)).withRel("ver-costos-desde-3"));
         responseConLinks.add(linkTo(methodOn(CostPointsController.class).calculateMinCost(new CostPointsRequest(1L, 3L))).withRel("recalcular-ruta"));
 
-        when(service.calcularRutaMinima(anyLong(), anyLong())).thenReturn(ruta);
-        when(service.calcularCostoTotalRuta(anyList())).thenReturn(costoTotal);
+        when(service.calculateMinPath(anyLong(), anyLong())).thenReturn(ruta);
+        when(service.calculateTotalRouteCost(anyList())).thenReturn(costoTotal);
         when(rutaAssembler.toModel(any())).thenReturn(responseConLinks);
 
         // Act
@@ -150,8 +150,8 @@ public class CostPointsControllerTest {
         assertTrue(response.getBody().getLinks().hasLink("ver-costos-desde-3"));
         assertTrue(response.getBody().getLinks().hasLink("recalcular-ruta"));
 
-        verify(service, times(1)).calcularRutaMinima(anyLong(), anyLong());
-        verify(service, times(1)).calcularCostoTotalRuta(anyList());
+        verify(service, times(1)).calculateMinPath(anyLong(), anyLong());
+        verify(service, times(1)).calculateTotalRouteCost(anyList());
         verify(rutaAssembler, times(1)).toModel(any());
     }
 

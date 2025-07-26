@@ -66,7 +66,7 @@ public class PointSaleControllerTest {
     void getAllPointsSaleResponses() {
         // Arrange
         List<PointSale> puntosVenta = Arrays.asList(punto1, punto2);
-        when(service.getAllPuntosVenta()).thenReturn(puntosVenta);
+        when(service.getAllPointSale()).thenReturn(puntosVenta);
         when(assembler.toModel(any(PointSaleResponse.class)))
                 .thenAnswer(invocation -> invocation.getArgument(0));
 
@@ -88,7 +88,7 @@ public class PointSaleControllerTest {
                 ID_PUNTO_VENTA2.equals(p.getId()) && PUNTO_VENTA_2.equals(p.getName())
         ));
 
-        verify(service, times(1)).getAllPuntosVenta();
+        verify(service, times(1)).getAllPointSale();
     }
 
     /**
@@ -100,7 +100,7 @@ public class PointSaleControllerTest {
         ResponseEntity<Void> response = controller.addPointSale(request);
         assertEquals(SUCCESS_RESPONSE, response.getStatusCodeValue());
 
-        verify(service, times(1)).addPuntoVenta(PUNTO_VENTA_3);
+        verify(service, times(1)).addPointSale(PUNTO_VENTA_3);
     }
 
     /**
@@ -112,7 +112,7 @@ public class PointSaleControllerTest {
         ResponseEntity<Void> response = controller.updatePointSale(ID_PUNTO_VENTA5, request);
 
         assertEquals(SUCCESS_RESPONSE, response.getStatusCodeValue());
-        verify(service, times(1)).updatePuntoVenta(ID_PUNTO_VENTA5, PUNTO_VENTA_3);
+        verify(service, times(1)).updatePointSale(ID_PUNTO_VENTA5, PUNTO_VENTA_3);
     }
 
     /**
@@ -124,6 +124,6 @@ public class PointSaleControllerTest {
         ResponseEntity<Void> response = controller.deletePointSale(ID_PUNTO_VENTA4);
 
         assertEquals(SUCCESS_RESPONSE, response.getStatusCodeValue());
-        verify(pointSaleManager, times(1)).eliminarPuntoVentaConCostos(ID_PUNTO_VENTA4);
+        verify(pointSaleManager, times(1)).deletePointSaleWithCosts(ID_PUNTO_VENTA4);
     }
 }

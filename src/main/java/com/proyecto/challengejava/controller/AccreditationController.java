@@ -48,7 +48,7 @@ public class AccreditationController {
      */
     @PostMapping
     public ResponseEntity<AccreditationResponse> receiveAccreditation(@RequestBody @Valid AccreditationRequest request) {
-        Accreditation accreditation = service.recibirAcreditacion(request.getAmount(), request.getIdPointSale());
+        Accreditation accreditation = service.receiveAccreditation(request.getAmount(), request.getIdPointSale());
         AccreditationResponse response = mapToResponse(accreditation);
         return ResponseEntity.ok(accreditationAssembler.toModel(response));
     }
@@ -61,7 +61,7 @@ public class AccreditationController {
     @GetMapping
     public ResponseEntity<CollectionModel<AccreditationResponse>> getAccreditations() {
         List<AccreditationResponse> responses = StreamSupport
-                .stream(service.obtenerAcreditaciones().spliterator(), false)
+                .stream(service.getAccreditations().spliterator(), false)
                 .map(AccreditationMapper::mapToResponse)
                 .map(accreditationAssembler::toModel)
                 .collect(Collectors.toList());

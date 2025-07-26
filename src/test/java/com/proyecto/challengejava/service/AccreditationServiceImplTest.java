@@ -44,12 +44,12 @@ public class AccreditationServiceImplTest {
      * when the sales point exists.
      */
     @Test
-    void recibirAcreditacion_SavesAndReturnsAcreditacion() {
+    void receiveAccreditation() {
         PointSale pointSale = new PointSale();
         pointSale.setId(ID_PUNTO_VENTA);
         pointSale.setName(PUNTO_VENTA_1);
 
-        when(puntoVentaServiceImpl.getAllPuntosVenta()).thenReturn(List.of(pointSale));
+        when(puntoVentaServiceImpl.getAllPointSale()).thenReturn(List.of(pointSale));
 
         Accreditation accreditation = new Accreditation();
         accreditation.setId(ID_PUNTO_VENTA);
@@ -59,7 +59,7 @@ public class AccreditationServiceImplTest {
         accreditation.setDateReception(LocalDate.now());
 
         when(accreditationRepository.save(any(Accreditation.class))).thenReturn(accreditation);
-        Accreditation result = acreditacionServiceImpl.recibirAcreditacion(IMPORTE, ID_PUNTO_VENTA);
+        Accreditation result = acreditacionServiceImpl.receiveAccreditation(IMPORTE, ID_PUNTO_VENTA);
 
         assertNotNull(result);
         assertEquals(IMPORTE, result.getAmount());
@@ -74,11 +74,11 @@ public class AccreditationServiceImplTest {
      * when the sales point does not exist.
      */
     @Test
-    void recibirAcreditacion_ThrowsIllegalArgumentException() {
-        when(puntoVentaServiceImpl.getAllPuntosVenta()).thenReturn(List.of());
+    void receiveAccreditation_ThrowsIllegalArgumentException() {
+        when(puntoVentaServiceImpl.getAllPointSale()).thenReturn(List.of());
 
         Exception exception = assertThrows(PointSaleNotFoundException.class,
-                () -> acreditacionServiceImpl.recibirAcreditacion(IMPORTE, INVALID_ID));
+                () -> acreditacionServiceImpl.receiveAccreditation(IMPORTE, INVALID_ID));
         assertEquals(PUNTO_VENTA_NOT_FOUND + ": 99", exception.getMessage());
         verify(accreditationRepository, never()).save(any(Accreditation.class));
     }
@@ -88,7 +88,7 @@ public class AccreditationServiceImplTest {
      * from the repository.
      */
     @Test
-    void obtenerAcreditaciones_ReturnsAllAcreditaciones() {
+    void getAccreditations() {
         Accreditation accreditation1 = new Accreditation();
         accreditation1.setId(ID_PUNTO_VENTA);
         accreditation1.setAmount(IMPORTE);
@@ -98,7 +98,7 @@ public class AccreditationServiceImplTest {
         accreditation2.setAmount(IMPORTE2);
 
         when(accreditationRepository.findAll()).thenReturn(Arrays.asList(accreditation1, accreditation2));
-        Iterable<Accreditation> result = acreditacionServiceImpl.obtenerAcreditaciones();
+        Iterable<Accreditation> result = acreditacionServiceImpl.getAccreditations();
 
         assertNotNull(result);
         assertTrue(((Iterable<?>) result).iterator().hasNext());

@@ -19,8 +19,8 @@ public class PointSaleManager {
      *
      * @param id ID of the sales point to be deleted.
      */
-    public void eliminarPuntoVentaConCostos(Long id) {
-        costPointsService.eliminarCostosRelacionadosA(id);
-        pointSaleService.deletePuntoVenta(id);
+    public void deletePointSaleWithCosts(Long id) {
+        costPointsService.deleteRelatedCostsTo(id);
+        pointSaleService.deletePointSale(id);
     }
 }

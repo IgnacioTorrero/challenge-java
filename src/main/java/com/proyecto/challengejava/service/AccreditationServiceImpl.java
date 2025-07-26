@@ -34,25 +34,25 @@ public class AccreditationServiceImpl implements AccreditationService {
     /**
      * Registers a new accreditation for a specific sales point.
      *
-     * @param importe        Amount received.
-     * @param idPuntoVenta   ID of the sales point receiving the accreditation.
+     * @param amount        Amount received.
+     * @param idPointSale   ID of the sales point receiving the accreditation.
      * @return {@link Accreditation} object persisted in the database.
      * @throws PointSaleNotFoundException if the sales point does not exist.
      */
-    public Accreditation recibirAcreditacion(Double importe, Long idPuntoVenta) {
-        if (!puntoVentaExists(idPuntoVenta)) {
-            throw new PointSaleNotFoundException(PUNTO_VENTA_NOT_FOUND + ": " + idPuntoVenta);
+    public Accreditation receiveAccreditation(Double amount, Long idPointSale) {
+        if (!pointSaleExists(idPointSale)) {
+            throw new PointSaleNotFoundException(PUNTO_VENTA_NOT_FOUND + ": " + idPointSale);
         }
 
-        String nombrePuntoVenta = pointSaleService.getAllPuntosVenta().stream()
-                .filter(p -> p.getId().equals(idPuntoVenta))
+        String nombrePuntoVenta = pointSaleService.getAllPointSale().stream()
+                .filter(p -> p.getId().equals(idPointSale))
                 .map(PointSale::getName)
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException(PUNTO_VENTA_NOT_FOUND));
 
         Accreditation accreditation = new Accreditation();
-        accreditation.setAmount(importe);
-        accreditation.setIdPointSale(idPuntoVenta);
+        accreditation.setAmount(amount);
+        accreditation.setIdPointSale(idPointSale);
         accreditation.setPointSaleName(nombrePuntoVenta);
         accreditation.setDateReception(LocalDate.now());
 
@@ -65,8 +65,8 @@ public class AccreditationServiceImpl implements AccreditationService {
      * @param id ID of the sales point to verify.
      * @return {@code true} if it exists, {@code false} otherwise.
      */
-    private boolean puntoVentaExists(Long id) {
-        return pointSaleService.getAllPuntosVenta().stream().anyMatch(p -> p.getId().equals(id));
+    private boolean pointSaleExists(Long id) {
+        return pointSaleService.getAllPointSale().stream().anyMatch(p -> p.getId().equals(id));
     }
 
     /**
@@ -74,7 +74,7 @@ public class AccreditationServiceImpl implements AccreditationService {
      *
      * @return Iterable of {@link Accreditation} objects.
      */
-    public Iterable<Accreditation> obtenerAcreditaciones() {
+    public Iterable<Accreditation> getAccreditations() {
         return repository.findAll();
     }
 }

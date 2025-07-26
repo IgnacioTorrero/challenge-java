@@ -4,8 +4,8 @@ import com.proyecto.challengejava.entity.PointSale;
 import java.util.List;
 
 public interface PointSaleService {
-    List<PointSale> getAllPuntosVenta();
-    void addPuntoVenta(String nombre);
-    void updatePuntoVenta(Long id, String nombre);
-    void deletePuntoVenta(Long id);
+    List<PointSale> getAllPointSale();
+    void addPointSale(String name);
+    void updatePointSale(Long id, String name);
+    void deletePointSale(Long id);
 }

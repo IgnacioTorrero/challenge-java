@@ -71,7 +71,7 @@ public class AccreditationControllerTest {
                 accreditation.getDateReception()
         );
 
-        when(acreditacionServiceImpl.recibirAcreditacion(IMPORTE, ID_PUNTO_VENTA)).thenReturn(accreditation);
+        when(acreditacionServiceImpl.receiveAccreditation(IMPORTE, ID_PUNTO_VENTA)).thenReturn(accreditation);
         when(acreditacionAssembler.toModel(responseSinLinks)).thenReturn(responseSinLinks);
 
         // Act: call the controller
@@ -111,7 +111,7 @@ public class AccreditationControllerTest {
                 accreditation2.getDateReception()
         );
 
-        when(acreditacionServiceImpl.obtenerAcreditaciones()).thenReturn(acreditaciones);
+        when(acreditacionServiceImpl.getAccreditations()).thenReturn(acreditaciones);
         when(acreditacionAssembler.toModel(response1)).thenReturn(response1);
         when(acreditacionAssembler.toModel(response2)).thenReturn(response2);
 

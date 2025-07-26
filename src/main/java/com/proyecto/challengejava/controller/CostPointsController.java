@@ -54,7 +54,7 @@ public class CostPointsController {
     public ResponseEntity<Void> addCostPoints(@RequestBody @Valid CostPointsRequest request,
                                               @RequestParam Double cost) {
         validateParameters(request.getIdA(), request.getIdB());
-        service.addCostoPuntos(request.getIdA(), request.getIdB(), cost);
+        service.addCostPoints(request.getIdA(), request.getIdB(), cost);
         return ResponseEntity.ok().build();
     }
 
@@ -67,7 +67,7 @@ public class CostPointsController {
     @DeleteMapping
     public ResponseEntity<Void> removeCostPoints(@RequestBody @Valid CostPointsRequest request) {
         validateParameters(request.getIdA(), request.getIdB());
-        service.removeCostoPuntos(request.getIdA(), request.getIdB());
+        service.removeCostPoints(request.getIdA(), request.getIdB());
         return ResponseEntity.ok().build();
     }
 
@@ -79,7 +79,7 @@ public class CostPointsController {
      */
     @GetMapping("/{idA}")
     public ResponseEntity<CollectionModel<CostPointsResponse>> getCostsFromPoint(@PathVariable Long idA) {
-        List<CostPointsResponse> responseList = service.getCostosDesdePunto(idA)
+        List<CostPointsResponse> responseList = service.getCostsFromPoint(idA)
                 .stream()
                 .map(costPointsModelAssembler::toModel)
                 .collect(Collectors.toList());
@@ -98,8 +98,8 @@ public class CostPointsController {
     public ResponseEntity<MinCostRouteResponse> calculateMinCost(@RequestBody @Valid CostPointsRequest request) {
         validateParameters(request.getIdA(), request.getIdB());
 
-        List<Long> rute = service.calcularRutaMinima(request.getIdA(), request.getIdB());
-        Double totalCost = service.calcularCostoTotalRuta(rute);
+        List<Long> rute = service.calculateMinPath(request.getIdA(), request.getIdB());
+        Double totalCost = service.calculateTotalRouteCost(rute);
 
         MinCostRouteResponse response = new MinCostRouteResponse(rute, totalCost);
         return ResponseEntity.ok(minCostRouteModelAssembler.toModel(response));

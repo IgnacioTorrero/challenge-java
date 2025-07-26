@@ -43,22 +43,22 @@ public class CostPointsServiceImpl implements CostPointsService {
     @PostConstruct
     public void init() {
         // Wait for sales points to be preloaded
-        List<PointSale> puntos = pointSaleService.getAllPuntosVenta();
+        List<PointSale> puntos = pointSaleService.getAllPointSale();
         // Initial cost preloading could be done here if needed
-        cargarCacheDesdeDB();
+        loadCacheFromDB();
     }
 
     /**
      * Loads all costs from the database and stores them in the cache.
      */
-    public void cargarCacheDesdeDB() {
-        costRepository.findAll().forEach(costo -> {
-            Long idA = costo.getIdA();
-            Long idB = costo.getIdB();
-            Double importe = costo.getCost();
+    public void loadCacheFromDB() {
+        costRepository.findAll().forEach(cost -> {
+            Long idA = cost.getIdA();
+            Long idB = cost.getIdB();
+            Double amount = cost.getCost();
             String key = generateKey(idA, idB);
-            cache.putIfAbsent(key, importe);
-            System.out.println("✅ Cache loaded with key: " + key + " => " + importe);
+            cache.putIfAbsent(key, amount);
+            System.out.println("✅ Cache loaded with key: " + key + " => " + amount);
         });
     }
 
@@ -67,22 +67,22 @@ public class CostPointsServiceImpl implements CostPointsService {
      *
      * @param idA   ID of the first point.
      * @param idB   ID of the second point.
-     * @param costo Cost value between the two points.
+     * @param cost Cost value between the two points.
      * @throws IllegalArgumentException if the cost is negative or any point doesn't exist.
      */
-    public void addCostoPuntos(Long idA, Long idB, Double costo) {
-        if (costo < 0) {
+    public void addCostPoints(Long idA, Long idB, Double cost) {
+        if (cost < 0) {
             throw new IllegalArgumentException(COSTO_PUNTOS_LESS_THAN_ZERO);
         }
-        List<PointSale> puntos = pointSaleService.getAllPuntosVenta();
+        List<PointSale> puntos = pointSaleService.getAllPointSale();
         if (!puntoVentaExists(puntos, idA) || !puntoVentaExists(puntos, idB)) {
             throw new IllegalArgumentException(PUNTO_VENTA_NOT_FOUND);
         }
 
         String key = generateKey(idA, idB);
-        cache.put(key, costo);
+        cache.put(key, cost);
 
-        saveCostoToDB(idA, idB, costo);
+        saveCostToDB(idA, idB, cost);
     }
 
     /**
@@ -92,9 +92,9 @@ public class CostPointsServiceImpl implements CostPointsService {
      * @param idB ID of the second point.
      * @throws PointSaleNotFoundException if any of the points do not exist.
      */
-    public void removeCostoPuntos(Long idA, Long idB) {
-        List<PointSale> puntos = pointSaleService.getAllPuntosVenta();
-        if (!puntoVentaExists(puntos, idA) || !puntoVentaExists(puntos, idB)) {
+    public void removeCostPoints(Long idA, Long idB) {
+        List<PointSale> points = pointSaleService.getAllPointSale();
+        if (!puntoVentaExists(points, idA) || !puntoVentaExists(points, idB)) {
             throw new PointSaleNotFoundException(PUNTO_VENTA_NOT_FOUND);
         }
 
@@ -109,12 +109,12 @@ public class CostPointsServiceImpl implements CostPointsService {
      * @return List of responses with cost information from that point.
      * @throws IllegalArgumentException if the point does not exist.
      */
-    public List<CostPointsResponse> getCostosDesdePunto(Long idA) {
-        List<PointSale> puntos = pointSaleService.getAllPuntosVenta();
-        if (!puntoVentaExists(puntos, idA)) {
+    public List<CostPointsResponse> getCostsFromPoint(Long idA) {
+        List<PointSale> points = pointSaleService.getAllPointSale();
+        if (!puntoVentaExists(points, idA)) {
             throw new IllegalArgumentException(PUNTO_VENTA_NOT_FOUND);
         }
-        List<CostPointsResponse> costos = new ArrayList<>();
+        List<CostPointsResponse> costs = new ArrayList<>();
         cache.forEach((key, value) -> {
             String[] ids = key.split(REGEX);
             Long id1 = Long.valueOf(ids[0]);
@@ -122,28 +122,28 @@ public class CostPointsServiceImpl implements CostPointsService {
 
             if (id1.equals(idA)) {
                 Long idB = id2;
-                if (!puntoVentaExists(puntos, idB)) return;
-                String nombrePuntoB = getNombrePuntoVenta(idB, puntos);
-                costos.add(new CostPointsResponse(idA, idB, value, nombrePuntoB));
+                if (!puntoVentaExists(points, idB)) return;
+                String pointBName = getPointSaleName(idB, points);
+                costs.add(new CostPointsResponse(idA, idB, value, pointBName));
             } else if (id2.equals(idA)) {
                 Long idB = id1;
-                if (!puntoVentaExists(puntos, idB)) return;
-                String nombrePuntoB = getNombrePuntoVenta(idB, puntos);
-                costos.add(new CostPointsResponse(idA, idB, value, nombrePuntoB));
+                if (!puntoVentaExists(points, idB)) return;
+                String nombrePuntoB = getPointSaleName(idB, points);
+                costs.add(new CostPointsResponse(idA, idB, value, nombrePuntoB));
             }
         });
-        return costos;
+        return costs;
     }
 
     /**
      * Retrieves the name of a sales point by its ID.
      *
      * @param id     ID of the point.
-     * @param puntos List of sales points.
+     * @param points List of sales points.
      * @return Name of the point or a default value if not found.
      */
-    private String getNombrePuntoVenta(Long id, List<PointSale> puntos) {
-        return puntos.stream()
+    private String getPointSaleName(Long id, List<PointSale> points) {
+        return points.stream()
                 .filter(p -> p.getId().equals(id))
                 .map(PointSale::getName)
                 .findFirst()
@@ -153,75 +153,75 @@ public class CostPointsServiceImpl implements CostPointsService {
     /**
      * Calculates the lowest cost route between two sales points using Dijkstra's algorithm.
      *
-     * @param puntoA ID of the origin point.
-     * @param puntoB ID of the destination point.
+     * @param pointA ID of the origin point.
+     * @param pointB ID of the destination point.
      * @return List of point IDs representing the optimal route.
      * @throws IllegalArgumentException if any of the points do not exist.
      */
-    public List<Long> calcularRutaMinima(Long puntoA, Long puntoB) {
-        Map<Long, Double> distancias = new HashMap<>();
-        Map<Long, Long> predecesores = new HashMap<>();
+    public List<Long> calculateMinPath(Long pointA, Long pointB) {
+        Map<Long, Double> distances = new HashMap<>();
+        Map<Long, Long> predecessors = new HashMap<>();
         PriorityQueue<Map.Entry<Long, Double>> pq = new PriorityQueue<>(Comparator.comparing(Map.Entry::getValue));
 
-        List<PointSale> puntos = pointSaleService.getAllPuntosVenta();
-        if (!puntoVentaExists(puntos, puntoA) || !puntoVentaExists(puntos, puntoB)) {
+        List<PointSale> points = pointSaleService.getAllPointSale();
+        if (!puntoVentaExists(points, pointA) || !puntoVentaExists(points, pointB)) {
             throw new IllegalArgumentException(PUNTO_VENTA_NOT_FOUND);
         }
 
-        pointSaleService.getAllPuntosVenta().forEach(p -> distancias.put(p.getId(), Double.MAX_VALUE));
-        distancias.put(puntoA, 0.0);
+        pointSaleService.getAllPointSale().forEach(p -> distances.put(p.getId(), Double.MAX_VALUE));
+        distances.put(pointA, 0.0);
 
-        pq.add(new AbstractMap.SimpleEntry<>(puntoA, 0.0));
+        pq.add(new AbstractMap.SimpleEntry<>(pointA, 0.0));
 
         while (!pq.isEmpty()) {
             long actual = pq.poll().getKey();
 
-            for (Map.Entry<Long, Double> vecino : getVecinos(actual, cache, REGEX).entrySet()) {
-                double nuevoCosto = distancias.get(actual) + vecino.getValue();
-                if (nuevoCosto < distancias.get(vecino.getKey())) {
-                    distancias.put(vecino.getKey(), nuevoCosto);
-                    predecesores.put(vecino.getKey(), actual);
-                    pq.add(new AbstractMap.SimpleEntry<>(vecino.getKey(), nuevoCosto));
+            for (Map.Entry<Long, Double> neighbor : getVecinos(actual, cache, REGEX).entrySet()) {
+                double newCost = distances.get(actual) + neighbor.getValue();
+                if (newCost < distances.get(neighbor.getKey())) {
+                    distances.put(neighbor.getKey(), newCost);
+                    predecessors.put(neighbor.getKey(), actual);
+                    pq.add(new AbstractMap.SimpleEntry<>(neighbor.getKey(), newCost));
                 }
             }
         }
 
-        List<Long> ruta = new ArrayList<>();
-        Long current = puntoB;
+        List<Long> rute = new ArrayList<>();
+        Long current = pointB;
         while (current != null) {
-            ruta.add(current);
-            current = predecesores.get(current);
+            rute.add(current);
+            current = predecessors.get(current);
         }
-        Collections.reverse(ruta);
-        return ruta;
+        Collections.reverse(rute);
+        return rute;
     }
 
     /**
      * Calculates the total cost of a route composed of sales point IDs.
      *
-     * @param ruta List of IDs representing the route.
+     * @param rute List of IDs representing the route.
      * @return Total sum of costs between each pair of consecutive points.
      * @throws IllegalStateException if any cost is missing in the cache.
      */
-    public Double calcularCostoTotalRuta(List<Long> ruta) {
-        double costoTotal = 0.0;
+    public Double calculateTotalRouteCost(List<Long> rute) {
+        double totalCost = 0.0;
 
-        for (int i = 0; i < ruta.size() - 1; i++) {
-            Long idA = ruta.get(i);
-            Long idB = ruta.get(i + 1);
+        for (int i = 0; i < rute.size() - 1; i++) {
+            Long idA = rute.get(i);
+            Long idB = rute.get(i + 1);
             String key = generateKey(idA, idB);
 
-            Double costo = cache.get(key);
+            Double cost = cache.get(key);
             if (!cache.containsKey(key)) {
                 System.err.println("❌ Key faltante en cache: " + key);
                 System.err.println("📦 Cache disponible: " + cache);
-                throw new IllegalStateException("Falta costo entre " + idA + " y " + idB);
+                throw new IllegalStateException("Missing cost between " + idA + " and " + idB);
             }
 
-            costoTotal += costo;
+            totalCost += cost;
         }
 
-        return costoTotal;
+        return totalCost;
     }
 
     /**
@@ -229,23 +229,23 @@ public class CostPointsServiceImpl implements CostPointsService {
      *
      * @param idA   ID of the first point.
      * @param idB   ID of the second point.
-     * @param costo Cost between them.
+     * @param cost Cost between them.
      */
-    private void saveCostoToDB(Long idA, Long idB, Double costo) {
-        Long menor = Math.min(idA, idB);
+    private void saveCostToDB(Long idA, Long idB, Double cost) {
+        Long minor = Math.min(idA, idB);
         Long mayor = Math.max(idA, idB);
 
-        Optional<CostPoints> existente = costRepository.findByIdAAndIdB(menor, mayor);
-        if (existente.isPresent()) {
-            CostPoints costoExistente = existente.get();
-            costoExistente.setCost(costo);
-            costRepository.save(costoExistente);
+        Optional<CostPoints> existing = costRepository.findByIdAAndIdB(minor, mayor);
+        if (existing.isPresent()) {
+            CostPoints existingCost = existing.get();
+            existingCost.setCost(cost);
+            costRepository.save(existingCost);
         } else {
-            CostPoints nuevo = new CostPoints();
-            nuevo.setIdA(menor);
-            nuevo.setIdB(mayor);
-            nuevo.setCost(costo);
-            costRepository.save(nuevo);
+            CostPoints newCost = new CostPoints();
+            newCost.setIdA(minor);
+            newCost.setIdB(mayor);
+            newCost.setCost(cost);
+            costRepository.save(newCost);
         }
     }
 
@@ -254,16 +254,16 @@ public class CostPointsServiceImpl implements CostPointsService {
      *
      * @param id ID of the sales point to delete.
      */
-    public void eliminarCostosRelacionadosA(Long id) {
+    public void deleteRelatedCostsTo(Long id) {
         cache.keySet().removeIf(key -> {
-            String[] partes = key.split(REGEX);
-            return partes[0].equals(id.toString()) || partes[1].equals(id.toString());
+            String[] parts = key.split(REGEX);
+            return parts[0].equals(id.toString()) || parts[1].equals(id.toString());
         });
 
-        List<CostPoints> costos = costRepository.findAll();
-        for (CostPoints costo : costos) {
-            if (Objects.equals(costo.getIdA(), id) || Objects.equals(costo.getIdB(), id)) {
-                costRepository.delete(costo);
+        List<CostPoints> costs = costRepository.findAll();
+        for (CostPoints cost : costs) {
+            if (Objects.equals(cost.getIdA(), id) || Objects.equals(cost.getIdB(), id)) {
+                costRepository.delete(cost);
             }
         }
     }

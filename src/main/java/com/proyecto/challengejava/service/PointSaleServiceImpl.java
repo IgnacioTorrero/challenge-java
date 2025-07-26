@@ -44,7 +44,7 @@ public class PointSaleServiceImpl implements PointSaleService {
     public void init() {
 //        precargarPuntosVentaSiNoExisten();
         if (!Arrays.asList(env.getActiveProfiles()).contains("test")) {
-            precargarCache();
+            preloadCache();
         }
     }
 
@@ -77,16 +77,16 @@ public class PointSaleServiceImpl implements PointSaleService {
      *
      * @return List of {@link PointSale} entities.
      */
-    public List<PointSale> getAllPuntosVenta() {
+    public List<PointSale> getAllPointSale() {
         return pointSaleRepository.findAll();
     }
 
     /**
      * Preloads the in-memory cache with all sales points from the database.
      */
-    private void precargarCache() {
-        List<PointSale> puntos = pointSaleRepository.findAll();
-        for (PointSale p : puntos) {
+    private void preloadCache() {
+        List<PointSale> points = pointSaleRepository.findAll();
+        for (PointSale p : points) {
             cache.put(p.getId(), p.getName());
         }
     }
@@ -94,33 +94,33 @@ public class PointSaleServiceImpl implements PointSaleService {
     /**
      * Adds a new sales point if no other exists with the same name.
      *
-     * @param nombre Name of the sales point to create.
+     * @param name Name of the sales point to create.
      * @throws IllegalArgumentException if a point with the same name already exists.
      */
     @Override
-    public void addPuntoVenta(String nombre) {
-        if (pointSaleRepository.existsByNombre(nombre)) {
+    public void addPointSale(String name) {
+        if (pointSaleRepository.existsByNombre(name)) {
             throw new IllegalArgumentException(PUNTO_VENTA_ALREADY_EXISTS);
         }
         PointSale pointSale = new PointSale();
-        pointSale.setName(nombre);
+        pointSale.setName(name);
         pointSale = pointSaleRepository.save(pointSale);
-        cache.put(pointSale.getId(), nombre);
+        cache.put(pointSale.getId(), name);
     }
 
     /**
      * Updates the name of an existing sales point.
      *
      * @param id     ID of the sales point to update.
-     * @param nombre New name for the sales point.
+     * @param name New name for the sales point.
      * @throws IllegalArgumentException if the ID does not correspond to an existing point.
      */
-    public void updatePuntoVenta(Long id, String nombre) {
+    public void updatePointSale(Long id, String name) {
         PointSale pointSale = pointSaleRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException(PUNTO_VENTA_NOT_FOUND));
-        pointSale.setName(nombre);
+        pointSale.setName(name);
         pointSaleRepository.save(pointSale);
-        cache.put(id, nombre);
+        cache.put(id, name);
     }
 
     /**
@@ -129,7 +129,7 @@ public class PointSaleServiceImpl implements PointSaleService {
      * @param id ID of the sales point to delete.
      * @throws IllegalArgumentException if the ID does not exist in the database.
      */
-    public void deletePuntoVenta(Long id) {
+    public void deletePointSale(Long id) {
         if (!pointSaleRepository.existsById(id)) {
             throw new IllegalArgumentException(PUNTO_VENTA_NOT_FOUND);
         }

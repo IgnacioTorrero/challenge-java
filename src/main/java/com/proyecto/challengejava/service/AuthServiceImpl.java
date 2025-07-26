@@ -52,15 +52,15 @@ public class AuthServiceImpl implements AuthService {
      */
     @Override
     public AuthResponse register(RegisterRequest request) {
-        Usuario usuario = new Usuario();
-        usuario.setName(request.getName());
-        usuario.setEmail(request.getEmail());
-        usuario.setPassword(passwordEncoder.encode(request.getPassword()));
-        usuario.setRole(Role.USER);
+        Usuario username = new Usuario();
+        username.setName(request.getName());
+        username.setEmail(request.getEmail());
+        username.setPassword(passwordEncoder.encode(request.getPassword()));
+        username.setRole(Role.USER);
 
-        usernameRepository.save(usuario);
+        usernameRepository.save(username);
 
-        String token = jwtService.generateToken(usuario.getEmail());
+        String token = jwtService.generateToken(username.getEmail());
 
         return new AuthResponse(token);
     }

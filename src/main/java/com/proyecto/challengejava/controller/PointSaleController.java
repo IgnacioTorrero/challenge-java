@@ -47,7 +47,7 @@ public class PointSaleController {
      */
     @GetMapping
     public ResponseEntity<CollectionModel<PointSaleResponse>> getAllPointsSale() {
-        List<PointSaleResponse> responses = service.getAllPuntosVenta().stream()
+        List<PointSaleResponse> responses = service.getAllPointSale().stream()
                 .map(p -> new PointSaleResponse(p.getId(), p.getName()))
                 .map(assembler::toModel)
                 .collect(Collectors.toList());
@@ -63,7 +63,7 @@ public class PointSaleController {
      */
     @PostMapping
     public ResponseEntity<Void> addPointSale(@RequestBody @Valid PointSaleRequest request) {
-        service.addPuntoVenta(request.getName());
+        service.addPointSale(request.getName());
         return ResponseEntity.ok().build();
     }
 
@@ -76,7 +76,7 @@ public class PointSaleController {
      */
     @PutMapping("/{id}")
     public ResponseEntity<Void> updatePointSale(@PathVariable Long id, @RequestBody @Valid PointSaleRequest request) {
-        service.updatePuntoVenta(id, request.getName());
+        service.updatePointSale(id, request.getName());
         return ResponseEntity.ok().build();
     }
 
@@ -88,7 +88,7 @@ public class PointSaleController {
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePointSale(@PathVariable Long id) {
-        manager.eliminarPuntoVentaConCostos(id);
+        manager.deletePointSaleWithCosts(id);
         return ResponseEntity.ok().build();
     }
 }

@@ -79,7 +79,7 @@ public class PointSaleServiceImplTest {
      * Verifies that {@code precargarCache} correctly loads all points into the internal cache using reflection.
      */
     @Test
-    void precargarCache_CargaDatosEnElCache() throws Exception {
+    void preloadCache_CargaDatosEnElCache() throws Exception {
         // Act
         var method = PointSaleServiceImpl.class.getDeclaredMethod("precargarCache");
         method.setAccessible(true);
@@ -99,9 +99,9 @@ public class PointSaleServiceImplTest {
      * Verifies that {@code getAllPuntosVenta} returns all existing points of sale.
      */
     @Test
-    void getAllPuntosVenta_ReturnListOfPuntosVenta() {
+    void getAllPuntosVenta_ReturnListOfPointSale() {
         // Act
-        List<PointSale> puntosVenta = service.getAllPuntosVenta();
+        List<PointSale> puntosVenta = service.getAllPointSale();
 
         // Assert
         assertNotNull(puntosVenta);
@@ -114,12 +114,12 @@ public class PointSaleServiceImplTest {
      * Verifies that {@code addPuntoVenta} successfully adds a new sales point.
      */
     @Test
-    void addPuntoVenta_AddsNewPuntoVenta() {
+    void addPuntoVenta_AddsNewPointSale() {
         // Act
-        service.addPuntoVenta(PUNTO_VENTA_3);
+        service.addPointSale(PUNTO_VENTA_3);
 
         // Assert
-        List<PointSale> puntosVenta = service.getAllPuntosVenta();
+        List<PointSale> puntosVenta = service.getAllPointSale();
         assertEquals(11, puntosVenta.size());
 
         PointSale agregado = puntosVenta.stream()
@@ -133,14 +133,14 @@ public class PointSaleServiceImplTest {
      * Verifies that {@code addPuntoVenta} throws exception if name already exists.
      */
     @Test
-    void addPuntoVenta_ThrowsIllegalArgumentException_WhenNombreAlreadyExists() {
+    void addPointSale_ThrowsIllegalArgumentException_WhenNombreAlreadyExists() {
         // Arrange
         String nombreDuplicado = "Punto 5";
         when(pointSaleRepository.existsByNombre(nombreDuplicado)).thenReturn(true);
 
         // Act & Assert
         Exception ex = assertThrows(IllegalArgumentException.class, () ->
-                service.addPuntoVenta(nombreDuplicado)
+                service.addPointSale(nombreDuplicado)
         );
         assertEquals(PUNTO_VENTA_ALREADY_EXISTS, ex.getMessage());
     }
@@ -149,13 +149,13 @@ public class PointSaleServiceImplTest {
      * Verifies that {@code updatePuntoVenta} updates the name of an existing sales point.
      */
     @Test
-    void updatePuntoVenta_UpdatesExistingPuntoVenta() {
+    void updatePuntoVenta_UpdatesExistingPointSale() {
         // Act
         Long idParaActualizar = 2L;
-        service.updatePuntoVenta(idParaActualizar, PUNTO_VENTA_5);
+        service.updatePointSale(idParaActualizar, PUNTO_VENTA_5);
 
         // Assert
-        PointSale actualizado = service.getAllPuntosVenta().stream()
+        PointSale actualizado = service.getAllPointSale().stream()
                 .filter(p -> p.getId().equals(idParaActualizar))
                 .findFirst()
                 .orElse(null);
@@ -167,10 +167,10 @@ public class PointSaleServiceImplTest {
      * Verifies that {@code updatePuntoVenta} throws exception if the sales point does not exist.
      */
     @Test
-    void updatePuntoVenta_ThrowsIllegalArgumentException() {
+    void updatePointSale_ThrowsIllegalArgumentException() {
         // Act & Assert
         Exception ex = assertThrows(IllegalArgumentException.class, () ->
-                service.updatePuntoVenta(INVALID_ID, PUNTO_VENTA_6));
+                service.updatePointSale(INVALID_ID, PUNTO_VENTA_6));
         assertEquals(PUNTO_VENTA_NOT_FOUND, ex.getMessage());
     }
 
@@ -178,13 +178,13 @@ public class PointSaleServiceImplTest {
      * Verifies that {@code deletePuntoVenta} removes a sales point by ID.
      */
     @Test
-    void deletePuntoVenta_RemovesPuntoVenta() {
+    void deletePuntoVenta_RemovesPointSale() {
         // Act
         Long idAEliminar = 4L;
-        service.deletePuntoVenta(idAEliminar);
+        service.deletePointSale(idAEliminar);
 
         // Assert
-        List<PointSale> puntosVenta = service.getAllPuntosVenta();
+        List<PointSale> puntosVenta = service.getAllPointSale();
         assertEquals(9, puntosVenta.size());
         assertTrue(puntosVenta.stream().noneMatch(p -> p.getId().equals(idAEliminar)));
     }
@@ -193,14 +193,14 @@ public class PointSaleServiceImplTest {
      * Verifies that {@code deletePuntoVenta} throws exception if the ID does not exist.
      */
     @Test
-    void deletePuntoVenta_ThrowsIllegalArgumentException_WhenIdNotExists() {
+    void deletePointSale_ThrowsIllegalArgumentException_WhenIdNotExists() {
         // Arrange
         Long idInexistente = 999L;
         when(pointSaleRepository.existsById(idInexistente)).thenReturn(false);
 
         // Act & Assert
         Exception ex = assertThrows(IllegalArgumentException.class, () ->
-                service.deletePuntoVenta(idInexistente)
+                service.deletePointSale(idInexistente)
         );
         assertEquals(PUNTO_VENTA_NOT_FOUND, ex.getMessage());
     }
