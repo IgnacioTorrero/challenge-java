@@ -1,8 +1,8 @@
 package com.proyecto.challengejava.service;
 
 import com.proyecto.challengejava.dto.CostPointsResponse;
-import com.proyecto.challengejava.entity.CostoPuntos;
-import com.proyecto.challengejava.entity.PuntoVenta;
+import com.proyecto.challengejava.entity.CostPoints;
+import com.proyecto.challengejava.entity.PointSale;
 import com.proyecto.challengejava.exception.PuntoVentaNotFoundException;
 import com.proyecto.challengejava.repository.CostoRepository;
 import jakarta.annotation.PostConstruct;
@@ -43,7 +43,7 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
     @PostConstruct
     public void init() {
         // Wait for sales points to be preloaded
-        List<PuntoVenta> puntos = puntoVentaService.getAllPuntosVenta();
+        List<PointSale> puntos = puntoVentaService.getAllPuntosVenta();
         // Initial cost preloading could be done here if needed
         cargarCacheDesdeDB();
     }
@@ -74,7 +74,7 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
         if (costo < 0) {
             throw new IllegalArgumentException(COSTO_PUNTOS_LESS_THAN_ZERO);
         }
-        List<PuntoVenta> puntos = puntoVentaService.getAllPuntosVenta();
+        List<PointSale> puntos = puntoVentaService.getAllPuntosVenta();
         if (!puntoVentaExists(puntos, idA) || !puntoVentaExists(puntos, idB)) {
             throw new IllegalArgumentException(PUNTO_VENTA_NOT_FOUND);
         }
@@ -93,7 +93,7 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
      * @throws PuntoVentaNotFoundException if any of the points do not exist.
      */
     public void removeCostoPuntos(Long idA, Long idB) {
-        List<PuntoVenta> puntos = puntoVentaService.getAllPuntosVenta();
+        List<PointSale> puntos = puntoVentaService.getAllPuntosVenta();
         if (!puntoVentaExists(puntos, idA) || !puntoVentaExists(puntos, idB)) {
             throw new PuntoVentaNotFoundException(PUNTO_VENTA_NOT_FOUND);
         }
@@ -110,7 +110,7 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
      * @throws IllegalArgumentException if the point does not exist.
      */
     public List<CostPointsResponse> getCostosDesdePunto(Long idA) {
-        List<PuntoVenta> puntos = puntoVentaService.getAllPuntosVenta();
+        List<PointSale> puntos = puntoVentaService.getAllPuntosVenta();
         if (!puntoVentaExists(puntos, idA)) {
             throw new IllegalArgumentException(PUNTO_VENTA_NOT_FOUND);
         }
@@ -142,10 +142,10 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
      * @param puntos List of sales points.
      * @return Name of the point or a default value if not found.
      */
-    private String getNombrePuntoVenta(Long id, List<PuntoVenta> puntos) {
+    private String getNombrePuntoVenta(Long id, List<PointSale> puntos) {
         return puntos.stream()
                 .filter(p -> p.getId().equals(id))
-                .map(PuntoVenta::getNombre)
+                .map(PointSale::getNombre)
                 .findFirst()
                 .orElse(UNKNOWN);
     }
@@ -163,7 +163,7 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
         Map<Long, Long> predecesores = new HashMap<>();
         PriorityQueue<Map.Entry<Long, Double>> pq = new PriorityQueue<>(Comparator.comparing(Map.Entry::getValue));
 
-        List<PuntoVenta> puntos = puntoVentaService.getAllPuntosVenta();
+        List<PointSale> puntos = puntoVentaService.getAllPuntosVenta();
         if (!puntoVentaExists(puntos, puntoA) || !puntoVentaExists(puntos, puntoB)) {
             throw new IllegalArgumentException(PUNTO_VENTA_NOT_FOUND);
         }
@@ -235,13 +235,13 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
         Long menor = Math.min(idA, idB);
         Long mayor = Math.max(idA, idB);
 
-        Optional<CostoPuntos> existente = costoRepository.findByIdAAndIdB(menor, mayor);
+        Optional<CostPoints> existente = costoRepository.findByIdAAndIdB(menor, mayor);
         if (existente.isPresent()) {
-            CostoPuntos costoExistente = existente.get();
+            CostPoints costoExistente = existente.get();
             costoExistente.setCosto(costo);
             costoRepository.save(costoExistente);
         } else {
-            CostoPuntos nuevo = new CostoPuntos();
+            CostPoints nuevo = new CostPoints();
             nuevo.setIdA(menor);
             nuevo.setIdB(mayor);
             nuevo.setCosto(costo);
@@ -260,8 +260,8 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
             return partes[0].equals(id.toString()) || partes[1].equals(id.toString());
         });
 
-        List<CostoPuntos> costos = costoRepository.findAll();
-        for (CostoPuntos costo : costos) {
+        List<CostPoints> costos = costoRepository.findAll();
+        for (CostPoints costo : costos) {
             if (Objects.equals(costo.getIdA(), id) || Objects.equals(costo.getIdB(), id)) {
                 costoRepository.delete(costo);
             }

@@ -2,7 +2,7 @@ package com.proyecto.challengejava.controller;
 
 import com.proyecto.challengejava.dto.AccreditationRequest;
 import com.proyecto.challengejava.dto.AccreditationResponse;
-import com.proyecto.challengejava.entity.Acreditacion;
+import com.proyecto.challengejava.entity.Accreditation;
 import com.proyecto.challengejava.hateoas.AcreditacionModelAssembler;
 import com.proyecto.challengejava.service.AcreditacionServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -54,24 +54,24 @@ public class AccreditationControllerTest {
     @Test
     void recibirAcreditacion_ReturnsAcreditacionResponse() {
         // Arrange: simulate the accreditation returned by the service
-        Acreditacion acreditacion = new Acreditacion();
-        acreditacion.setId(ID_PUNTO_VENTA);
-        acreditacion.setImporte(IMPORTE);
-        acreditacion.setIdPuntoVenta(ID_PUNTO_VENTA);
+        Accreditation accreditation = new Accreditation();
+        accreditation.setId(ID_PUNTO_VENTA);
+        accreditation.setImporte(IMPORTE);
+        accreditation.setIdPuntoVenta(ID_PUNTO_VENTA);
 
         AccreditationRequest request = new AccreditationRequest();
         request.setImporte(IMPORTE);
         request.setIdPuntoVenta(ID_PUNTO_VENTA);
 
         AccreditationResponse responseSinLinks = new AccreditationResponse(
-                acreditacion.getId(),
-                acreditacion.getImporte(),
-                acreditacion.getIdPuntoVenta(),
-                acreditacion.getNombrePuntoVenta(),
-                acreditacion.getFechaRecepcion()
+                accreditation.getId(),
+                accreditation.getImporte(),
+                accreditation.getIdPuntoVenta(),
+                accreditation.getNombrePuntoVenta(),
+                accreditation.getFechaRecepcion()
         );
 
-        when(acreditacionServiceImpl.recibirAcreditacion(IMPORTE, ID_PUNTO_VENTA)).thenReturn(acreditacion);
+        when(acreditacionServiceImpl.recibirAcreditacion(IMPORTE, ID_PUNTO_VENTA)).thenReturn(accreditation);
         when(acreditacionAssembler.toModel(responseSinLinks)).thenReturn(responseSinLinks);
 
         // Act: call the controller
@@ -90,25 +90,25 @@ public class AccreditationControllerTest {
     @Test
     void obtenerAcreditaciones_ReturnsCollectionModelOfAcreditacionResponses() {
         // Arrange: simulate two accreditations returned by the service
-        Acreditacion acreditacion1 = new Acreditacion();
-        acreditacion1.setId(ID_PUNTO_VENTA);
-        acreditacion1.setImporte(IMPORTE);
+        Accreditation accreditation1 = new Accreditation();
+        accreditation1.setId(ID_PUNTO_VENTA);
+        accreditation1.setImporte(IMPORTE);
 
-        Acreditacion acreditacion2 = new Acreditacion();
-        acreditacion2.setId(ID_PUNTO_VENTA2);
-        acreditacion2.setImporte(IMPORTE2);
+        Accreditation accreditation2 = new Accreditation();
+        accreditation2.setId(ID_PUNTO_VENTA2);
+        accreditation2.setImporte(IMPORTE2);
 
-        Iterable<Acreditacion> acreditaciones = Arrays.asList(acreditacion1, acreditacion2);
+        Iterable<Accreditation> acreditaciones = Arrays.asList(accreditation1, accreditation2);
 
         AccreditationResponse response1 = new AccreditationResponse(
-                acreditacion1.getId(), acreditacion1.getImporte(),
-                acreditacion1.getIdPuntoVenta(), acreditacion1.getNombrePuntoVenta(),
-                acreditacion1.getFechaRecepcion()
+                accreditation1.getId(), accreditation1.getImporte(),
+                accreditation1.getIdPuntoVenta(), accreditation1.getNombrePuntoVenta(),
+                accreditation1.getFechaRecepcion()
         );
         AccreditationResponse response2 = new AccreditationResponse(
-                acreditacion2.getId(), acreditacion2.getImporte(),
-                acreditacion2.getIdPuntoVenta(), acreditacion2.getNombrePuntoVenta(),
-                acreditacion2.getFechaRecepcion()
+                accreditation2.getId(), accreditation2.getImporte(),
+                accreditation2.getIdPuntoVenta(), accreditation2.getNombrePuntoVenta(),
+                accreditation2.getFechaRecepcion()
         );
 
         when(acreditacionServiceImpl.obtenerAcreditaciones()).thenReturn(acreditaciones);

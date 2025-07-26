@@ -6,7 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-public class CostoPuntos {
+public class CostPoints {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,10 +15,10 @@ public class CostoPuntos {
     private Long idB;
     private Double costo;
 
-    public CostoPuntos() {
+    public CostPoints() {
     }
 
-    public CostoPuntos(Long idA, Long idB, Double costo) {
+    public CostPoints(Long idA, Long idB, Double costo) {
         this.idA = idA;
         this.idB = idB;
         this.costo = costo;

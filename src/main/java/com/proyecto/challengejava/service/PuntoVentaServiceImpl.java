@@ -1,6 +1,6 @@
 package com.proyecto.challengejava.service;
 
-import com.proyecto.challengejava.entity.PuntoVenta;
+import com.proyecto.challengejava.entity.PointSale;
 import com.proyecto.challengejava.repository.PuntoVentaRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,9 +75,9 @@ public class PuntoVentaServiceImpl implements PuntoVentaService {
     /**
      * Retrieves all sales points registered in the database.
      *
-     * @return List of {@link PuntoVenta} entities.
+     * @return List of {@link PointSale} entities.
      */
-    public List<PuntoVenta> getAllPuntosVenta() {
+    public List<PointSale> getAllPuntosVenta() {
         return puntoVentaRepository.findAll();
     }
 
@@ -85,8 +85,8 @@ public class PuntoVentaServiceImpl implements PuntoVentaService {
      * Preloads the in-memory cache with all sales points from the database.
      */
     private void precargarCache() {
-        List<PuntoVenta> puntos = puntoVentaRepository.findAll();
-        for (PuntoVenta p : puntos) {
+        List<PointSale> puntos = puntoVentaRepository.findAll();
+        for (PointSale p : puntos) {
             cache.put(p.getId(), p.getNombre());
         }
     }
@@ -102,10 +102,10 @@ public class PuntoVentaServiceImpl implements PuntoVentaService {
         if (puntoVentaRepository.existsByNombre(nombre)) {
             throw new IllegalArgumentException(PUNTO_VENTA_ALREADY_EXISTS);
         }
-        PuntoVenta puntoVenta = new PuntoVenta();
-        puntoVenta.setNombre(nombre);
-        puntoVenta = puntoVentaRepository.save(puntoVenta);
-        cache.put(puntoVenta.getId(), nombre);
+        PointSale pointSale = new PointSale();
+        pointSale.setNombre(nombre);
+        pointSale = puntoVentaRepository.save(pointSale);
+        cache.put(pointSale.getId(), nombre);
     }
 
     /**
@@ -116,10 +116,10 @@ public class PuntoVentaServiceImpl implements PuntoVentaService {
      * @throws IllegalArgumentException if the ID does not correspond to an existing point.
      */
     public void updatePuntoVenta(Long id, String nombre) {
-        PuntoVenta puntoVenta = puntoVentaRepository.findById(id)
+        PointSale pointSale = puntoVentaRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException(PUNTO_VENTA_NOT_FOUND));
-        puntoVenta.setNombre(nombre);
-        puntoVentaRepository.save(puntoVenta);
+        pointSale.setNombre(nombre);
+        puntoVentaRepository.save(pointSale);
         cache.put(id, nombre);
     }
 

@@ -1,6 +1,6 @@
 package com.proyecto.challengejava.service;
 
-import com.proyecto.challengejava.entity.PuntoVenta;
+import com.proyecto.challengejava.entity.PointSale;
 import com.proyecto.challengejava.repository.PuntoVentaRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ import static org.mockito.Mockito.*;
  */
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
-public class PuntoVentaServiceImplTest {
+public class PointSaleServiceImplTest {
 
     @Mock
     private PuntoVentaRepository puntoVentaRepository;
@@ -33,7 +33,7 @@ public class PuntoVentaServiceImplTest {
     @InjectMocks
     private PuntoVentaServiceImpl service;
 
-    private List<PuntoVenta> datosMock;
+    private List<PointSale> datosMock;
 
     /**
      * Initializes mock repository behavior and sets up an in-memory list to simulate database operations.
@@ -42,7 +42,7 @@ public class PuntoVentaServiceImplTest {
     void setUp() {
         datosMock = new ArrayList<>();
         for (long i = 1; i <= 10; i++) {
-            datosMock.add(new PuntoVenta(i, "Punto " + i));
+            datosMock.add(new PointSale(i, "Punto " + i));
         }
 
         when(puntoVentaRepository.findAll()).thenAnswer(invocation -> new ArrayList<>(datosMock));
@@ -57,8 +57,8 @@ public class PuntoVentaServiceImplTest {
             return datosMock.stream().anyMatch(p -> p.getId().equals(id));
         });
 
-        when(puntoVentaRepository.save(any(PuntoVenta.class))).thenAnswer(invocation -> {
-            PuntoVenta nuevo = invocation.getArgument(0);
+        when(puntoVentaRepository.save(any(PointSale.class))).thenAnswer(invocation -> {
+            PointSale nuevo = invocation.getArgument(0);
             if (nuevo.getId() == null) {
                 nuevo.setId((long) (datosMock.size() + 1));
             } else {
@@ -101,7 +101,7 @@ public class PuntoVentaServiceImplTest {
     @Test
     void getAllPuntosVenta_ReturnListOfPuntosVenta() {
         // Act
-        List<PuntoVenta> puntosVenta = service.getAllPuntosVenta();
+        List<PointSale> puntosVenta = service.getAllPuntosVenta();
 
         // Assert
         assertNotNull(puntosVenta);
@@ -119,10 +119,10 @@ public class PuntoVentaServiceImplTest {
         service.addPuntoVenta(PUNTO_VENTA_3);
 
         // Assert
-        List<PuntoVenta> puntosVenta = service.getAllPuntosVenta();
+        List<PointSale> puntosVenta = service.getAllPuntosVenta();
         assertEquals(11, puntosVenta.size());
 
-        PuntoVenta agregado = puntosVenta.stream()
+        PointSale agregado = puntosVenta.stream()
                 .filter(p -> PUNTO_VENTA_3.equals(p.getNombre()))
                 .findFirst()
                 .orElse(null);
@@ -155,7 +155,7 @@ public class PuntoVentaServiceImplTest {
         service.updatePuntoVenta(idParaActualizar, PUNTO_VENTA_5);
 
         // Assert
-        PuntoVenta actualizado = service.getAllPuntosVenta().stream()
+        PointSale actualizado = service.getAllPuntosVenta().stream()
                 .filter(p -> p.getId().equals(idParaActualizar))
                 .findFirst()
                 .orElse(null);
@@ -184,7 +184,7 @@ public class PuntoVentaServiceImplTest {
         service.deletePuntoVenta(idAEliminar);
 
         // Assert
-        List<PuntoVenta> puntosVenta = service.getAllPuntosVenta();
+        List<PointSale> puntosVenta = service.getAllPuntosVenta();
         assertEquals(9, puntosVenta.size());
         assertTrue(puntosVenta.stream().noneMatch(p -> p.getId().equals(idAEliminar)));
     }

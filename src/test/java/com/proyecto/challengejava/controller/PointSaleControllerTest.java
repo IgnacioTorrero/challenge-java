@@ -2,7 +2,7 @@ package com.proyecto.challengejava.controller;
 
 import com.proyecto.challengejava.dto.PointSaleRequest;
 import com.proyecto.challengejava.dto.PointSaleResponse;
-import com.proyecto.challengejava.entity.PuntoVenta;
+import com.proyecto.challengejava.entity.PointSale;
 import com.proyecto.challengejava.hateoas.PuntoVentaModelAssembler;
 import com.proyecto.challengejava.service.PuntoVentaManager;
 import com.proyecto.challengejava.service.PuntoVentaServiceImpl;
@@ -39,8 +39,8 @@ public class PointSaleControllerTest {
     @InjectMocks
     private PointSaleController controller;
 
-    private final PuntoVenta punto1 = new PuntoVenta();
-    private final PuntoVenta punto2 = new PuntoVenta();
+    private final PointSale punto1 = new PointSale();
+    private final PointSale punto2 = new PointSale();
     private final PointSaleRequest request = new PointSaleRequest();
 
     /**
@@ -65,7 +65,7 @@ public class PointSaleControllerTest {
     @Test
     void getAllPuntosVenta_ReturnsCollectionModelOfPuntoVentaResponses() {
         // Arrange
-        List<PuntoVenta> puntosVenta = Arrays.asList(punto1, punto2);
+        List<PointSale> puntosVenta = Arrays.asList(punto1, punto2);
         when(service.getAllPuntosVenta()).thenReturn(puntosVenta);
         when(assembler.toModel(any(PointSaleResponse.class)))
                 .thenAnswer(invocation -> invocation.getArgument(0));

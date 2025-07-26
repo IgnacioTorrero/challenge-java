@@ -8,7 +8,7 @@ import jakarta.persistence.Id;
 import java.time.LocalDate;
 
 @Entity
-public class Acreditacion {
+public class Accreditation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

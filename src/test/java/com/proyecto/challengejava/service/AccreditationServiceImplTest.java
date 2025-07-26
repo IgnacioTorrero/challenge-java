@@ -1,7 +1,7 @@
 package com.proyecto.challengejava.service;
 
-import com.proyecto.challengejava.entity.Acreditacion;
-import com.proyecto.challengejava.entity.PuntoVenta;
+import com.proyecto.challengejava.entity.Accreditation;
+import com.proyecto.challengejava.entity.PointSale;
 import com.proyecto.challengejava.exception.PuntoVentaNotFoundException;
 import com.proyecto.challengejava.repository.AcreditacionRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,7 +23,7 @@ import static org.mockito.Mockito.*;
  * Unit test for {@link AcreditacionServiceImpl}.
  * Validates logic related to accreditation creation and retrieval.
  */
-public class AcreditacionServiceImplTest {
+public class AccreditationServiceImplTest {
 
     @Mock
     private AcreditacionRepository acreditacionRepository;
@@ -45,28 +45,28 @@ public class AcreditacionServiceImplTest {
      */
     @Test
     void recibirAcreditacion_SavesAndReturnsAcreditacion() {
-        PuntoVenta puntoVenta = new PuntoVenta();
-        puntoVenta.setId(ID_PUNTO_VENTA);
-        puntoVenta.setNombre(PUNTO_VENTA_1);
+        PointSale pointSale = new PointSale();
+        pointSale.setId(ID_PUNTO_VENTA);
+        pointSale.setNombre(PUNTO_VENTA_1);
 
-        when(puntoVentaServiceImpl.getAllPuntosVenta()).thenReturn(List.of(puntoVenta));
+        when(puntoVentaServiceImpl.getAllPuntosVenta()).thenReturn(List.of(pointSale));
 
-        Acreditacion acreditacion = new Acreditacion();
-        acreditacion.setId(ID_PUNTO_VENTA);
-        acreditacion.setImporte(IMPORTE);
-        acreditacion.setIdPuntoVenta(ID_PUNTO_VENTA);
-        acreditacion.setNombrePuntoVenta(PUNTO_VENTA_1);
-        acreditacion.setFechaRecepcion(LocalDate.now());
+        Accreditation accreditation = new Accreditation();
+        accreditation.setId(ID_PUNTO_VENTA);
+        accreditation.setImporte(IMPORTE);
+        accreditation.setIdPuntoVenta(ID_PUNTO_VENTA);
+        accreditation.setNombrePuntoVenta(PUNTO_VENTA_1);
+        accreditation.setFechaRecepcion(LocalDate.now());
 
-        when(acreditacionRepository.save(any(Acreditacion.class))).thenReturn(acreditacion);
-        Acreditacion result = acreditacionServiceImpl.recibirAcreditacion(IMPORTE, ID_PUNTO_VENTA);
+        when(acreditacionRepository.save(any(Accreditation.class))).thenReturn(accreditation);
+        Accreditation result = acreditacionServiceImpl.recibirAcreditacion(IMPORTE, ID_PUNTO_VENTA);
 
         assertNotNull(result);
         assertEquals(IMPORTE, result.getImporte());
         assertEquals(ID_PUNTO_VENTA, result.getIdPuntoVenta());
         assertEquals(PUNTO_VENTA_1, result.getNombrePuntoVenta());
         assertEquals(LocalDate.now(), result.getFechaRecepcion());
-        verify(acreditacionRepository, times(1)).save(any(Acreditacion.class));
+        verify(acreditacionRepository, times(1)).save(any(Accreditation.class));
     }
 
     /**
@@ -80,7 +80,7 @@ public class AcreditacionServiceImplTest {
         Exception exception = assertThrows(PuntoVentaNotFoundException.class,
                 () -> acreditacionServiceImpl.recibirAcreditacion(IMPORTE, INVALID_ID));
         assertEquals(PUNTO_VENTA_NOT_FOUND + ": 99", exception.getMessage());
-        verify(acreditacionRepository, never()).save(any(Acreditacion.class));
+        verify(acreditacionRepository, never()).save(any(Accreditation.class));
     }
 
     /**
@@ -89,16 +89,16 @@ public class AcreditacionServiceImplTest {
      */
     @Test
     void obtenerAcreditaciones_ReturnsAllAcreditaciones() {
-        Acreditacion acreditacion1 = new Acreditacion();
-        acreditacion1.setId(ID_PUNTO_VENTA);
-        acreditacion1.setImporte(IMPORTE);
+        Accreditation accreditation1 = new Accreditation();
+        accreditation1.setId(ID_PUNTO_VENTA);
+        accreditation1.setImporte(IMPORTE);
 
-        Acreditacion acreditacion2 = new Acreditacion();
-        acreditacion2.setId(ID_PUNTO_VENTA2);
-        acreditacion2.setImporte(IMPORTE2);
+        Accreditation accreditation2 = new Accreditation();
+        accreditation2.setId(ID_PUNTO_VENTA2);
+        accreditation2.setImporte(IMPORTE2);
 
-        when(acreditacionRepository.findAll()).thenReturn(Arrays.asList(acreditacion1, acreditacion2));
-        Iterable<Acreditacion> result = acreditacionServiceImpl.obtenerAcreditaciones();
+        when(acreditacionRepository.findAll()).thenReturn(Arrays.asList(accreditation1, accreditation2));
+        Iterable<Accreditation> result = acreditacionServiceImpl.obtenerAcreditaciones();
 
         assertNotNull(result);
         assertTrue(((Iterable<?>) result).iterator().hasNext());

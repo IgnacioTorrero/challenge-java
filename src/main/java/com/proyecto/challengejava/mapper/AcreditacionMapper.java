@@ -1,10 +1,10 @@
 package com.proyecto.challengejava.mapper;
 
 import com.proyecto.challengejava.dto.AccreditationResponse;
-import com.proyecto.challengejava.entity.Acreditacion;
+import com.proyecto.challengejava.entity.Accreditation;
 
 public class AcreditacionMapper {
-    public static AccreditationResponse mapToResponse(Acreditacion entity) {
+    public static AccreditationResponse mapToResponse(Accreditation entity) {
         return new AccreditationResponse(
                 entity.getId(),
                 entity.getImporte(),

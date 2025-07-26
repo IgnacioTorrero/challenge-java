@@ -2,7 +2,7 @@ package com.proyecto.challengejava.controller;
 
 import com.proyecto.challengejava.dto.AccreditationRequest;
 import com.proyecto.challengejava.dto.AccreditationResponse;
-import com.proyecto.challengejava.entity.Acreditacion;
+import com.proyecto.challengejava.entity.Accreditation;
 import com.proyecto.challengejava.hateoas.AcreditacionModelAssembler;
 import com.proyecto.challengejava.mapper.AcreditacionMapper;
 import com.proyecto.challengejava.service.AcreditacionService;
@@ -48,8 +48,8 @@ public class AccreditationController {
      */
     @PostMapping
     public ResponseEntity<AccreditationResponse> recibirAcreditacion(@RequestBody @Valid AccreditationRequest request) {
-        Acreditacion acreditacion = service.recibirAcreditacion(request.getImporte(), request.getIdPuntoVenta());
-        AccreditationResponse response = mapToResponse(acreditacion);
+        Accreditation accreditation = service.recibirAcreditacion(request.getImporte(), request.getIdPuntoVenta());
+        AccreditationResponse response = mapToResponse(accreditation);
         return ResponseEntity.ok(acreditacionAssembler.toModel(response));
     }
 

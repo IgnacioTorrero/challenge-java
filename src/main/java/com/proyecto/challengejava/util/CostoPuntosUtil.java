@@ -1,6 +1,6 @@
 package com.proyecto.challengejava.util;
 
-import com.proyecto.challengejava.entity.PuntoVenta;
+import com.proyecto.challengejava.entity.PointSale;
 
 import java.util.HashMap;
 import java.util.List;
@@ -33,7 +33,7 @@ public class CostoPuntosUtil {
         return vecinos;
     }
 
-    public static boolean puntoVentaExists(List<PuntoVenta> puntos, Long id) {
+    public static boolean puntoVentaExists(List<PointSale> puntos, Long id) {
         return puntos.stream().anyMatch(p -> p.getId().equals(id));
     }
 }
