@@ -1,32 +1,32 @@
-CREATE TABLE IF NOT EXISTS punto_venta (
+CREATE TABLE IF NOT EXISTS point_sale (
         id BIGINT AUTO_INCREMENT PRIMARY KEY,
-        nombre VARCHAR(255)
+        name VARCHAR(255)
     );
 
-CREATE TABLE IF NOT EXISTS costo_puntos (
+CREATE TABLE IF NOT EXISTS cost_points (
         id BIGINT AUTO_INCREMENT PRIMARY KEY,
         idA BIGINT,
         idB BIGINT,
-        costo DOUBLE
+        cost DOUBLE
 );
 
-CREATE TABLE IF NOT EXISTS acreditacion (
+CREATE TABLE IF NOT EXISTS accreditation (
         id BIGINT AUTO_INCREMENT PRIMARY KEY,
-        importe DOUBLE,
-        id_punto_venta BIGINT,
-        nombre_punto_venta VARCHAR(255),
-        fecha_recepcion DATE
+        amount DOUBLE,
+        id_point_sale BIGINT,
+        point_sale_name VARCHAR(255),
+        receipt_date DATE
     );
 
-CREATE TABLE IF NOT EXISTS usuario (
+CREATE TABLE IF NOT EXISTS username (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(255),
+    name VARCHAR(255),
     email VARCHAR(255) UNIQUE,
     password VARCHAR(255),
-    rol ENUM('ADMIN', 'USER')
+    role ENUM('ADMIN', 'USER')
     );
 
 -- Datos de ejemplo
-INSERT INTO punto_venta (nombre) VALUES
+INSERT INTO point_sale (name) VALUES
     ('CABA'), ('GBA_1'), ('GBA_2'), ('Santa Fe'), ('Córdoba'),
     ('Misiones'), ('Salta'), ('Chubut'), ('Santa Cruz'), ('Catamarca');
