@@ -22,7 +22,7 @@ import static com.proyecto.challengejava.constants.Constants.*;
  */
 @RestController
 @RequestMapping("/api/costos")
-public class CostoPuntosController {
+public class CostPointsController {
 
     private final CostoPuntosService service;
     private final CostoPuntosModelAssembler costoPuntosModelAssembler;
@@ -36,8 +36,8 @@ public class CostoPuntosController {
      * @param rutaCostoMinimoModelAssembler HATEOAS assembler for minimum cost route responses.
      */
     @Autowired
-    public CostoPuntosController(CostoPuntosService service, CostoPuntosModelAssembler costoPuntosModelAssembler,
-                                 RutaCostoMinimoModelAssembler rutaCostoMinimoModelAssembler) {
+    public CostPointsController(CostoPuntosService service, CostoPuntosModelAssembler costoPuntosModelAssembler,
+                                RutaCostoMinimoModelAssembler rutaCostoMinimoModelAssembler) {
         this.service = service;
         this.costoPuntosModelAssembler = costoPuntosModelAssembler;
         this.rutaCostoMinimoModelAssembler = rutaCostoMinimoModelAssembler;

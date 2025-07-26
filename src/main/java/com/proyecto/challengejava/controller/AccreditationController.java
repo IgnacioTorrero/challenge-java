@@ -23,7 +23,7 @@ import static com.proyecto.challengejava.mapper.AcreditacionMapper.mapToResponse
  */
 @RestController
 @RequestMapping("/api/acreditaciones")
-public class AcreditacionController {
+public class AccreditationController {
 
     private final AcreditacionService service;
     private final AcreditacionModelAssembler acreditacionAssembler;
@@ -35,7 +35,7 @@ public class AcreditacionController {
      * @param acreditacionAssembler Assembler to convert responses into HATEOAS models.
      */
     @Autowired
-    public AcreditacionController(AcreditacionService service, AcreditacionModelAssembler acreditacionAssembler) {
+    public AccreditationController(AcreditacionService service, AcreditacionModelAssembler acreditacionAssembler) {
         this.service = service;
         this.acreditacionAssembler = acreditacionAssembler;
     }

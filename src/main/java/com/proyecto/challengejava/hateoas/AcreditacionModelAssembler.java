@@ -1,7 +1,7 @@
 package com.proyecto.challengejava.hateoas;
 
-import com.proyecto.challengejava.controller.AcreditacionController;
-import com.proyecto.challengejava.controller.PuntoVentaController;
+import com.proyecto.challengejava.controller.AccreditationController;
+import com.proyecto.challengejava.controller.PointSaleController;
 import com.proyecto.challengejava.dto.AcreditacionResponse;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
@@ -15,12 +15,12 @@ public class AcreditacionModelAssembler implements RepresentationModelAssembler<
     @Override
     public AcreditacionResponse toModel(AcreditacionResponse entity) {
         entity.add(WebMvcLinkBuilder.linkTo(
-                WebMvcLinkBuilder.methodOn(PuntoVentaController.class)
+                WebMvcLinkBuilder.methodOn(PointSaleController.class)
                         .getAllPuntosVenta()
         ).withRel(VER_TODOS_PUNTOS_DE_VENTA));
 
         entity.add(WebMvcLinkBuilder.linkTo(
-                WebMvcLinkBuilder.methodOn(AcreditacionController.class)
+                WebMvcLinkBuilder.methodOn(AccreditationController.class)
                         .obtenerAcreditaciones()
         ).withRel(VER_TODAS_ACREDITACIONES));
 

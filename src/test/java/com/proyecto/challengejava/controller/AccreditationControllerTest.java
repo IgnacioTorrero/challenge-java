@@ -20,10 +20,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
 /**
- * Unit test for {@link AcreditacionController}.
+ * Unit test for {@link AccreditationController}.
  * Verifies correct behavior of endpoints related to accreditations.
  */
-public class AcreditacionControllerTest {
+public class AccreditationControllerTest {
 
     @Mock
     private AcreditacionServiceImpl acreditacionServiceImpl;
@@ -32,7 +32,7 @@ public class AcreditacionControllerTest {
     private AcreditacionModelAssembler acreditacionAssembler;
 
     @InjectMocks
-    private AcreditacionController acreditacionController;
+    private AccreditationController accreditationController;
 
     private final AcreditacionRequest request = new AcreditacionRequest();
 
@@ -75,7 +75,7 @@ public class AcreditacionControllerTest {
         when(acreditacionAssembler.toModel(responseSinLinks)).thenReturn(responseSinLinks);
 
         // Act: call the controller
-        ResponseEntity<AcreditacionResponse> response = acreditacionController.recibirAcreditacion(request);
+        ResponseEntity<AcreditacionResponse> response = accreditationController.recibirAcreditacion(request);
 
         // Assert: verify the response
         assertEquals(SUCCESS_RESPONSE, response.getStatusCodeValue());
@@ -116,7 +116,7 @@ public class AcreditacionControllerTest {
         when(acreditacionAssembler.toModel(response2)).thenReturn(response2);
 
         // Act: call the controller
-        ResponseEntity<?> response = acreditacionController.obtenerAcreditaciones();
+        ResponseEntity<?> response = accreditationController.obtenerAcreditaciones();
 
         // Assert: verify the response
         assertEquals(SUCCESS_RESPONSE, response.getStatusCodeValue());

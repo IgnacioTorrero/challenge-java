@@ -24,10 +24,10 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 /**
- * Unit test for {@link CostoPuntosController}.
+ * Unit test for {@link CostPointsController}.
  * Verifies the behavior of endpoints related to connection costs between sales points.
  */
-public class CostoPuntosControllerTest {
+public class CostPointsControllerTest {
 
     @Mock
     private CostoPuntosServiceImpl service;
@@ -39,7 +39,7 @@ public class CostoPuntosControllerTest {
     private RutaCostoMinimoModelAssembler rutaAssembler;
 
     @InjectMocks
-    private CostoPuntosController controller;
+    private CostPointsController controller;
 
     private final CostoPuntosRequest request = new CostoPuntosRequest(ID_PUNTO_VENTA, ID_PUNTO_VENTA2);
 
@@ -126,10 +126,10 @@ public class CostoPuntosControllerTest {
         RutaCostoMinimoResponse original = new RutaCostoMinimoResponse(ruta, costoTotal);
 
         RutaCostoMinimoResponse responseConLinks = new RutaCostoMinimoResponse(ruta, costoTotal);
-        responseConLinks.add(linkTo(methodOn(CostoPuntosController.class).getCostosDesdePunto(1L)).withRel("ver-costos-desde-1"));
-        responseConLinks.add(linkTo(methodOn(CostoPuntosController.class).getCostosDesdePunto(2L)).withRel("ver-costos-desde-2"));
-        responseConLinks.add(linkTo(methodOn(CostoPuntosController.class).getCostosDesdePunto(3L)).withRel("ver-costos-desde-3"));
-        responseConLinks.add(linkTo(methodOn(CostoPuntosController.class).calcularCostoMinimo(new CostoPuntosRequest(1L, 3L))).withRel("recalcular-ruta"));
+        responseConLinks.add(linkTo(methodOn(CostPointsController.class).getCostosDesdePunto(1L)).withRel("ver-costos-desde-1"));
+        responseConLinks.add(linkTo(methodOn(CostPointsController.class).getCostosDesdePunto(2L)).withRel("ver-costos-desde-2"));
+        responseConLinks.add(linkTo(methodOn(CostPointsController.class).getCostosDesdePunto(3L)).withRel("ver-costos-desde-3"));
+        responseConLinks.add(linkTo(methodOn(CostPointsController.class).calcularCostoMinimo(new CostoPuntosRequest(1L, 3L))).withRel("recalcular-ruta"));
 
         when(service.calcularRutaMinima(anyLong(), anyLong())).thenReturn(ruta);
         when(service.calcularCostoTotalRuta(anyList())).thenReturn(costoTotal);

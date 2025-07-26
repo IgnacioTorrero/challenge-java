@@ -1,6 +1,6 @@
 package com.proyecto.challengejava.hateoas;
 
-import com.proyecto.challengejava.controller.PuntoVentaController;
+import com.proyecto.challengejava.controller.PointSaleController;
 import com.proyecto.challengejava.dto.PuntoVentaResponse;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
@@ -15,14 +15,14 @@ public class PuntoVentaModelAssembler implements RepresentationModelAssembler<Pu
     public PuntoVentaResponse toModel(PuntoVentaResponse puntoVenta) {
         puntoVenta.add(
                 WebMvcLinkBuilder.linkTo(
-                        WebMvcLinkBuilder.methodOn(PuntoVentaController.class)
+                        WebMvcLinkBuilder.methodOn(PointSaleController.class)
                                 .getAllPuntosVenta()
                 ).withRel(LISTAR_TODOS)
         );
 
         puntoVenta.add(
                 WebMvcLinkBuilder.linkTo(
-                        WebMvcLinkBuilder.methodOn(PuntoVentaController.class)
+                        WebMvcLinkBuilder.methodOn(PointSaleController.class)
                                 .deletePuntoVenta(puntoVenta.getId())
                 ).withRel(ELIMINAR)
         );

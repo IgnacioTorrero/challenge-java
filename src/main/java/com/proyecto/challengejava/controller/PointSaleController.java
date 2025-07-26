@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping("/api/puntos-venta")
-public class PuntoVentaController {
+public class PointSaleController {
 
     private final PuntoVentaService service;
     private final PuntoVentaManager manager;
@@ -33,8 +33,8 @@ public class PuntoVentaController {
      * @param assembler HATEOAS assembler for sales point responses.
      */
     @Autowired
-    public PuntoVentaController(PuntoVentaService service, PuntoVentaManager manager,
-                                PuntoVentaModelAssembler assembler) {
+    public PointSaleController(PuntoVentaService service, PuntoVentaManager manager,
+                               PuntoVentaModelAssembler assembler) {
         this.service = service;
         this.manager = manager;
         this.assembler = assembler;

@@ -22,10 +22,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Unit test for {@link PuntoVentaController}.
+ * Unit test for {@link PointSaleController}.
  * Validates the correct behavior of endpoints related to sales points.
  */
-public class PuntoVentaControllerTest {
+public class PointSaleControllerTest {
 
     @Mock
     private PuntoVentaServiceImpl service;
@@ -37,7 +37,7 @@ public class PuntoVentaControllerTest {
     private PuntoVentaModelAssembler assembler;
 
     @InjectMocks
-    private PuntoVentaController controller;
+    private PointSaleController controller;
 
     private final PuntoVenta punto1 = new PuntoVenta();
     private final PuntoVenta punto2 = new PuntoVenta();

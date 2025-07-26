@@ -1,6 +1,6 @@
 package com.proyecto.challengejava.hateoas;
 
-import com.proyecto.challengejava.controller.CostoPuntosController;
+import com.proyecto.challengejava.controller.CostPointsController;
 import com.proyecto.challengejava.dto.CostoPuntosRequest;
 import com.proyecto.challengejava.dto.RutaCostoMinimoResponse;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
@@ -20,14 +20,14 @@ public class RutaCostoMinimoModelAssembler implements RepresentationModelAssembl
             CostoPuntosRequest request = new CostoPuntosRequest(origen, destino);
 
             response.add(WebMvcLinkBuilder.linkTo(
-                    WebMvcLinkBuilder.methodOn(CostoPuntosController.class)
+                    WebMvcLinkBuilder.methodOn(CostPointsController.class)
                             .calcularCostoMinimo(request)
             ).withRel(RECALCULAR_RUTA));
         }
 
         response.getRuta().forEach(id ->
                 response.add(WebMvcLinkBuilder.linkTo(
-                        WebMvcLinkBuilder.methodOn(CostoPuntosController.class)
+                        WebMvcLinkBuilder.methodOn(CostPointsController.class)
                                 .getCostosDesdePunto(id)
                 ).withRel(VER_COSTOS_DESDE + id))
         );
