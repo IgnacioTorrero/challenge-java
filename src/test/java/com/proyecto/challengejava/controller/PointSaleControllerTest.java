@@ -55,7 +55,7 @@ public class PointSaleControllerTest {
         punto2.setId(ID_PUNTO_VENTA2);
         punto2.setNombre(PUNTO_VENTA_2);
 
-        request.setNombre(PUNTO_VENTA_3);
+        request.setName(PUNTO_VENTA_3);
     }
 
     /**
@@ -82,10 +82,10 @@ public class PointSaleControllerTest {
         List<PointSaleResponse> resultList = body.getContent().stream().toList();
 
         assertTrue(resultList.stream().anyMatch(p ->
-                ID_PUNTO_VENTA.equals(p.getId()) && PUNTO_VENTA_1.equals(p.getNombre())
+                ID_PUNTO_VENTA.equals(p.getId()) && PUNTO_VENTA_1.equals(p.getName())
         ));
         assertTrue(resultList.stream().anyMatch(p ->
-                ID_PUNTO_VENTA2.equals(p.getId()) && PUNTO_VENTA_2.equals(p.getNombre())
+                ID_PUNTO_VENTA2.equals(p.getId()) && PUNTO_VENTA_2.equals(p.getName())
         ));
 
         verify(service, times(1)).getAllPuntosVenta();

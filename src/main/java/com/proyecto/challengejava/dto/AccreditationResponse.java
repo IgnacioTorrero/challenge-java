@@ -6,22 +6,22 @@ import java.time.LocalDate;
 
 public class AccreditationResponse extends RepresentationModel<AccreditationResponse> {
     private Long id;
-    private Double importe;
-    private Long idPuntoVenta;
-    private String nombrePuntoVenta;
-    private LocalDate fechaRecepcion;
+    private Double amount;
+    private Long idPointSale;
+    private String pointSaleName;
+    private LocalDate dateReception;
 
-    public AccreditationResponse(Long id, Double importe, Long idPuntoVenta, String nombrePuntoVenta, LocalDate fechaRecepcion) {
+    public AccreditationResponse(Long id, Double amount, Long idPointSale, String pointSaleName, LocalDate dateReception) {
         this.id = id;
-        this.importe = importe;
-        this.idPuntoVenta = idPuntoVenta;
-        this.nombrePuntoVenta = nombrePuntoVenta;
-        this.fechaRecepcion = fechaRecepcion;
+        this.amount = amount;
+        this.idPointSale = idPointSale;
+        this.pointSaleName = pointSaleName;
+        this.dateReception = dateReception;
     }
 
     public Long getId() { return id; }
-    public Double getImporte() { return importe; }
-    public Long getIdPuntoVenta() { return idPuntoVenta; }
-    public String getNombrePuntoVenta() { return nombrePuntoVenta; }
-    public LocalDate getFechaRecepcion() { return fechaRecepcion; }
+    public Double getAmount() { return amount; }
+    public Long getIdPointSale() { return idPointSale; }
+    public String getPointSaleName() { return pointSaleName; }
+    public LocalDate getDateReception() { return dateReception; }
 }

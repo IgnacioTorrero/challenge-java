@@ -53,7 +53,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public AuthResponse register(RegisterRequest request) {
         Usuario usuario = new Usuario();
-        usuario.setNombre(request.getNombre());
+        usuario.setNombre(request.getName());
         usuario.setEmail(request.getEmail());
         usuario.setPassword(passwordEncoder.encode(request.getPassword()));
         usuario.setRol(Role.USER);

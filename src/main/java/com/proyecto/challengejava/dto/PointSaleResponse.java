@@ -4,16 +4,16 @@ import org.springframework.hateoas.RepresentationModel;
 
 public class PointSaleResponse extends RepresentationModel<PointSaleResponse> {
     private Long id;
-    private String nombre;
+    private String name;
 
-    public PointSaleResponse(Long id, String nombre) {
+    public PointSaleResponse(Long id, String name) {
         this.id = id;
-        this.nombre = nombre;
+        this.name = name;
     }
 
     public Long getId() { return id; }
-    public String getNombre() { return nombre; }
+    public String getName() { return name; }
 
     public void setId(Long id) { this.id = id; }
-    public void setNombre(String nombre) { this.nombre = nombre; }
+    public void setName(String name) { this.name = name; }
 }

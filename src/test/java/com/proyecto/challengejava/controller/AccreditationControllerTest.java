@@ -43,8 +43,8 @@ public class AccreditationControllerTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        request.setImporte(IMPORTE);
-        request.setIdPuntoVenta(ID_PUNTO_VENTA);
+        request.setAmount(IMPORTE);
+        request.setIdPointSale(ID_PUNTO_VENTA);
     }
 
     /**
@@ -60,8 +60,8 @@ public class AccreditationControllerTest {
         accreditation.setIdPuntoVenta(ID_PUNTO_VENTA);
 
         AccreditationRequest request = new AccreditationRequest();
-        request.setImporte(IMPORTE);
-        request.setIdPuntoVenta(ID_PUNTO_VENTA);
+        request.setAmount(IMPORTE);
+        request.setIdPointSale(ID_PUNTO_VENTA);
 
         AccreditationResponse responseSinLinks = new AccreditationResponse(
                 accreditation.getId(),
@@ -79,8 +79,8 @@ public class AccreditationControllerTest {
 
         // Assert: verify the response
         assertEquals(SUCCESS_RESPONSE, response.getStatusCodeValue());
-        assertEquals(responseSinLinks.getImporte(), response.getBody().getImporte());
-        assertEquals(responseSinLinks.getIdPuntoVenta(), response.getBody().getIdPuntoVenta());
+        assertEquals(responseSinLinks.getAmount(), response.getBody().getAmount());
+        assertEquals(responseSinLinks.getIdPointSale(), response.getBody().getIdPointSale());
     }
 
     /**

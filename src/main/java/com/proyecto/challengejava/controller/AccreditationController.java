@@ -48,7 +48,7 @@ public class AccreditationController {
      */
     @PostMapping
     public ResponseEntity<AccreditationResponse> receiveAccreditation(@RequestBody @Valid AccreditationRequest request) {
-        Accreditation accreditation = service.recibirAcreditacion(request.getImporte(), request.getIdPuntoVenta());
+        Accreditation accreditation = service.recibirAcreditacion(request.getAmount(), request.getIdPointSale());
         AccreditationResponse response = mapToResponse(accreditation);
         return ResponseEntity.ok(accreditationAssembler.toModel(response));
     }

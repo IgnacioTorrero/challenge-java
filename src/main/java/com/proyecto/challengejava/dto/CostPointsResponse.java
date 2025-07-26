@@ -5,14 +5,14 @@ import org.springframework.hateoas.RepresentationModel;
 public class CostPointsResponse extends RepresentationModel<CostPointsResponse> {
     private Long idA;
     private Long idB;
-    private Double costo;
-    private String nombrePuntoB;
+    private Double cost;
+    private String pointNameB;
 
-    public CostPointsResponse(Long idA, Long idB, Double costo, String nombrePuntoB) {
+    public CostPointsResponse(Long idA, Long idB, Double cost, String pointNameB) {
         this.idA = idA;
         this.idB = idB;
-        this.costo = costo;
-        this.nombrePuntoB = nombrePuntoB;
+        this.cost = cost;
+        this.pointNameB = pointNameB;
     }
 
     // Getters y setters
@@ -22,9 +22,9 @@ public class CostPointsResponse extends RepresentationModel<CostPointsResponse> 
     public Long getIdB() { return idB; }
     public void setIdB(Long idB) { this.idB = idB; }
 
-    public Double getCosto() { return costo; }
-    public void setCosto(Double costo) { this.costo = costo; }
+    public Double getCost() { return cost; }
+    public void setCost(Double cost) { this.cost = cost; }
 
-    public String getNombrePuntoB() { return nombrePuntoB; }
-    public void setNombrePuntoB(String nombrePuntoB) { this.nombrePuntoB = nombrePuntoB; }
+    public String getPointNameB() { return pointNameB; }
+    public void setPointNameB(String pointNameB) { this.pointNameB = pointNameB; }
 }

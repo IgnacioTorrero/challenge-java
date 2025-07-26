@@ -107,8 +107,8 @@ public class CostPointsControllerTest {
                     item != null &&
                             item.getIdA().equals(esperado.getIdA()) &&
                             item.getIdB().equals(esperado.getIdB()) &&
-                            item.getCosto().equals(esperado.getCosto()) &&
-                            item.getNombrePuntoB().equals(esperado.getNombrePuntoB())
+                            item.getCost().equals(esperado.getCost()) &&
+                            item.getPointNameB().equals(esperado.getPointNameB())
             ));
         }
 
@@ -142,8 +142,8 @@ public class CostPointsControllerTest {
         // Assert
         assertEquals(SUCCESS_RESPONSE, response.getStatusCodeValue());
         assertNotNull(response.getBody());
-        assertEquals(ruta, response.getBody().getRuta());
-        assertEquals(costoTotal, response.getBody().getCostoTotal());
+        assertEquals(ruta, response.getBody().getRute());
+        assertEquals(costoTotal, response.getBody().getTotalCost());
 
         assertTrue(response.getBody().getLinks().hasLink("ver-costos-desde-1"));
         assertTrue(response.getBody().getLinks().hasLink("ver-costos-desde-2"));

@@ -78,7 +78,7 @@ public class CostPointsServiceImplTest {
         List<CostPointsResponse> costos = costoPuntosServiceImpl.getCostosDesdePunto(ID_PUNTO_VENTA);
 
         assertEquals(3, costos.size());
-        assertEquals(IMPORTE, costos.get(0).getCosto());
+        assertEquals(IMPORTE, costos.get(0).getCost());
     }
 
     /**
@@ -109,7 +109,7 @@ public class CostPointsServiceImplTest {
     @Test
     void removeCostoPuntos_ReturnsOk() {
         costoPuntosServiceImpl.removeCostoPuntos(ID_PUNTO_VENTA, ID_PUNTO_VENTA2);
-        double costoAhora = costoPuntosServiceImpl.getCostosDesdePunto(ID_PUNTO_VENTA).get(0).getCosto();
+        double costoAhora = costoPuntosServiceImpl.getCostosDesdePunto(ID_PUNTO_VENTA).get(0).getCost();
         assertEquals(0.0, costoAhora);
     }
 
@@ -124,8 +124,8 @@ public class CostPointsServiceImplTest {
         List<CostPointsResponse> costos = costoPuntosServiceImpl.getCostosDesdePunto(ID_PUNTO_VENTA);
 
         assertEquals(3, costos.size());
-        assertEquals(IMPORTE, costos.get(0).getCosto());
-        assertEquals(IMPORTE2, costos.get(1).getCosto());
+        assertEquals(IMPORTE, costos.get(0).getCost());
+        assertEquals(IMPORTE2, costos.get(1).getCost());
     }
 
     /**
@@ -278,8 +278,8 @@ public class CostPointsServiceImplTest {
         assertEquals(1, costos.size());
         assertEquals(idA, costos.get(0).getIdA());
         assertEquals(idRelacionado, costos.get(0).getIdB());
-        assertEquals(5.5, costos.get(0).getCosto());
-        assertEquals("Punto 1", costos.get(0).getNombrePuntoB());
+        assertEquals(5.5, costos.get(0).getCost());
+        assertEquals("Punto 1", costos.get(0).getPointNameB());
     }
 
     /**

@@ -5,11 +5,11 @@ import jakarta.validation.constraints.NotNull;
 
 public class CostPointsRequest {
 
-    @NotNull(message = "El ID no puede ser nulo")
-    @Min(value = 1, message = "El ID debe ser mayor que 0")
+    @NotNull(message = "The ID cannot be null")
+    @Min(value = 1, message = "The ID cannot be more than 0")
     private Long idA;
-    @NotNull(message = "El ID no puede ser nulo")
-    @Min(value = 1, message = "El ID debe ser mayor que 0")
+    @NotNull(message = "The ID cannot be null")
+    @Min(value = 1, message = "The ID cannot be more than 0")
     private Long idB;
 
     public CostPointsRequest(Long idA, Long idB) {

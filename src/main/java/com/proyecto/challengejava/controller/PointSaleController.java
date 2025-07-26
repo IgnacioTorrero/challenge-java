@@ -63,7 +63,7 @@ public class PointSaleController {
      */
     @PostMapping
     public ResponseEntity<Void> addPointSale(@RequestBody @Valid PointSaleRequest request) {
-        service.addPuntoVenta(request.getNombre());
+        service.addPuntoVenta(request.getName());
         return ResponseEntity.ok().build();
     }
 
@@ -76,7 +76,7 @@ public class PointSaleController {
      */
     @PutMapping("/{id}")
     public ResponseEntity<Void> updatePointSale(@PathVariable Long id, @RequestBody @Valid PointSaleRequest request) {
-        service.updatePuntoVenta(id, request.getNombre());
+        service.updatePuntoVenta(id, request.getName());
         return ResponseEntity.ok().build();
     }
 

@@ -5,10 +5,10 @@ import jakarta.validation.constraints.Pattern;
 
 public class PointSaleRequest {
 
-    @NotBlank(message = "El nombre no puede estar vacío")
-    @Pattern(regexp = "^[A-Za-z0-9_ ]+$", message = "El nombre solo puede contener letras, números, espacios y guiones bajos")
-    private String nombre;
+    @NotBlank(message = "The name cannot be empty")
+    @Pattern(regexp = "^[A-Za-z0-9_ ]+$", message = "The name cannot contain letters, numbers, spaces, and underscores")
+    private String name;
 
-    public String getNombre() { return nombre; }
-    public void setNombre(String nombre) { this.nombre = nombre; }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 }

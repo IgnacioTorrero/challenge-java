@@ -5,15 +5,15 @@ import jakarta.validation.constraints.NotNull;
 
 public class AccreditationRequest {
 
-    @NotNull(message = "El importe no puede ser nulo")
-    @Min(value = 0, message = "El importe no puede ser negativo")
-    private Double importe;
-    @NotNull(message = "El ID no puede ser nulo")
-    @Min(value = 1, message = "El ID debe ser mayor que 0")
-    private Long idPuntoVenta;
+    @NotNull(message = "The amount cannot be null")
+    @Min(value = 0, message = "The amount cannot be negative")
+    private Double amount;
+    @NotNull(message = "The ID cannot be null")
+    @Min(value = 1, message = "The ID cannot be more than 0")
+    private Long idPointSale;
 
-    public Double getImporte() { return importe; }
-    public void setImporte(Double importe) { this.importe = importe; }
-    public Long getIdPuntoVenta() { return idPuntoVenta; }
-    public void setIdPuntoVenta(Long idPuntoVenta) { this.idPuntoVenta = idPuntoVenta; }
+    public Double getAmount() { return amount; }
+    public void setAmount(Double amount) { this.amount = amount; }
+    public Long getIdPointSale() { return idPointSale; }
+    public void setIdPointSale(Long idPointSale) { this.idPointSale = idPointSale; }
 }
