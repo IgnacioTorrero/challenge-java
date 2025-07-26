@@ -47,14 +47,14 @@ public class CostPointsController {
      * Endpoint to add a connection cost between two sales points.
      *
      * @param request Object containing the IDs of points A and B.
-     * @param costo   Cost value between the points.
+     * @param cost   Cost value between the points.
      * @return HTTP 200 OK response if added successfully.
      */
     @PostMapping
-    public ResponseEntity<Void> addCostoPuntos(@RequestBody @Valid CostPointsRequest request,
-                                               @RequestParam Double costo) {
-        validarParametros(request.getIdA(), request.getIdB());
-        service.addCostoPuntos(request.getIdA(), request.getIdB(), costo);
+    public ResponseEntity<Void> addCostPoints(@RequestBody @Valid CostPointsRequest request,
+                                              @RequestParam Double cost) {
+        validateParameters(request.getIdA(), request.getIdB());
+        service.addCostoPuntos(request.getIdA(), request.getIdB(), cost);
         return ResponseEntity.ok().build();
     }
 
@@ -65,8 +65,8 @@ public class CostPointsController {
      * @return HTTP 200 OK response if removed successfully.
      */
     @DeleteMapping
-    public ResponseEntity<Void> removeCostoPuntos(@RequestBody @Valid CostPointsRequest request) {
-        validarParametros(request.getIdA(), request.getIdB());
+    public ResponseEntity<Void> removeCostPoints(@RequestBody @Valid CostPointsRequest request) {
+        validateParameters(request.getIdA(), request.getIdB());
         service.removeCostoPuntos(request.getIdA(), request.getIdB());
         return ResponseEntity.ok().build();
     }
@@ -78,7 +78,7 @@ public class CostPointsController {
      * @return HATEOAS collection of costs from the specified point.
      */
     @GetMapping("/{idA}")
-    public ResponseEntity<CollectionModel<CostPointsResponse>> getCostosDesdePunto(@PathVariable Long idA) {
+    public ResponseEntity<CollectionModel<CostPointsResponse>> getCostsFromPoint(@PathVariable Long idA) {
         List<CostPointsResponse> responseList = service.getCostosDesdePunto(idA)
                 .stream()
                 .map(costPointsModelAssembler::toModel)
@@ -95,13 +95,13 @@ public class CostPointsController {
      * @return HATEOAS model with the route and total cost.
      */
     @PostMapping("/minimo")
-    public ResponseEntity<MinCostRouteResponse> calcularCostoMinimo(@RequestBody @Valid CostPointsRequest request) {
-        validarParametros(request.getIdA(), request.getIdB());
+    public ResponseEntity<MinCostRouteResponse> calculateMinCost(@RequestBody @Valid CostPointsRequest request) {
+        validateParameters(request.getIdA(), request.getIdB());
 
-        List<Long> ruta = service.calcularRutaMinima(request.getIdA(), request.getIdB());
-        Double costoTotal = service.calcularCostoTotalRuta(ruta);
+        List<Long> rute = service.calcularRutaMinima(request.getIdA(), request.getIdB());
+        Double totalCost = service.calcularCostoTotalRuta(rute);
 
-        MinCostRouteResponse response = new MinCostRouteResponse(ruta, costoTotal);
+        MinCostRouteResponse response = new MinCostRouteResponse(rute, totalCost);
         return ResponseEntity.ok(minCostRouteModelAssembler.toModel(response));
     }
 
@@ -112,7 +112,7 @@ public class CostPointsController {
      * @param idB ID of point B.
      * @throws IllegalArgumentException if both IDs are the same.
      */
-    private void validarParametros(Long idA, Long idB) {
+    private void validateParameters(Long idA, Long idB) {
         if (idA.equals(idB)) {
             throw new IllegalArgumentException(INVALID_ID_EXCEPTION);
         }

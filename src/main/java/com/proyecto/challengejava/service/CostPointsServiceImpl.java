@@ -12,7 +12,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.proyecto.challengejava.constants.Constants.*;
-import static com.proyecto.challengejava.util.CostoPuntosUtil.*;
+import static com.proyecto.challengejava.util.CostPointsUtil.*;
 
 /**
  * Implementation of the service that manages connection costs between sales points,

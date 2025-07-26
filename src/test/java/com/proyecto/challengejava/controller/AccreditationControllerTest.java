@@ -52,7 +52,7 @@ public class AccreditationControllerTest {
      * returns a response with the expected data.
      */
     @Test
-    void recibirAcreditacion_ReturnsAcreditacionResponse() {
+    void receiveAccreditationResponse() {
         // Arrange: simulate the accreditation returned by the service
         Accreditation accreditation = new Accreditation();
         accreditation.setId(ID_PUNTO_VENTA);
@@ -75,7 +75,7 @@ public class AccreditationControllerTest {
         when(acreditacionAssembler.toModel(responseSinLinks)).thenReturn(responseSinLinks);
 
         // Act: call the controller
-        ResponseEntity<AccreditationResponse> response = accreditationController.recibirAcreditacion(request);
+        ResponseEntity<AccreditationResponse> response = accreditationController.receiveAccreditation(request);
 
         // Assert: verify the response
         assertEquals(SUCCESS_RESPONSE, response.getStatusCodeValue());
@@ -88,7 +88,7 @@ public class AccreditationControllerTest {
      * returns a list of accreditations correctly transformed.
      */
     @Test
-    void obtenerAcreditaciones_ReturnsCollectionModelOfAcreditacionResponses() {
+    void getAccreditations_ReturnsCollectionModelOfAcreditacionResponses() {
         // Arrange: simulate two accreditations returned by the service
         Accreditation accreditation1 = new Accreditation();
         accreditation1.setId(ID_PUNTO_VENTA);
@@ -116,7 +116,7 @@ public class AccreditationControllerTest {
         when(acreditacionAssembler.toModel(response2)).thenReturn(response2);
 
         // Act: call the controller
-        ResponseEntity<?> response = accreditationController.obtenerAcreditaciones();
+        ResponseEntity<?> response = accreditationController.getAccreditations();
 
         // Assert: verify the response
         assertEquals(SUCCESS_RESPONSE, response.getStatusCodeValue());

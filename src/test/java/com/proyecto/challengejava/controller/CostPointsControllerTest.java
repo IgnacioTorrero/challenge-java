@@ -58,8 +58,8 @@ public class CostPointsControllerTest {
      * and correctly invokes the service.
      */
     @Test
-    void addCostoPuntos_ReturnsOk() {
-        ResponseEntity<Void> response = controller.addCostoPuntos(request, IMPORTE);
+    void addCostPoints_ReturnsOk() {
+        ResponseEntity<Void> response = controller.addCostPoints(request, IMPORTE);
 
         assertEquals(SUCCESS_RESPONSE, response.getStatusCodeValue());
         verify(service, times(1)).addCostoPuntos(ID_PUNTO_VENTA5, ID_PUNTO_VENTA2, IMPORTE);
@@ -70,8 +70,8 @@ public class CostPointsControllerTest {
      * and invokes the service to remove the cost.
      */
     @Test
-    void removeCostoPuntos_ReturnsOk() {
-        ResponseEntity<Void> response = controller.removeCostoPuntos(request);
+    void removeCostPoints_ReturnsOk() {
+        ResponseEntity<Void> response = controller.removeCostPoints(request);
 
         assertEquals(200, response.getStatusCodeValue());
         verify(service, times(1)).removeCostoPuntos(ID_PUNTO_VENTA5, ID_PUNTO_VENTA2);
@@ -93,7 +93,7 @@ public class CostPointsControllerTest {
         when(assembler.toModel(any())).thenAnswer(invocation -> invocation.getArgument(0));
 
         // Act
-        ResponseEntity<CollectionModel<CostPointsResponse>> response = controller.getCostosDesdePunto(ID_PUNTO_VENTA);
+        ResponseEntity<CollectionModel<CostPointsResponse>> response = controller.getCostsFromPoint(ID_PUNTO_VENTA);
 
         // Assert
         assertEquals(SUCCESS_RESPONSE, response.getStatusCodeValue());
@@ -120,16 +120,16 @@ public class CostPointsControllerTest {
      * with the corresponding HATEOAS links.
      */
     @Test
-    void calcularCostoMinimo_ReturnsRutaCostoMinimoResponse() {
+    void calculateMinCostResponse() {
         List<Long> ruta = Arrays.asList(1L, 2L, 3L);
         Double costoTotal = 25.0;
         MinCostRouteResponse original = new MinCostRouteResponse(ruta, costoTotal);
 
         MinCostRouteResponse responseConLinks = new MinCostRouteResponse(ruta, costoTotal);
-        responseConLinks.add(linkTo(methodOn(CostPointsController.class).getCostosDesdePunto(1L)).withRel("ver-costos-desde-1"));
-        responseConLinks.add(linkTo(methodOn(CostPointsController.class).getCostosDesdePunto(2L)).withRel("ver-costos-desde-2"));
-        responseConLinks.add(linkTo(methodOn(CostPointsController.class).getCostosDesdePunto(3L)).withRel("ver-costos-desde-3"));
-        responseConLinks.add(linkTo(methodOn(CostPointsController.class).calcularCostoMinimo(new CostPointsRequest(1L, 3L))).withRel("recalcular-ruta"));
+        responseConLinks.add(linkTo(methodOn(CostPointsController.class).getCostsFromPoint(1L)).withRel("ver-costos-desde-1"));
+        responseConLinks.add(linkTo(methodOn(CostPointsController.class).getCostsFromPoint(2L)).withRel("ver-costos-desde-2"));
+        responseConLinks.add(linkTo(methodOn(CostPointsController.class).getCostsFromPoint(3L)).withRel("ver-costos-desde-3"));
+        responseConLinks.add(linkTo(methodOn(CostPointsController.class).calculateMinCost(new CostPointsRequest(1L, 3L))).withRel("recalcular-ruta"));
 
         when(service.calcularRutaMinima(anyLong(), anyLong())).thenReturn(ruta);
         when(service.calcularCostoTotalRuta(anyList())).thenReturn(costoTotal);
@@ -137,7 +137,7 @@ public class CostPointsControllerTest {
 
         // Act
         CostPointsRequest request = new CostPointsRequest(1L, 3L);
-        ResponseEntity<MinCostRouteResponse> response = controller.calcularCostoMinimo(request);
+        ResponseEntity<MinCostRouteResponse> response = controller.calculateMinCost(request);
 
         // Assert
         assertEquals(SUCCESS_RESPONSE, response.getStatusCodeValue());
@@ -160,14 +160,14 @@ public class CostPointsControllerTest {
      * method throws an {@link IllegalArgumentException}.
      */
     @Test
-    void addCostoPuntos_SameId_ThrowsException() {
+    void addCostPoints_SameId_ThrowsException() {
         // Arrange
         Long id = 5L;
         CostPointsRequest requestConIdsIguales = new CostPointsRequest(id, id);
 
         // Act & Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            controller.addCostoPuntos(requestConIdsIguales, 100.0);
+            controller.addCostPoints(requestConIdsIguales, 100.0);
         });
 
         assertEquals(INVALID_ID_EXCEPTION, exception.getMessage());

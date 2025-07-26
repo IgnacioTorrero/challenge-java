@@ -17,14 +17,14 @@ public class CostPointsModelAssembler implements RepresentationModelAssembler<Co
         entity.add(
                 WebMvcLinkBuilder.linkTo(
                         WebMvcLinkBuilder.methodOn(CostPointsController.class)
-                                .getCostosDesdePunto(entity.getIdB())
+                                .getCostsFromPoint(entity.getIdB())
                 ).withRel(VER_COSTOS_DESDE_PUNTO)
         );
 
         entity.add(
                 WebMvcLinkBuilder.linkTo(
                         WebMvcLinkBuilder.methodOn(CostPointsController.class)
-                                .calcularCostoMinimo(new CostPointsRequest(entity.getIdA(), entity.getIdB()))
+                                .calculateMinCost(new CostPointsRequest(entity.getIdA(), entity.getIdB()))
                 ).withRel(CALCULAR_RUTA_MINIMA)
         );
 

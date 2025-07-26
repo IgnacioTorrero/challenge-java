@@ -9,9 +9,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static com.proyecto.challengejava.constants.Constants.*;
 
-public class CostoPuntosUtil {
+public class CostPointsUtil {
 
-    private CostoPuntosUtil() {}
+    private CostPointsUtil() {}
 
     public static String generateKey(Long idA, Long idB) {
         return (idA < idB ? idA + REGEX + idB : idB + REGEX + idA);

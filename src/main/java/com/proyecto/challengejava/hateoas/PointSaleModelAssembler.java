@@ -16,14 +16,14 @@ public class PointSaleModelAssembler implements RepresentationModelAssembler<Poi
         puntoVenta.add(
                 WebMvcLinkBuilder.linkTo(
                         WebMvcLinkBuilder.methodOn(PointSaleController.class)
-                                .getAllPuntosVenta()
+                                .getAllPointsSale()
                 ).withRel(LISTAR_TODOS)
         );
 
         puntoVenta.add(
                 WebMvcLinkBuilder.linkTo(
                         WebMvcLinkBuilder.methodOn(PointSaleController.class)
-                                .deletePuntoVenta(puntoVenta.getId())
+                                .deletePointSale(puntoVenta.getId())
                 ).withRel(ELIMINAR)
         );
 

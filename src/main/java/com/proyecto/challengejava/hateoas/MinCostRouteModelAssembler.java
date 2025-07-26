@@ -21,14 +21,14 @@ public class MinCostRouteModelAssembler implements RepresentationModelAssembler<
 
             response.add(WebMvcLinkBuilder.linkTo(
                     WebMvcLinkBuilder.methodOn(CostPointsController.class)
-                            .calcularCostoMinimo(request)
+                            .calculateMinCost(request)
             ).withRel(RECALCULAR_RUTA));
         }
 
         response.getRuta().forEach(id ->
                 response.add(WebMvcLinkBuilder.linkTo(
                         WebMvcLinkBuilder.methodOn(CostPointsController.class)
-                                .getCostosDesdePunto(id)
+                                .getCostsFromPoint(id)
                 ).withRel(VER_COSTOS_DESDE + id))
         );
 

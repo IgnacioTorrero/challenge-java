@@ -46,7 +46,7 @@ public class PointSaleController {
      * @return HATEOAS collection with the registered sales points.
      */
     @GetMapping
-    public ResponseEntity<CollectionModel<PointSaleResponse>> getAllPuntosVenta() {
+    public ResponseEntity<CollectionModel<PointSaleResponse>> getAllPointsSale() {
         List<PointSaleResponse> responses = service.getAllPuntosVenta().stream()
                 .map(p -> new PointSaleResponse(p.getId(), p.getNombre()))
                 .map(assembler::toModel)
@@ -62,7 +62,7 @@ public class PointSaleController {
      * @return HTTP 200 OK response if added successfully.
      */
     @PostMapping
-    public ResponseEntity<Void> addPuntoVenta(@RequestBody @Valid PointSaleRequest request) {
+    public ResponseEntity<Void> addPointSale(@RequestBody @Valid PointSaleRequest request) {
         service.addPuntoVenta(request.getNombre());
         return ResponseEntity.ok().build();
     }
@@ -75,7 +75,7 @@ public class PointSaleController {
      * @return HTTP 200 OK response if updated successfully.
      */
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updatePuntoVenta(@PathVariable Long id, @RequestBody @Valid PointSaleRequest request) {
+    public ResponseEntity<Void> updatePointSale(@PathVariable Long id, @RequestBody @Valid PointSaleRequest request) {
         service.updatePuntoVenta(id, request.getNombre());
         return ResponseEntity.ok().build();
     }
@@ -87,7 +87,7 @@ public class PointSaleController {
      * @return HTTP 200 OK response if deleted successfully.
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePuntoVenta(@PathVariable Long id) {
+    public ResponseEntity<Void> deletePointSale(@PathVariable Long id) {
         manager.eliminarPuntoVentaConCostos(id);
         return ResponseEntity.ok().build();
     }

@@ -16,12 +16,12 @@ public class AccreditationModelAssembler implements RepresentationModelAssembler
     public AccreditationResponse toModel(AccreditationResponse entity) {
         entity.add(WebMvcLinkBuilder.linkTo(
                 WebMvcLinkBuilder.methodOn(PointSaleController.class)
-                        .getAllPuntosVenta()
+                        .getAllPointsSale()
         ).withRel(VER_TODOS_PUNTOS_DE_VENTA));
 
         entity.add(WebMvcLinkBuilder.linkTo(
                 WebMvcLinkBuilder.methodOn(AccreditationController.class)
-                        .obtenerAcreditaciones()
+                        .getAccreditations()
         ).withRel(VER_TODAS_ACREDITACIONES));
 
         return entity;

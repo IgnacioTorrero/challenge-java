@@ -63,7 +63,7 @@ public class PointSaleControllerTest {
      * a list of sales points converted to a CollectionModel.
      */
     @Test
-    void getAllPuntosVenta_ReturnsCollectionModelOfPuntoVentaResponses() {
+    void getAllPointsSaleResponses() {
         // Arrange
         List<PointSale> puntosVenta = Arrays.asList(punto1, punto2);
         when(service.getAllPuntosVenta()).thenReturn(puntosVenta);
@@ -71,7 +71,7 @@ public class PointSaleControllerTest {
                 .thenAnswer(invocation -> invocation.getArgument(0));
 
         // Act
-        ResponseEntity<CollectionModel<PointSaleResponse>> response = controller.getAllPuntosVenta();
+        ResponseEntity<CollectionModel<PointSaleResponse>> response = controller.getAllPointsSale();
 
         // Assert
         assertEquals(SUCCESS_RESPONSE, response.getStatusCodeValue());
@@ -96,8 +96,8 @@ public class PointSaleControllerTest {
      * and invokes the service to create a new sales point.
      */
     @Test
-    void addPuntoVenta_ReturnsResponseOk() {
-        ResponseEntity<Void> response = controller.addPuntoVenta(request);
+    void addPointSale_ReturnsResponseOk() {
+        ResponseEntity<Void> response = controller.addPointSale(request);
         assertEquals(SUCCESS_RESPONSE, response.getStatusCodeValue());
 
         verify(service, times(1)).addPuntoVenta(PUNTO_VENTA_3);
@@ -108,8 +108,8 @@ public class PointSaleControllerTest {
      * the name of the given sales point.
      */
     @Test
-    void updatePuntoVenta_ReturnsResponseOk() {
-        ResponseEntity<Void> response = controller.updatePuntoVenta(ID_PUNTO_VENTA5, request);
+    void updatePointSale_ReturnsResponseOk() {
+        ResponseEntity<Void> response = controller.updatePointSale(ID_PUNTO_VENTA5, request);
 
         assertEquals(SUCCESS_RESPONSE, response.getStatusCodeValue());
         verify(service, times(1)).updatePuntoVenta(ID_PUNTO_VENTA5, PUNTO_VENTA_3);
@@ -120,8 +120,8 @@ public class PointSaleControllerTest {
      * along with its associated costs.
      */
     @Test
-    void deletePuntoVenta_ReturnsResponseOk() {
-        ResponseEntity<Void> response = controller.deletePuntoVenta(ID_PUNTO_VENTA4);
+    void deletePointSale_ReturnsResponseOk() {
+        ResponseEntity<Void> response = controller.deletePointSale(ID_PUNTO_VENTA4);
 
         assertEquals(SUCCESS_RESPONSE, response.getStatusCodeValue());
         verify(pointSaleManager, times(1)).eliminarPuntoVentaConCostos(ID_PUNTO_VENTA4);

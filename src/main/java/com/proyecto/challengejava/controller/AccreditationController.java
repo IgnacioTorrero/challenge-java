@@ -26,18 +26,18 @@ import static com.proyecto.challengejava.mapper.AccreditationMapper.mapToRespons
 public class AccreditationController {
 
     private final AccreditationService service;
-    private final AccreditationModelAssembler acreditacionAssembler;
+    private final AccreditationModelAssembler accreditationAssembler;
 
     /**
      * Constructor that injects the required dependencies.
      *
      * @param service               Service responsible for the business logic of accreditations.
-     * @param acreditacionAssembler Assembler to convert responses into HATEOAS models.
+     * @param accreditationAssembler Assembler to convert responses into HATEOAS models.
      */
     @Autowired
-    public AccreditationController(AccreditationService service, AccreditationModelAssembler acreditacionAssembler) {
+    public AccreditationController(AccreditationService service, AccreditationModelAssembler accreditationAssembler) {
         this.service = service;
-        this.acreditacionAssembler = acreditacionAssembler;
+        this.accreditationAssembler = accreditationAssembler;
     }
 
     /**
@@ -47,10 +47,10 @@ public class AccreditationController {
      * @return HTTP response with the HATEOAS model of the created accreditation.
      */
     @PostMapping
-    public ResponseEntity<AccreditationResponse> recibirAcreditacion(@RequestBody @Valid AccreditationRequest request) {
+    public ResponseEntity<AccreditationResponse> receiveAccreditation(@RequestBody @Valid AccreditationRequest request) {
         Accreditation accreditation = service.recibirAcreditacion(request.getImporte(), request.getIdPuntoVenta());
         AccreditationResponse response = mapToResponse(accreditation);
-        return ResponseEntity.ok(acreditacionAssembler.toModel(response));
+        return ResponseEntity.ok(accreditationAssembler.toModel(response));
     }
 
     /**
@@ -59,11 +59,11 @@ public class AccreditationController {
      * @return HTTP response with a collection of HATEOAS models of accreditations.
      */
     @GetMapping
-    public ResponseEntity<CollectionModel<AccreditationResponse>> obtenerAcreditaciones() {
+    public ResponseEntity<CollectionModel<AccreditationResponse>> getAccreditations() {
         List<AccreditationResponse> responses = StreamSupport
                 .stream(service.obtenerAcreditaciones().spliterator(), false)
                 .map(AccreditationMapper::mapToResponse)
-                .map(acreditacionAssembler::toModel)
+                .map(accreditationAssembler::toModel)
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(CollectionModel.of(responses));
