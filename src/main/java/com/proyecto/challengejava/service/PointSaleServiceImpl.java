@@ -99,7 +99,7 @@ public class PointSaleServiceImpl implements PointSaleService {
      */
     @Override
     public void addPointSale(String name) {
-        if (pointSaleRepository.existsByNombre(name)) {
+        if (pointSaleRepository.existsByName(name)) {
             throw new IllegalArgumentException(POINT_OF_SALE_ALREADY_EXISTS);
         }
         PointSale pointSale = new PointSale();

@@ -136,7 +136,7 @@ public class PointSaleServiceImplTest {
     void addPointSale_ThrowsIllegalArgumentException_WhenNameAlreadyExists() {
         // Arrange
         String duplicatedName = "Punto 5";
-        when(pointSaleRepository.existsByNombre(duplicatedName)).thenReturn(true);
+        when(pointSaleRepository.existsByName(duplicatedName)).thenReturn(true);
 
         // Act & Assert
         Exception ex = assertThrows(IllegalArgumentException.class, () ->
