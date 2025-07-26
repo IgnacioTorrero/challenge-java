@@ -1,6 +1,6 @@
 package com.proyecto.challengejava.entity;
 
-import com.proyecto.challengejava.enums.Rol;
+import com.proyecto.challengejava.enums.Role;
 import jakarta.persistence.*;
 
 @Entity
@@ -18,7 +18,7 @@ public class Usuario {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private Rol rol;
+    private Role role;
 
     public Long getId() {
         return id;
@@ -52,11 +52,11 @@ public class Usuario {
         this.password = password;
     }
 
-    public Rol getRol() {
-        return rol;
+    public Role getRol() {
+        return role;
     }
 
-    public void setRol(Rol rol) {
-        this.rol = rol;
+    public void setRol(Role role) {
+        this.role = role;
     }
 }

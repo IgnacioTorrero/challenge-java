@@ -1,6 +1,6 @@
 package com.proyecto.challengejava.enums;
 
-public enum Rol {
+public enum Role {
     ADMIN,
     USER
 }

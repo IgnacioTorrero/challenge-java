@@ -2,7 +2,7 @@ package com.proyecto.challengejava.service;
 
 import com.proyecto.challengejava.entity.Accreditation;
 import com.proyecto.challengejava.entity.PointSale;
-import com.proyecto.challengejava.exception.PuntoVentaNotFoundException;
+import com.proyecto.challengejava.exception.PointSaleNotFoundException;
 import com.proyecto.challengejava.repository.AcreditacionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -70,14 +70,14 @@ public class AccreditationServiceImplTest {
     }
 
     /**
-     * Verifies that {@code recibirAcreditacion} throws a {@link PuntoVentaNotFoundException}
+     * Verifies that {@code recibirAcreditacion} throws a {@link PointSaleNotFoundException}
      * when the sales point does not exist.
      */
     @Test
     void recibirAcreditacion_ThrowsIllegalArgumentException() {
         when(puntoVentaServiceImpl.getAllPuntosVenta()).thenReturn(List.of());
 
-        Exception exception = assertThrows(PuntoVentaNotFoundException.class,
+        Exception exception = assertThrows(PointSaleNotFoundException.class,
                 () -> acreditacionServiceImpl.recibirAcreditacion(IMPORTE, INVALID_ID));
         assertEquals(PUNTO_VENTA_NOT_FOUND + ": 99", exception.getMessage());
         verify(acreditacionRepository, never()).save(any(Accreditation.class));

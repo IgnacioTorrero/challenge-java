@@ -4,7 +4,7 @@ import com.proyecto.challengejava.dto.AuthRequest;
 import com.proyecto.challengejava.dto.AuthResponse;
 import com.proyecto.challengejava.dto.RegisterRequest;
 import com.proyecto.challengejava.entity.Usuario;
-import com.proyecto.challengejava.enums.Rol;
+import com.proyecto.challengejava.enums.Role;
 import com.proyecto.challengejava.repository.UsuarioRepository;
 import com.proyecto.challengejava.security.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +56,7 @@ public class AuthServiceImpl implements AuthService {
         usuario.setNombre(request.getNombre());
         usuario.setEmail(request.getEmail());
         usuario.setPassword(passwordEncoder.encode(request.getPassword()));
-        usuario.setRol(Rol.USER);
+        usuario.setRol(Role.USER);
 
         usuarioRepository.save(usuario);
 
