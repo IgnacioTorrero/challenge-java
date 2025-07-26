@@ -197,10 +197,10 @@ public class CostPointsServiceImplTest {
      */
     @Test
     void calculateTotalRouteCost_ThrowsException_WhenKeyNotInCache() {
-        List<Long> invalidRute = Arrays.asList(2L, 3L);
+        List<Long> invalidRoute = Arrays.asList(2L, 3L);
 
         Exception exception = assertThrows(IllegalStateException.class, () -> {
-            costoPuntosServiceImpl.calculateTotalRouteCost(invalidRute);
+            costoPuntosServiceImpl.calculateTotalRouteCost(invalidRoute);
         });
 
         assertEquals("Falta costo entre 2 y 3", exception.getMessage());

@@ -121,17 +121,17 @@ public class CostPointsControllerTest {
      */
     @Test
     void calculateMinCostResponse() {
-        List<Long> rute = Arrays.asList(1L, 2L, 3L);
+        List<Long> route = Arrays.asList(1L, 2L, 3L);
         Double totalCost = 25.0;
-        MinCostRouteResponse original = new MinCostRouteResponse(rute, totalCost);
+        MinCostRouteResponse original = new MinCostRouteResponse(route, totalCost);
 
-        MinCostRouteResponse responseConLinks = new MinCostRouteResponse(rute, totalCost);
+        MinCostRouteResponse responseConLinks = new MinCostRouteResponse(route, totalCost);
         responseConLinks.add(linkTo(methodOn(CostPointsController.class).getCostsFromPoint(1L)).withRel("ver-costos-desde-1"));
         responseConLinks.add(linkTo(methodOn(CostPointsController.class).getCostsFromPoint(2L)).withRel("ver-costos-desde-2"));
         responseConLinks.add(linkTo(methodOn(CostPointsController.class).getCostsFromPoint(3L)).withRel("ver-costos-desde-3"));
         responseConLinks.add(linkTo(methodOn(CostPointsController.class).calculateMinCost(new CostPointsRequest(1L, 3L))).withRel("recalcular-ruta"));
 
-        when(service.calculateMinPath(anyLong(), anyLong())).thenReturn(rute);
+        when(service.calculateMinPath(anyLong(), anyLong())).thenReturn(route);
         when(service.calculateTotalRouteCost(anyList())).thenReturn(totalCost);
         when(rutaAssembler.toModel(any())).thenReturn(responseConLinks);
 
@@ -142,7 +142,7 @@ public class CostPointsControllerTest {
         // Assert
         assertEquals(SUCCESS_RESPONSE, response.getStatusCodeValue());
         assertNotNull(response.getBody());
-        assertEquals(rute, response.getBody().getRute());
+        assertEquals(route, response.getBody().getRoute());
         assertEquals(totalCost, response.getBody().getTotalCost());
 
         assertTrue(response.getBody().getLinks().hasLink("ver-costos-desde-1"));

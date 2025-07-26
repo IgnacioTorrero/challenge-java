@@ -98,10 +98,10 @@ public class CostPointsController {
     public ResponseEntity<MinCostRouteResponse> calculateMinCost(@RequestBody @Valid CostPointsRequest request) {
         validateParameters(request.getIdA(), request.getIdB());
 
-        List<Long> rute = service.calculateMinPath(request.getIdA(), request.getIdB());
-        Double totalCost = service.calculateTotalRouteCost(rute);
+        List<Long> route = service.calculateMinPath(request.getIdA(), request.getIdB());
+        Double totalCost = service.calculateTotalRouteCost(route);
 
-        MinCostRouteResponse response = new MinCostRouteResponse(rute, totalCost);
+        MinCostRouteResponse response = new MinCostRouteResponse(route, totalCost);
         return ResponseEntity.ok(minCostRouteModelAssembler.toModel(response));
     }
 

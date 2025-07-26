@@ -8,6 +8,6 @@ public interface CostPointsService {
     void removeCostPoints(Long idA, Long idB);
     List<CostPointsResponse> getCostsFromPoint(Long idA);
     List<Long> calculateMinPath(Long pointA, Long pointB);
-    Double calculateTotalRouteCost(List<Long> rute);
+    Double calculateTotalRouteCost(List<Long> route);
     void deleteRelatedCostsTo(Long id);
 }

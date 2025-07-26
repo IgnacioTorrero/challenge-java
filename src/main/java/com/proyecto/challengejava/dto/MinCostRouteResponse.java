@@ -5,20 +5,20 @@ import org.springframework.hateoas.RepresentationModel;
 import java.util.List;
 
 public class MinCostRouteResponse extends RepresentationModel<MinCostRouteResponse> {
-    private List<Long> rute;
+    private List<Long> route;
     private Double totalCost;
 
-    public MinCostRouteResponse(List<Long> rute, Double totalCost) {
-        this.rute = rute;
+    public MinCostRouteResponse(List<Long> route, Double totalCost) {
+        this.route = route;
         this.totalCost = totalCost;
     }
 
-    public List<Long> getRute() {
-        return rute;
+    public List<Long> getRoute() {
+        return route;
     }
 
-    public void setRute(List<Long> rute) {
-        this.rute = rute;
+    public void setRoute(List<Long> route) {
+        this.route = route;
     }
 
     public Double getTotalCost() {

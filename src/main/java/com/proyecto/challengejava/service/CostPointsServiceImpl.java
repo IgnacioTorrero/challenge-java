@@ -186,29 +186,29 @@ public class CostPointsServiceImpl implements CostPointsService {
             }
         }
 
-        List<Long> rute = new ArrayList<>();
+        List<Long> route = new ArrayList<>();
         Long current = pointB;
         while (current != null) {
-            rute.add(current);
+            route.add(current);
             current = predecessors.get(current);
         }
-        Collections.reverse(rute);
-        return rute;
+        Collections.reverse(route);
+        return route;
     }
 
     /**
      * Calculates the total cost of a route composed of sales point IDs.
      *
-     * @param rute List of IDs representing the route.
+     * @param route List of IDs representing the route.
      * @return Total sum of costs between each pair of consecutive points.
      * @throws IllegalStateException if any cost is missing in the cache.
      */
-    public Double calculateTotalRouteCost(List<Long> rute) {
+    public Double calculateTotalRouteCost(List<Long> route) {
         double totalCost = 0.0;
 
-        for (int i = 0; i < rute.size() - 1; i++) {
-            Long idA = rute.get(i);
-            Long idB = rute.get(i + 1);
+        for (int i = 0; i < route.size() - 1; i++) {
+            Long idA = route.get(i);
+            Long idB = route.get(i + 1);
             String key = generateKey(idA, idB);
 
             Double cost = cache.get(key);

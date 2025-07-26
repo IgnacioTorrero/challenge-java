@@ -14,14 +14,14 @@ public class Constants {
     public static final String BEARER = "Bearer ";
 
     /* Assemblers */
-    public static final String VER_TODOS_PUNTOS_DE_VENTA = "ver-todos-los-puntos-venta";
-    public static final String VER_TODAS_ACREDITACIONES = "ver-todas-las-acreditaciones";
-    public static final String VER_COSTOS_DESDE_PUNTO = "ver-costos-desde-este-punto";
-    public static final String CALCULAR_RUTA_MINIMA = "calcular-ruta-minima";
-    public static final String LISTAR_TODOS = "listar-todos";
-    public static final String ELIMINAR = "eliminar";
-    public static final String RECALCULAR_RUTA = "recalcular-ruta";
-    public static final String VER_COSTOS_DESDE = "ver-costos-desde-";
+    public static final String SEE_ALL_POINTS_OF_SALE = "see-all-points-of-sale";
+    public static final String SEE_ALL_ACCREDITATIONS = "see-all-accreditations";
+    public static final String SEE_COSTS_FROM_POINT = "see-costs-from-this-point";
+    public static final String CALCULATE_MIN_ROUTE = "calculate-min-route";
+    public static final String LIST_ALL = "list-all";
+    public static final String DELETE = "delete";
+    public static final String RECALCULATE_ROUTE = "recalculate-route";
+    public static final String SEE_COSTS_FROM = "see-costs-from-";
 
     /* Error messages */
     public static final String POINT_OF_SALE_NOT_FOUND = "Point of sale/s not found";

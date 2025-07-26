@@ -14,22 +14,22 @@ public class MinCostRouteModelAssembler implements RepresentationModelAssembler<
 
     @Override
     public MinCostRouteResponse toModel(MinCostRouteResponse response) {
-        if (response.getRute().size() >= 2) {
-            Long origen = response.getRute().get(0);
-            Long destino = response.getRute().get(response.getRute().size() - 1);
-            CostPointsRequest request = new CostPointsRequest(origen, destino);
+        if (response.getRoute().size() >= 2) {
+            Long origin = response.getRoute().get(0);
+            Long destination = response.getRoute().get(response.getRoute().size() - 1);
+            CostPointsRequest request = new CostPointsRequest(origin, destination);
 
             response.add(WebMvcLinkBuilder.linkTo(
                     WebMvcLinkBuilder.methodOn(CostPointsController.class)
                             .calculateMinCost(request)
-            ).withRel(RECALCULAR_RUTA));
+            ).withRel(RECALCULATE_ROUTE));
         }
 
-        response.getRute().forEach(id ->
+        response.getRoute().forEach(id ->
                 response.add(WebMvcLinkBuilder.linkTo(
                         WebMvcLinkBuilder.methodOn(CostPointsController.class)
                                 .getCostsFromPoint(id)
-                ).withRel(VER_COSTOS_DESDE + id))
+                ).withRel(SEE_COSTS_FROM + id))
         );
 
         return response;
