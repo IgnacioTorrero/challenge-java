@@ -177,7 +177,7 @@ public class CostPointsServiceImplTest {
             costoPuntosServiceImpl.calculateMinPath(1L, 3L);
         });
 
-        assertEquals("Punto/s de venta no encontrado/s", exception.getMessage());
+        assertEquals("Point of sale/s not found", exception.getMessage());
     }
 
     /**
@@ -203,7 +203,7 @@ public class CostPointsServiceImplTest {
             costoPuntosServiceImpl.calculateTotalRouteCost(invalidRoute);
         });
 
-        assertEquals("Falta costo entre 2 y 3", exception.getMessage());
+        assertEquals("Missing cost between 2 and 3", exception.getMessage());
     }
 
     /**
