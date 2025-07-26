@@ -3,7 +3,7 @@ package com.proyecto.challengejava.dto;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
-public class CostoPuntosRequest {
+public class CostPointsRequest {
 
     @NotNull(message = "El ID no puede ser nulo")
     @Min(value = 1, message = "El ID debe ser mayor que 0")
@@ -12,7 +12,7 @@ public class CostoPuntosRequest {
     @Min(value = 1, message = "El ID debe ser mayor que 0")
     private Long idB;
 
-    public CostoPuntosRequest(Long idA, Long idB) {
+    public CostPointsRequest(Long idA, Long idB) {
         this.idA = idA;
         this.idB = idB;
     }

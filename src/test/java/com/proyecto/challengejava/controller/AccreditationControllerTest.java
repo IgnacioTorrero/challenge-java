@@ -1,7 +1,7 @@
 package com.proyecto.challengejava.controller;
 
-import com.proyecto.challengejava.dto.AcreditacionRequest;
-import com.proyecto.challengejava.dto.AcreditacionResponse;
+import com.proyecto.challengejava.dto.AccreditationRequest;
+import com.proyecto.challengejava.dto.AccreditationResponse;
 import com.proyecto.challengejava.entity.Acreditacion;
 import com.proyecto.challengejava.hateoas.AcreditacionModelAssembler;
 import com.proyecto.challengejava.service.AcreditacionServiceImpl;
@@ -34,7 +34,7 @@ public class AccreditationControllerTest {
     @InjectMocks
     private AccreditationController accreditationController;
 
-    private final AcreditacionRequest request = new AcreditacionRequest();
+    private final AccreditationRequest request = new AccreditationRequest();
 
     /**
      * Initializes the mocks before each test.
@@ -59,11 +59,11 @@ public class AccreditationControllerTest {
         acreditacion.setImporte(IMPORTE);
         acreditacion.setIdPuntoVenta(ID_PUNTO_VENTA);
 
-        AcreditacionRequest request = new AcreditacionRequest();
+        AccreditationRequest request = new AccreditationRequest();
         request.setImporte(IMPORTE);
         request.setIdPuntoVenta(ID_PUNTO_VENTA);
 
-        AcreditacionResponse responseSinLinks = new AcreditacionResponse(
+        AccreditationResponse responseSinLinks = new AccreditationResponse(
                 acreditacion.getId(),
                 acreditacion.getImporte(),
                 acreditacion.getIdPuntoVenta(),
@@ -75,7 +75,7 @@ public class AccreditationControllerTest {
         when(acreditacionAssembler.toModel(responseSinLinks)).thenReturn(responseSinLinks);
 
         // Act: call the controller
-        ResponseEntity<AcreditacionResponse> response = accreditationController.recibirAcreditacion(request);
+        ResponseEntity<AccreditationResponse> response = accreditationController.recibirAcreditacion(request);
 
         // Assert: verify the response
         assertEquals(SUCCESS_RESPONSE, response.getStatusCodeValue());
@@ -100,12 +100,12 @@ public class AccreditationControllerTest {
 
         Iterable<Acreditacion> acreditaciones = Arrays.asList(acreditacion1, acreditacion2);
 
-        AcreditacionResponse response1 = new AcreditacionResponse(
+        AccreditationResponse response1 = new AccreditationResponse(
                 acreditacion1.getId(), acreditacion1.getImporte(),
                 acreditacion1.getIdPuntoVenta(), acreditacion1.getNombrePuntoVenta(),
                 acreditacion1.getFechaRecepcion()
         );
-        AcreditacionResponse response2 = new AcreditacionResponse(
+        AccreditationResponse response2 = new AccreditationResponse(
                 acreditacion2.getId(), acreditacion2.getImporte(),
                 acreditacion2.getIdPuntoVenta(), acreditacion2.getNombrePuntoVenta(),
                 acreditacion2.getFechaRecepcion()

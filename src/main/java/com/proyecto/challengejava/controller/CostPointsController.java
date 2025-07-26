@@ -1,8 +1,8 @@
 package com.proyecto.challengejava.controller;
 
-import com.proyecto.challengejava.dto.CostoPuntosRequest;
-import com.proyecto.challengejava.dto.CostoPuntosResponse;
-import com.proyecto.challengejava.dto.RutaCostoMinimoResponse;
+import com.proyecto.challengejava.dto.CostPointsRequest;
+import com.proyecto.challengejava.dto.CostPointsResponse;
+import com.proyecto.challengejava.dto.MinCostRouteResponse;
 import com.proyecto.challengejava.hateoas.CostoPuntosModelAssembler;
 import com.proyecto.challengejava.hateoas.RutaCostoMinimoModelAssembler;
 import com.proyecto.challengejava.service.CostoPuntosService;
@@ -51,7 +51,7 @@ public class CostPointsController {
      * @return HTTP 200 OK response if added successfully.
      */
     @PostMapping
-    public ResponseEntity<Void> addCostoPuntos(@RequestBody @Valid CostoPuntosRequest request,
+    public ResponseEntity<Void> addCostoPuntos(@RequestBody @Valid CostPointsRequest request,
                                                @RequestParam Double costo) {
         validarParametros(request.getIdA(), request.getIdB());
         service.addCostoPuntos(request.getIdA(), request.getIdB(), costo);
@@ -65,7 +65,7 @@ public class CostPointsController {
      * @return HTTP 200 OK response if removed successfully.
      */
     @DeleteMapping
-    public ResponseEntity<Void> removeCostoPuntos(@RequestBody @Valid CostoPuntosRequest request) {
+    public ResponseEntity<Void> removeCostoPuntos(@RequestBody @Valid CostPointsRequest request) {
         validarParametros(request.getIdA(), request.getIdB());
         service.removeCostoPuntos(request.getIdA(), request.getIdB());
         return ResponseEntity.ok().build();
@@ -78,8 +78,8 @@ public class CostPointsController {
      * @return HATEOAS collection of costs from the specified point.
      */
     @GetMapping("/{idA}")
-    public ResponseEntity<CollectionModel<CostoPuntosResponse>> getCostosDesdePunto(@PathVariable Long idA) {
-        List<CostoPuntosResponse> responseList = service.getCostosDesdePunto(idA)
+    public ResponseEntity<CollectionModel<CostPointsResponse>> getCostosDesdePunto(@PathVariable Long idA) {
+        List<CostPointsResponse> responseList = service.getCostosDesdePunto(idA)
                 .stream()
                 .map(costoPuntosModelAssembler::toModel)
                 .collect(Collectors.toList());
@@ -95,13 +95,13 @@ public class CostPointsController {
      * @return HATEOAS model with the route and total cost.
      */
     @PostMapping("/minimo")
-    public ResponseEntity<RutaCostoMinimoResponse> calcularCostoMinimo(@RequestBody @Valid CostoPuntosRequest request) {
+    public ResponseEntity<MinCostRouteResponse> calcularCostoMinimo(@RequestBody @Valid CostPointsRequest request) {
         validarParametros(request.getIdA(), request.getIdB());
 
         List<Long> ruta = service.calcularRutaMinima(request.getIdA(), request.getIdB());
         Double costoTotal = service.calcularCostoTotalRuta(ruta);
 
-        RutaCostoMinimoResponse response = new RutaCostoMinimoResponse(ruta, costoTotal);
+        MinCostRouteResponse response = new MinCostRouteResponse(ruta, costoTotal);
         return ResponseEntity.ok(rutaCostoMinimoModelAssembler.toModel(response));
     }
 

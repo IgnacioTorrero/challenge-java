@@ -1,8 +1,8 @@
 package com.proyecto.challengejava.hateoas;
 
 import com.proyecto.challengejava.controller.CostPointsController;
-import com.proyecto.challengejava.dto.CostoPuntosRequest;
-import com.proyecto.challengejava.dto.CostoPuntosResponse;
+import com.proyecto.challengejava.dto.CostPointsRequest;
+import com.proyecto.challengejava.dto.CostPointsResponse;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
@@ -10,10 +10,10 @@ import org.springframework.stereotype.Component;
 import static com.proyecto.challengejava.constants.Constants.*;
 
 @Component
-public class CostoPuntosModelAssembler implements RepresentationModelAssembler<CostoPuntosResponse, CostoPuntosResponse> {
+public class CostoPuntosModelAssembler implements RepresentationModelAssembler<CostPointsResponse, CostPointsResponse> {
 
     @Override
-    public CostoPuntosResponse toModel(CostoPuntosResponse entity) {
+    public CostPointsResponse toModel(CostPointsResponse entity) {
         entity.add(
                 WebMvcLinkBuilder.linkTo(
                         WebMvcLinkBuilder.methodOn(CostPointsController.class)
@@ -24,7 +24,7 @@ public class CostoPuntosModelAssembler implements RepresentationModelAssembler<C
         entity.add(
                 WebMvcLinkBuilder.linkTo(
                         WebMvcLinkBuilder.methodOn(CostPointsController.class)
-                                .calcularCostoMinimo(new CostoPuntosRequest(entity.getIdA(), entity.getIdB()))
+                                .calcularCostoMinimo(new CostPointsRequest(entity.getIdA(), entity.getIdB()))
                 ).withRel(CALCULAR_RUTA_MINIMA)
         );
 

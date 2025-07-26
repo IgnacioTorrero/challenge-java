@@ -1,7 +1,7 @@
 package com.proyecto.challengejava.controller;
 
-import com.proyecto.challengejava.dto.AcreditacionRequest;
-import com.proyecto.challengejava.dto.AcreditacionResponse;
+import com.proyecto.challengejava.dto.AccreditationRequest;
+import com.proyecto.challengejava.dto.AccreditationResponse;
 import com.proyecto.challengejava.entity.Acreditacion;
 import com.proyecto.challengejava.hateoas.AcreditacionModelAssembler;
 import com.proyecto.challengejava.mapper.AcreditacionMapper;
@@ -47,9 +47,9 @@ public class AccreditationController {
      * @return HTTP response with the HATEOAS model of the created accreditation.
      */
     @PostMapping
-    public ResponseEntity<AcreditacionResponse> recibirAcreditacion(@RequestBody @Valid AcreditacionRequest request) {
+    public ResponseEntity<AccreditationResponse> recibirAcreditacion(@RequestBody @Valid AccreditationRequest request) {
         Acreditacion acreditacion = service.recibirAcreditacion(request.getImporte(), request.getIdPuntoVenta());
-        AcreditacionResponse response = mapToResponse(acreditacion);
+        AccreditationResponse response = mapToResponse(acreditacion);
         return ResponseEntity.ok(acreditacionAssembler.toModel(response));
     }
 
@@ -59,8 +59,8 @@ public class AccreditationController {
      * @return HTTP response with a collection of HATEOAS models of accreditations.
      */
     @GetMapping
-    public ResponseEntity<CollectionModel<AcreditacionResponse>> obtenerAcreditaciones() {
-        List<AcreditacionResponse> responses = StreamSupport
+    public ResponseEntity<CollectionModel<AccreditationResponse>> obtenerAcreditaciones() {
+        List<AccreditationResponse> responses = StreamSupport
                 .stream(service.obtenerAcreditaciones().spliterator(), false)
                 .map(AcreditacionMapper::mapToResponse)
                 .map(acreditacionAssembler::toModel)

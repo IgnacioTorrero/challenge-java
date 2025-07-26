@@ -4,11 +4,11 @@ import org.springframework.hateoas.RepresentationModel;
 
 import java.util.List;
 
-public class RutaCostoMinimoResponse extends RepresentationModel<RutaCostoMinimoResponse> {
+public class MinCostRouteResponse extends RepresentationModel<MinCostRouteResponse> {
     private List<Long> ruta;
     private Double costoTotal;
 
-    public RutaCostoMinimoResponse(List<Long> ruta, Double costoTotal) {
+    public MinCostRouteResponse(List<Long> ruta, Double costoTotal) {
         this.ruta = ruta;
         this.costoTotal = costoTotal;
     }

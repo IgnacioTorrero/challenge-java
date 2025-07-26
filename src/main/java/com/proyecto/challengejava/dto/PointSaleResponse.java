@@ -2,11 +2,11 @@ package com.proyecto.challengejava.dto;
 
 import org.springframework.hateoas.RepresentationModel;
 
-public class PuntoVentaResponse extends RepresentationModel<PuntoVentaResponse> {
+public class PointSaleResponse extends RepresentationModel<PointSaleResponse> {
     private Long id;
     private String nombre;
 
-    public PuntoVentaResponse(Long id, String nombre) {
+    public PointSaleResponse(Long id, String nombre) {
         this.id = id;
         this.nombre = nombre;
     }

@@ -3,7 +3,7 @@ package com.proyecto.challengejava.dto;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
-public class AcreditacionRequest {
+public class AccreditationRequest {
 
     @NotNull(message = "El importe no puede ser nulo")
     @Min(value = 0, message = "El importe no puede ser negativo")

@@ -1,6 +1,6 @@
 package com.proyecto.challengejava.service;
 
-import com.proyecto.challengejava.dto.CostoPuntosResponse;
+import com.proyecto.challengejava.dto.CostPointsResponse;
 import com.proyecto.challengejava.entity.CostoPuntos;
 import com.proyecto.challengejava.entity.PuntoVenta;
 import com.proyecto.challengejava.exception.PuntoVentaNotFoundException;
@@ -75,7 +75,7 @@ public class CostoPuntosServiceImplTest {
     void addCostoPuntos_ReturnsOk() {
         costoPuntosServiceImpl.addCostoPuntos(ID_PUNTO_VENTA, ID_PUNTO_VENTA2, IMPORTE);
 
-        List<CostoPuntosResponse> costos = costoPuntosServiceImpl.getCostosDesdePunto(ID_PUNTO_VENTA);
+        List<CostPointsResponse> costos = costoPuntosServiceImpl.getCostosDesdePunto(ID_PUNTO_VENTA);
 
         assertEquals(3, costos.size());
         assertEquals(IMPORTE, costos.get(0).getCosto());
@@ -121,7 +121,7 @@ public class CostoPuntosServiceImplTest {
         costoPuntosServiceImpl.addCostoPuntos(ID_PUNTO_VENTA, ID_PUNTO_VENTA2, IMPORTE);
         costoPuntosServiceImpl.addCostoPuntos(ID_PUNTO_VENTA, ID_PUNTO_VENTA3, IMPORTE2);
 
-        List<CostoPuntosResponse> costos = costoPuntosServiceImpl.getCostosDesdePunto(ID_PUNTO_VENTA);
+        List<CostPointsResponse> costos = costoPuntosServiceImpl.getCostosDesdePunto(ID_PUNTO_VENTA);
 
         assertEquals(3, costos.size());
         assertEquals(IMPORTE, costos.get(0).getCosto());
@@ -157,7 +157,7 @@ public class CostoPuntosServiceImplTest {
     void cargarCacheDesdeDB_ReturnsOk() {
         costoPuntosServiceImpl.cargarCacheDesdeDB();
 
-        List<CostoPuntosResponse> costosDesdePunto1 = costoPuntosServiceImpl.getCostosDesdePunto(ID_PUNTO_VENTA);
+        List<CostPointsResponse> costosDesdePunto1 = costoPuntosServiceImpl.getCostosDesdePunto(ID_PUNTO_VENTA);
 
         assertFalse(costosDesdePunto1.isEmpty());
         assertEquals(3, costosDesdePunto1.size());
@@ -272,7 +272,7 @@ public class CostoPuntosServiceImplTest {
         costoPuntosServiceImpl.addCostoPuntos(idRelacionado, idA, 5.5); // creates key "1-2"
 
         // Act
-        List<CostoPuntosResponse> costos = costoPuntosServiceImpl.getCostosDesdePunto(idA);
+        List<CostPointsResponse> costos = costoPuntosServiceImpl.getCostosDesdePunto(idA);
 
         // Assert
         assertEquals(1, costos.size());

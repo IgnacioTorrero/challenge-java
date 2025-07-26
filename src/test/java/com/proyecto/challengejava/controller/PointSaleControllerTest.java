@@ -1,7 +1,7 @@
 package com.proyecto.challengejava.controller;
 
-import com.proyecto.challengejava.dto.PuntoVentaRequest;
-import com.proyecto.challengejava.dto.PuntoVentaResponse;
+import com.proyecto.challengejava.dto.PointSaleRequest;
+import com.proyecto.challengejava.dto.PointSaleResponse;
 import com.proyecto.challengejava.entity.PuntoVenta;
 import com.proyecto.challengejava.hateoas.PuntoVentaModelAssembler;
 import com.proyecto.challengejava.service.PuntoVentaManager;
@@ -41,7 +41,7 @@ public class PointSaleControllerTest {
 
     private final PuntoVenta punto1 = new PuntoVenta();
     private final PuntoVenta punto2 = new PuntoVenta();
-    private final PuntoVentaRequest request = new PuntoVentaRequest();
+    private final PointSaleRequest request = new PointSaleRequest();
 
     /**
      * Initializes mocks and common test data before each test.
@@ -67,19 +67,19 @@ public class PointSaleControllerTest {
         // Arrange
         List<PuntoVenta> puntosVenta = Arrays.asList(punto1, punto2);
         when(service.getAllPuntosVenta()).thenReturn(puntosVenta);
-        when(assembler.toModel(any(PuntoVentaResponse.class)))
+        when(assembler.toModel(any(PointSaleResponse.class)))
                 .thenAnswer(invocation -> invocation.getArgument(0));
 
         // Act
-        ResponseEntity<CollectionModel<PuntoVentaResponse>> response = controller.getAllPuntosVenta();
+        ResponseEntity<CollectionModel<PointSaleResponse>> response = controller.getAllPuntosVenta();
 
         // Assert
         assertEquals(SUCCESS_RESPONSE, response.getStatusCodeValue());
-        CollectionModel<PuntoVentaResponse> body = response.getBody();
+        CollectionModel<PointSaleResponse> body = response.getBody();
         assertNotNull(body);
         assertEquals(2, body.getContent().size());
 
-        List<PuntoVentaResponse> resultList = body.getContent().stream().toList();
+        List<PointSaleResponse> resultList = body.getContent().stream().toList();
 
         assertTrue(resultList.stream().anyMatch(p ->
                 ID_PUNTO_VENTA.equals(p.getId()) && PUNTO_VENTA_1.equals(p.getNombre())

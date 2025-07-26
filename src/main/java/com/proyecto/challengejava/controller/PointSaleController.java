@@ -1,7 +1,7 @@
 package com.proyecto.challengejava.controller;
 
-import com.proyecto.challengejava.dto.PuntoVentaRequest;
-import com.proyecto.challengejava.dto.PuntoVentaResponse;
+import com.proyecto.challengejava.dto.PointSaleRequest;
+import com.proyecto.challengejava.dto.PointSaleResponse;
 import com.proyecto.challengejava.hateoas.PuntoVentaModelAssembler;
 import com.proyecto.challengejava.service.PuntoVentaManager;
 import com.proyecto.challengejava.service.PuntoVentaService;
@@ -46,9 +46,9 @@ public class PointSaleController {
      * @return HATEOAS collection with the registered sales points.
      */
     @GetMapping
-    public ResponseEntity<CollectionModel<PuntoVentaResponse>> getAllPuntosVenta() {
-        List<PuntoVentaResponse> responses = service.getAllPuntosVenta().stream()
-                .map(p -> new PuntoVentaResponse(p.getId(), p.getNombre()))
+    public ResponseEntity<CollectionModel<PointSaleResponse>> getAllPuntosVenta() {
+        List<PointSaleResponse> responses = service.getAllPuntosVenta().stream()
+                .map(p -> new PointSaleResponse(p.getId(), p.getNombre()))
                 .map(assembler::toModel)
                 .collect(Collectors.toList());
 
@@ -62,7 +62,7 @@ public class PointSaleController {
      * @return HTTP 200 OK response if added successfully.
      */
     @PostMapping
-    public ResponseEntity<Void> addPuntoVenta(@RequestBody @Valid PuntoVentaRequest request) {
+    public ResponseEntity<Void> addPuntoVenta(@RequestBody @Valid PointSaleRequest request) {
         service.addPuntoVenta(request.getNombre());
         return ResponseEntity.ok().build();
     }
@@ -75,7 +75,7 @@ public class PointSaleController {
      * @return HTTP 200 OK response if updated successfully.
      */
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updatePuntoVenta(@PathVariable Long id, @RequestBody @Valid PuntoVentaRequest request) {
+    public ResponseEntity<Void> updatePuntoVenta(@PathVariable Long id, @RequestBody @Valid PointSaleRequest request) {
         service.updatePuntoVenta(id, request.getNombre());
         return ResponseEntity.ok().build();
     }

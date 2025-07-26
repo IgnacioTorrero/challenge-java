@@ -4,14 +4,14 @@ import org.springframework.hateoas.RepresentationModel;
 
 import java.time.LocalDate;
 
-public class AcreditacionResponse extends RepresentationModel<AcreditacionResponse> {
+public class AccreditationResponse extends RepresentationModel<AccreditationResponse> {
     private Long id;
     private Double importe;
     private Long idPuntoVenta;
     private String nombrePuntoVenta;
     private LocalDate fechaRecepcion;
 
-    public AcreditacionResponse(Long id, Double importe, Long idPuntoVenta, String nombrePuntoVenta, LocalDate fechaRecepcion) {
+    public AccreditationResponse(Long id, Double importe, Long idPuntoVenta, String nombrePuntoVenta, LocalDate fechaRecepcion) {
         this.id = id;
         this.importe = importe;
         this.idPuntoVenta = idPuntoVenta;

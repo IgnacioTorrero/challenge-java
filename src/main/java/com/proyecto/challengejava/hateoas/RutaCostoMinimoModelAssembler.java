@@ -1,8 +1,8 @@
 package com.proyecto.challengejava.hateoas;
 
 import com.proyecto.challengejava.controller.CostPointsController;
-import com.proyecto.challengejava.dto.CostoPuntosRequest;
-import com.proyecto.challengejava.dto.RutaCostoMinimoResponse;
+import com.proyecto.challengejava.dto.CostPointsRequest;
+import com.proyecto.challengejava.dto.MinCostRouteResponse;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
@@ -10,14 +10,14 @@ import org.springframework.stereotype.Component;
 import static com.proyecto.challengejava.constants.Constants.*;
 
 @Component
-public class RutaCostoMinimoModelAssembler implements RepresentationModelAssembler<RutaCostoMinimoResponse, RutaCostoMinimoResponse> {
+public class RutaCostoMinimoModelAssembler implements RepresentationModelAssembler<MinCostRouteResponse, MinCostRouteResponse> {
 
     @Override
-    public RutaCostoMinimoResponse toModel(RutaCostoMinimoResponse response) {
+    public MinCostRouteResponse toModel(MinCostRouteResponse response) {
         if (response.getRuta().size() >= 2) {
             Long origen = response.getRuta().get(0);
             Long destino = response.getRuta().get(response.getRuta().size() - 1);
-            CostoPuntosRequest request = new CostoPuntosRequest(origen, destino);
+            CostPointsRequest request = new CostPointsRequest(origen, destino);
 
             response.add(WebMvcLinkBuilder.linkTo(
                     WebMvcLinkBuilder.methodOn(CostPointsController.class)

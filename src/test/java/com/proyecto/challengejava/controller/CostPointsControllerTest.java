@@ -1,8 +1,8 @@
 package com.proyecto.challengejava.controller;
 
-import com.proyecto.challengejava.dto.CostoPuntosRequest;
-import com.proyecto.challengejava.dto.CostoPuntosResponse;
-import com.proyecto.challengejava.dto.RutaCostoMinimoResponse;
+import com.proyecto.challengejava.dto.CostPointsRequest;
+import com.proyecto.challengejava.dto.CostPointsResponse;
+import com.proyecto.challengejava.dto.MinCostRouteResponse;
 import com.proyecto.challengejava.hateoas.CostoPuntosModelAssembler;
 import com.proyecto.challengejava.hateoas.RutaCostoMinimoModelAssembler;
 import com.proyecto.challengejava.service.CostoPuntosServiceImpl;
@@ -41,7 +41,7 @@ public class CostPointsControllerTest {
     @InjectMocks
     private CostPointsController controller;
 
-    private final CostoPuntosRequest request = new CostoPuntosRequest(ID_PUNTO_VENTA, ID_PUNTO_VENTA2);
+    private final CostPointsRequest request = new CostPointsRequest(ID_PUNTO_VENTA, ID_PUNTO_VENTA2);
 
     /**
      * Initializes mocks before each test.
@@ -84,25 +84,25 @@ public class CostPointsControllerTest {
     @Test
     void getCostosDesdePunto_ReturnsCollectionModelOfCostos() {
         // Arrange
-        List<CostoPuntosResponse> costos = Arrays.asList(
-                new CostoPuntosResponse(1L, 2L, 100.0, "GBA_1"),
-                new CostoPuntosResponse(1L, 3L, 150.0, "GBA_2")
+        List<CostPointsResponse> costos = Arrays.asList(
+                new CostPointsResponse(1L, 2L, 100.0, "GBA_1"),
+                new CostPointsResponse(1L, 3L, 150.0, "GBA_2")
         );
 
         when(service.getCostosDesdePunto(ID_PUNTO_VENTA)).thenReturn(costos);
         when(assembler.toModel(any())).thenAnswer(invocation -> invocation.getArgument(0));
 
         // Act
-        ResponseEntity<CollectionModel<CostoPuntosResponse>> response = controller.getCostosDesdePunto(ID_PUNTO_VENTA);
+        ResponseEntity<CollectionModel<CostPointsResponse>> response = controller.getCostosDesdePunto(ID_PUNTO_VENTA);
 
         // Assert
         assertEquals(SUCCESS_RESPONSE, response.getStatusCodeValue());
 
-        CollectionModel<CostoPuntosResponse> body = response.getBody();
+        CollectionModel<CostPointsResponse> body = response.getBody();
         assertNotNull(body);
         assertEquals(costos.size(), body.getContent().size());
 
-        for (CostoPuntosResponse esperado : costos) {
+        for (CostPointsResponse esperado : costos) {
             assertTrue(body.getContent().stream().anyMatch(item ->
                     item != null &&
                             item.getIdA().equals(esperado.getIdA()) &&
@@ -123,21 +123,21 @@ public class CostPointsControllerTest {
     void calcularCostoMinimo_ReturnsRutaCostoMinimoResponse() {
         List<Long> ruta = Arrays.asList(1L, 2L, 3L);
         Double costoTotal = 25.0;
-        RutaCostoMinimoResponse original = new RutaCostoMinimoResponse(ruta, costoTotal);
+        MinCostRouteResponse original = new MinCostRouteResponse(ruta, costoTotal);
 
-        RutaCostoMinimoResponse responseConLinks = new RutaCostoMinimoResponse(ruta, costoTotal);
+        MinCostRouteResponse responseConLinks = new MinCostRouteResponse(ruta, costoTotal);
         responseConLinks.add(linkTo(methodOn(CostPointsController.class).getCostosDesdePunto(1L)).withRel("ver-costos-desde-1"));
         responseConLinks.add(linkTo(methodOn(CostPointsController.class).getCostosDesdePunto(2L)).withRel("ver-costos-desde-2"));
         responseConLinks.add(linkTo(methodOn(CostPointsController.class).getCostosDesdePunto(3L)).withRel("ver-costos-desde-3"));
-        responseConLinks.add(linkTo(methodOn(CostPointsController.class).calcularCostoMinimo(new CostoPuntosRequest(1L, 3L))).withRel("recalcular-ruta"));
+        responseConLinks.add(linkTo(methodOn(CostPointsController.class).calcularCostoMinimo(new CostPointsRequest(1L, 3L))).withRel("recalcular-ruta"));
 
         when(service.calcularRutaMinima(anyLong(), anyLong())).thenReturn(ruta);
         when(service.calcularCostoTotalRuta(anyList())).thenReturn(costoTotal);
         when(rutaAssembler.toModel(any())).thenReturn(responseConLinks);
 
         // Act
-        CostoPuntosRequest request = new CostoPuntosRequest(1L, 3L);
-        ResponseEntity<RutaCostoMinimoResponse> response = controller.calcularCostoMinimo(request);
+        CostPointsRequest request = new CostPointsRequest(1L, 3L);
+        ResponseEntity<MinCostRouteResponse> response = controller.calcularCostoMinimo(request);
 
         // Assert
         assertEquals(SUCCESS_RESPONSE, response.getStatusCodeValue());
@@ -163,7 +163,7 @@ public class CostPointsControllerTest {
     void addCostoPuntos_SameId_ThrowsException() {
         // Arrange
         Long id = 5L;
-        CostoPuntosRequest requestConIdsIguales = new CostoPuntosRequest(id, id);
+        CostPointsRequest requestConIdsIguales = new CostPointsRequest(id, id);
 
         // Act & Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {

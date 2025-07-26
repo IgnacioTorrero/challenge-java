@@ -1,6 +1,6 @@
 package com.proyecto.challengejava.service;
 
-import com.proyecto.challengejava.dto.CostoPuntosResponse;
+import com.proyecto.challengejava.dto.CostPointsResponse;
 import com.proyecto.challengejava.entity.CostoPuntos;
 import com.proyecto.challengejava.entity.PuntoVenta;
 import com.proyecto.challengejava.exception.PuntoVentaNotFoundException;
@@ -109,12 +109,12 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
      * @return List of responses with cost information from that point.
      * @throws IllegalArgumentException if the point does not exist.
      */
-    public List<CostoPuntosResponse> getCostosDesdePunto(Long idA) {
+    public List<CostPointsResponse> getCostosDesdePunto(Long idA) {
         List<PuntoVenta> puntos = puntoVentaService.getAllPuntosVenta();
         if (!puntoVentaExists(puntos, idA)) {
             throw new IllegalArgumentException(PUNTO_VENTA_NOT_FOUND);
         }
-        List<CostoPuntosResponse> costos = new ArrayList<>();
+        List<CostPointsResponse> costos = new ArrayList<>();
         cache.forEach((key, value) -> {
             String[] ids = key.split(REGEX);
             Long id1 = Long.valueOf(ids[0]);
@@ -124,12 +124,12 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
                 Long idB = id2;
                 if (!puntoVentaExists(puntos, idB)) return;
                 String nombrePuntoB = getNombrePuntoVenta(idB, puntos);
-                costos.add(new CostoPuntosResponse(idA, idB, value, nombrePuntoB));
+                costos.add(new CostPointsResponse(idA, idB, value, nombrePuntoB));
             } else if (id2.equals(idA)) {
                 Long idB = id1;
                 if (!puntoVentaExists(puntos, idB)) return;
                 String nombrePuntoB = getNombrePuntoVenta(idB, puntos);
-                costos.add(new CostoPuntosResponse(idA, idB, value, nombrePuntoB));
+                costos.add(new CostPointsResponse(idA, idB, value, nombrePuntoB));
             }
         });
         return costos;
