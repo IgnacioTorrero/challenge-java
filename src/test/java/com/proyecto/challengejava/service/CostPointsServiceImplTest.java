@@ -4,7 +4,7 @@ import com.proyecto.challengejava.dto.CostPointsResponse;
 import com.proyecto.challengejava.entity.CostPoints;
 import com.proyecto.challengejava.entity.PointSale;
 import com.proyecto.challengejava.exception.PointSaleNotFoundException;
-import com.proyecto.challengejava.repository.CostoRepository;
+import com.proyecto.challengejava.repository.CostRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -33,7 +33,7 @@ public class CostPointsServiceImplTest {
     private CostoPuntosServiceImpl costoPuntosServiceImpl;
 
     @Mock
-    private CostoRepository costoRepository;
+    private CostRepository costRepository;
 
     /**
      * Initializes mocks and preloads mock sales points and cost data into cache.
@@ -56,13 +56,13 @@ public class CostPointsServiceImplTest {
                 new PointSale() {{ setId(10L); setNombre(PUNTOS_VENTA.get(9)); }}
         ));
 
-        when(costoRepository.findAll()).thenReturn(Arrays.asList(
+        when(costRepository.findAll()).thenReturn(Arrays.asList(
                 new CostPoints() {{ setIdA(1L); setIdB(2L); setCosto(2.0); }},
                 new CostPoints() {{ setIdA(1L); setIdB(3L); setCosto(3.0); }},
                 new CostPoints() {{ setIdA(1L); setIdB(4L); setCosto(4.0); }}
         ));
 
-        costoPuntosServiceImpl = new CostoPuntosServiceImpl(puntoVentaServiceImpl, costoRepository);
+        costoPuntosServiceImpl = new CostoPuntosServiceImpl(puntoVentaServiceImpl, costRepository);
 
         // Preload cache
         costoPuntosServiceImpl.cargarCacheDesdeDB();
@@ -217,13 +217,13 @@ public class CostPointsServiceImplTest {
         CostPoints costo2 = new CostPoints(); costo2.setIdA(2L); costo2.setIdB(3L); costo2.setCosto(2.5);
         CostPoints costo3 = new CostPoints(); costo3.setIdA(4L); costo3.setIdB(5L); costo3.setCosto(3.0); // unrelated
 
-        when(costoRepository.findAll()).thenReturn(Arrays.asList(costo1, costo2, costo3));
+        when(costRepository.findAll()).thenReturn(Arrays.asList(costo1, costo2, costo3));
 
         costoPuntosServiceImpl.eliminarCostosRelacionadosA(id);
 
-        verify(costoRepository).delete(costo1);
-        verify(costoRepository).delete(costo2);
-        verify(costoRepository, never()).delete(costo3);
+        verify(costRepository).delete(costo1);
+        verify(costRepository).delete(costo2);
+        verify(costRepository, never()).delete(costo3);
     }
 
     /**
@@ -299,7 +299,7 @@ public class CostPointsServiceImplTest {
         existente.setIdB(mayor);
         existente.setCosto(10.0);
 
-        when(costoRepository.findByIdAAndIdB(menor, mayor)).thenReturn(Optional.of(existente));
+        when(costRepository.findByIdAAndIdB(menor, mayor)).thenReturn(Optional.of(existente));
 
         // Act
         when(puntoVentaService.getAllPuntosVenta()).thenReturn(List.of(
@@ -311,6 +311,6 @@ public class CostPointsServiceImplTest {
 
         // Assert
         assertEquals(nuevoCosto, existente.getCosto());
-        verify(costoRepository).save(existente);
+        verify(costRepository).save(existente);
     }
 }

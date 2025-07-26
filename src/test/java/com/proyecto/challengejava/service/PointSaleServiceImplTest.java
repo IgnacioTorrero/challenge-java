@@ -1,7 +1,7 @@
 package com.proyecto.challengejava.service;
 
 import com.proyecto.challengejava.entity.PointSale;
-import com.proyecto.challengejava.repository.PuntoVentaRepository;
+import com.proyecto.challengejava.repository.PointSaleRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,7 +28,7 @@ import static org.mockito.Mockito.*;
 public class PointSaleServiceImplTest {
 
     @Mock
-    private PuntoVentaRepository puntoVentaRepository;
+    private PointSaleRepository pointSaleRepository;
 
     @InjectMocks
     private PuntoVentaServiceImpl service;
@@ -45,19 +45,19 @@ public class PointSaleServiceImplTest {
             datosMock.add(new PointSale(i, "Punto " + i));
         }
 
-        when(puntoVentaRepository.findAll()).thenAnswer(invocation -> new ArrayList<>(datosMock));
+        when(pointSaleRepository.findAll()).thenAnswer(invocation -> new ArrayList<>(datosMock));
 
-        when(puntoVentaRepository.findById(anyLong())).thenAnswer(invocation -> {
+        when(pointSaleRepository.findById(anyLong())).thenAnswer(invocation -> {
             Long id = invocation.getArgument(0);
             return datosMock.stream().filter(p -> p.getId().equals(id)).findFirst();
         });
 
-        when(puntoVentaRepository.existsById(anyLong())).thenAnswer(invocation -> {
+        when(pointSaleRepository.existsById(anyLong())).thenAnswer(invocation -> {
             Long id = invocation.getArgument(0);
             return datosMock.stream().anyMatch(p -> p.getId().equals(id));
         });
 
-        when(puntoVentaRepository.save(any(PointSale.class))).thenAnswer(invocation -> {
+        when(pointSaleRepository.save(any(PointSale.class))).thenAnswer(invocation -> {
             PointSale nuevo = invocation.getArgument(0);
             if (nuevo.getId() == null) {
                 nuevo.setId((long) (datosMock.size() + 1));
@@ -72,7 +72,7 @@ public class PointSaleServiceImplTest {
             Long id = invocation.getArgument(0);
             datosMock.removeIf(p -> p.getId().equals(id));
             return null;
-        }).when(puntoVentaRepository).deleteById(anyLong());
+        }).when(pointSaleRepository).deleteById(anyLong());
     }
 
     /**
@@ -136,7 +136,7 @@ public class PointSaleServiceImplTest {
     void addPuntoVenta_ThrowsIllegalArgumentException_WhenNombreAlreadyExists() {
         // Arrange
         String nombreDuplicado = "Punto 5";
-        when(puntoVentaRepository.existsByNombre(nombreDuplicado)).thenReturn(true);
+        when(pointSaleRepository.existsByNombre(nombreDuplicado)).thenReturn(true);
 
         // Act & Assert
         Exception ex = assertThrows(IllegalArgumentException.class, () ->
@@ -196,7 +196,7 @@ public class PointSaleServiceImplTest {
     void deletePuntoVenta_ThrowsIllegalArgumentException_WhenIdNotExists() {
         // Arrange
         Long idInexistente = 999L;
-        when(puntoVentaRepository.existsById(idInexistente)).thenReturn(false);
+        when(pointSaleRepository.existsById(idInexistente)).thenReturn(false);
 
         // Act & Assert
         Exception ex = assertThrows(IllegalArgumentException.class, () ->

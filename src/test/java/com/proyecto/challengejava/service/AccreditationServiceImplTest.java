@@ -3,7 +3,7 @@ package com.proyecto.challengejava.service;
 import com.proyecto.challengejava.entity.Accreditation;
 import com.proyecto.challengejava.entity.PointSale;
 import com.proyecto.challengejava.exception.PointSaleNotFoundException;
-import com.proyecto.challengejava.repository.AcreditacionRepository;
+import com.proyecto.challengejava.repository.AccreditationRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -26,7 +26,7 @@ import static org.mockito.Mockito.*;
 public class AccreditationServiceImplTest {
 
     @Mock
-    private AcreditacionRepository acreditacionRepository;
+    private AccreditationRepository accreditationRepository;
 
     @Mock
     private PuntoVentaServiceImpl puntoVentaServiceImpl;
@@ -58,7 +58,7 @@ public class AccreditationServiceImplTest {
         accreditation.setNombrePuntoVenta(PUNTO_VENTA_1);
         accreditation.setFechaRecepcion(LocalDate.now());
 
-        when(acreditacionRepository.save(any(Accreditation.class))).thenReturn(accreditation);
+        when(accreditationRepository.save(any(Accreditation.class))).thenReturn(accreditation);
         Accreditation result = acreditacionServiceImpl.recibirAcreditacion(IMPORTE, ID_PUNTO_VENTA);
 
         assertNotNull(result);
@@ -66,7 +66,7 @@ public class AccreditationServiceImplTest {
         assertEquals(ID_PUNTO_VENTA, result.getIdPuntoVenta());
         assertEquals(PUNTO_VENTA_1, result.getNombrePuntoVenta());
         assertEquals(LocalDate.now(), result.getFechaRecepcion());
-        verify(acreditacionRepository, times(1)).save(any(Accreditation.class));
+        verify(accreditationRepository, times(1)).save(any(Accreditation.class));
     }
 
     /**
@@ -80,7 +80,7 @@ public class AccreditationServiceImplTest {
         Exception exception = assertThrows(PointSaleNotFoundException.class,
                 () -> acreditacionServiceImpl.recibirAcreditacion(IMPORTE, INVALID_ID));
         assertEquals(PUNTO_VENTA_NOT_FOUND + ": 99", exception.getMessage());
-        verify(acreditacionRepository, never()).save(any(Accreditation.class));
+        verify(accreditationRepository, never()).save(any(Accreditation.class));
     }
 
     /**
@@ -97,11 +97,11 @@ public class AccreditationServiceImplTest {
         accreditation2.setId(ID_PUNTO_VENTA2);
         accreditation2.setImporte(IMPORTE2);
 
-        when(acreditacionRepository.findAll()).thenReturn(Arrays.asList(accreditation1, accreditation2));
+        when(accreditationRepository.findAll()).thenReturn(Arrays.asList(accreditation1, accreditation2));
         Iterable<Accreditation> result = acreditacionServiceImpl.obtenerAcreditaciones();
 
         assertNotNull(result);
         assertTrue(((Iterable<?>) result).iterator().hasNext());
-        verify(acreditacionRepository, times(1)).findAll();
+        verify(accreditationRepository, times(1)).findAll();
     }
 }

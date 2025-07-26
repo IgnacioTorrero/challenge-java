@@ -4,7 +4,7 @@ import com.proyecto.challengejava.dto.CostPointsResponse;
 import com.proyecto.challengejava.entity.CostPoints;
 import com.proyecto.challengejava.entity.PointSale;
 import com.proyecto.challengejava.exception.PointSaleNotFoundException;
-import com.proyecto.challengejava.repository.CostoRepository;
+import com.proyecto.challengejava.repository.CostRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
 
@@ -23,17 +23,17 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
 
     private final ConcurrentHashMap<String, Double> cache = new ConcurrentHashMap<>();
     private final PuntoVentaService puntoVentaService;
-    private final CostoRepository costoRepository;
+    private final CostRepository costRepository;
 
     /**
      * Constructor that injects the required services.
      *
      * @param puntoVentaService Service for managing sales points.
-     * @param costoRepository   Repository for persisting costs.
+     * @param costRepository   Repository for persisting costs.
      */
-    public CostoPuntosServiceImpl(PuntoVentaService puntoVentaService, CostoRepository costoRepository) {
+    public CostoPuntosServiceImpl(PuntoVentaService puntoVentaService, CostRepository costRepository) {
         this.puntoVentaService = puntoVentaService;
-        this.costoRepository = costoRepository;
+        this.costRepository = costRepository;
     }
 
     /**
@@ -52,7 +52,7 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
      * Loads all costs from the database and stores them in the cache.
      */
     public void cargarCacheDesdeDB() {
-        costoRepository.findAll().forEach(costo -> {
+        costRepository.findAll().forEach(costo -> {
             Long idA = costo.getIdA();
             Long idB = costo.getIdB();
             Double importe = costo.getCosto();
@@ -235,17 +235,17 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
         Long menor = Math.min(idA, idB);
         Long mayor = Math.max(idA, idB);
 
-        Optional<CostPoints> existente = costoRepository.findByIdAAndIdB(menor, mayor);
+        Optional<CostPoints> existente = costRepository.findByIdAAndIdB(menor, mayor);
         if (existente.isPresent()) {
             CostPoints costoExistente = existente.get();
             costoExistente.setCosto(costo);
-            costoRepository.save(costoExistente);
+            costRepository.save(costoExistente);
         } else {
             CostPoints nuevo = new CostPoints();
             nuevo.setIdA(menor);
             nuevo.setIdB(mayor);
             nuevo.setCosto(costo);
-            costoRepository.save(nuevo);
+            costRepository.save(nuevo);
         }
     }
 
@@ -260,10 +260,10 @@ public class CostoPuntosServiceImpl implements CostoPuntosService {
             return partes[0].equals(id.toString()) || partes[1].equals(id.toString());
         });
 
-        List<CostPoints> costos = costoRepository.findAll();
+        List<CostPoints> costos = costRepository.findAll();
         for (CostPoints costo : costos) {
             if (Objects.equals(costo.getIdA(), id) || Objects.equals(costo.getIdB(), id)) {
-                costoRepository.delete(costo);
+                costRepository.delete(costo);
             }
         }
     }

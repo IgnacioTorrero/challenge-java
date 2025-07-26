@@ -3,7 +3,7 @@ package com.proyecto.challengejava.service;
 import com.proyecto.challengejava.entity.Accreditation;
 import com.proyecto.challengejava.entity.PointSale;
 import com.proyecto.challengejava.exception.PointSaleNotFoundException;
-import com.proyecto.challengejava.repository.AcreditacionRepository;
+import com.proyecto.challengejava.repository.AccreditationRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -17,7 +17,7 @@ import static com.proyecto.challengejava.constants.Constants.*;
 @Service
 public class AcreditacionServiceImpl implements AcreditacionService {
 
-    private final AcreditacionRepository repository;
+    private final AccreditationRepository repository;
     private final PuntoVentaService puntoVentaService;
 
     /**
@@ -26,7 +26,7 @@ public class AcreditacionServiceImpl implements AcreditacionService {
      * @param repository        Repository for accreditations.
      * @param puntoVentaService Service for managing sales points.
      */
-    public AcreditacionServiceImpl(AcreditacionRepository repository, PuntoVentaService puntoVentaService) {
+    public AcreditacionServiceImpl(AccreditationRepository repository, PuntoVentaService puntoVentaService) {
         this.repository = repository;
         this.puntoVentaService = puntoVentaService;
     }

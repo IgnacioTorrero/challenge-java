@@ -3,7 +3,7 @@ package com.proyecto.challengejava.mapper;
 import com.proyecto.challengejava.dto.AccreditationResponse;
 import com.proyecto.challengejava.entity.Accreditation;
 
-public class AcreditacionMapper {
+public class AccreditationMapper {
     public static AccreditationResponse mapToResponse(Accreditation entity) {
         return new AccreditationResponse(
                 entity.getId(),

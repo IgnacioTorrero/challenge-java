@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface CostoRepository extends JpaRepository<CostPoints, Long> {
+public interface CostRepository extends JpaRepository<CostPoints, Long> {
     Optional<CostPoints> findByIdAAndIdB(Long idA, Long idB);
 }
