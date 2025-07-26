@@ -47,25 +47,25 @@ public class AccreditationServiceImplTest {
     void recibirAcreditacion_SavesAndReturnsAcreditacion() {
         PointSale pointSale = new PointSale();
         pointSale.setId(ID_PUNTO_VENTA);
-        pointSale.setNombre(PUNTO_VENTA_1);
+        pointSale.setName(PUNTO_VENTA_1);
 
         when(puntoVentaServiceImpl.getAllPuntosVenta()).thenReturn(List.of(pointSale));
 
         Accreditation accreditation = new Accreditation();
         accreditation.setId(ID_PUNTO_VENTA);
-        accreditation.setImporte(IMPORTE);
-        accreditation.setIdPuntoVenta(ID_PUNTO_VENTA);
-        accreditation.setNombrePuntoVenta(PUNTO_VENTA_1);
-        accreditation.setFechaRecepcion(LocalDate.now());
+        accreditation.setAmount(IMPORTE);
+        accreditation.setIdPointSale(ID_PUNTO_VENTA);
+        accreditation.setPointSaleName(PUNTO_VENTA_1);
+        accreditation.setDateReception(LocalDate.now());
 
         when(accreditationRepository.save(any(Accreditation.class))).thenReturn(accreditation);
         Accreditation result = acreditacionServiceImpl.recibirAcreditacion(IMPORTE, ID_PUNTO_VENTA);
 
         assertNotNull(result);
-        assertEquals(IMPORTE, result.getImporte());
-        assertEquals(ID_PUNTO_VENTA, result.getIdPuntoVenta());
-        assertEquals(PUNTO_VENTA_1, result.getNombrePuntoVenta());
-        assertEquals(LocalDate.now(), result.getFechaRecepcion());
+        assertEquals(IMPORTE, result.getAmount());
+        assertEquals(ID_PUNTO_VENTA, result.getIdPointSale());
+        assertEquals(PUNTO_VENTA_1, result.getPointSaleName());
+        assertEquals(LocalDate.now(), result.getDateReception());
         verify(accreditationRepository, times(1)).save(any(Accreditation.class));
     }
 
@@ -91,11 +91,11 @@ public class AccreditationServiceImplTest {
     void obtenerAcreditaciones_ReturnsAllAcreditaciones() {
         Accreditation accreditation1 = new Accreditation();
         accreditation1.setId(ID_PUNTO_VENTA);
-        accreditation1.setImporte(IMPORTE);
+        accreditation1.setAmount(IMPORTE);
 
         Accreditation accreditation2 = new Accreditation();
         accreditation2.setId(ID_PUNTO_VENTA2);
-        accreditation2.setImporte(IMPORTE2);
+        accreditation2.setAmount(IMPORTE2);
 
         when(accreditationRepository.findAll()).thenReturn(Arrays.asList(accreditation1, accreditation2));
         Iterable<Accreditation> result = acreditacionServiceImpl.obtenerAcreditaciones();

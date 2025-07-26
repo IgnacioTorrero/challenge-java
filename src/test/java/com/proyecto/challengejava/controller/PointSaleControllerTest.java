@@ -51,9 +51,9 @@ public class PointSaleControllerTest {
         MockitoAnnotations.openMocks(this);
 
         punto1.setId(ID_PUNTO_VENTA);
-        punto1.setNombre(PUNTO_VENTA_1);
+        punto1.setName(PUNTO_VENTA_1);
         punto2.setId(ID_PUNTO_VENTA2);
-        punto2.setNombre(PUNTO_VENTA_2);
+        punto2.setName(PUNTO_VENTA_2);
 
         request.setName(PUNTO_VENTA_3);
     }

@@ -13,15 +13,15 @@ public class CostPoints {
     private Long id;
     private Long idA;
     private Long idB;
-    private Double costo;
+    private Double cost;
 
     public CostPoints() {
     }
 
-    public CostPoints(Long idA, Long idB, Double costo) {
+    public CostPoints(Long idA, Long idB, Double cost) {
         this.idA = idA;
         this.idB = idB;
-        this.costo = costo;
+        this.cost = cost;
     }
 
     public Long getIdA() {
@@ -40,12 +40,12 @@ public class CostPoints {
         this.idB = idB;
     }
 
-    public Double getCosto() {
-        return costo;
+    public Double getCost() {
+        return cost;
     }
 
-    public void setCosto(Double costo) {
-        this.costo = costo;
+    public void setCost(Double cost) {
+        this.cost = cost;
     }
 
     public void setId(Long id) {

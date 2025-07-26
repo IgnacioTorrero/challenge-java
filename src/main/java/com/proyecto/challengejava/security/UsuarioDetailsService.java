@@ -25,7 +25,7 @@ public class UsuarioDetailsService implements UserDetailsService {
 
         return User.withUsername(usuario.getEmail())
                 .password(usuario.getPassword())
-                .roles(usuario.getRol().name()) // Usa el enum Rol (ej: USER, ADMIN)
+                .roles(usuario.getRole().name()) // Usa el enum Rol (ej: USER, ADMIN)
                 .build();
     }
 }

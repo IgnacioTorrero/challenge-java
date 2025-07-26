@@ -56,8 +56,8 @@ public class AccreditationControllerTest {
         // Arrange: simulate the accreditation returned by the service
         Accreditation accreditation = new Accreditation();
         accreditation.setId(ID_PUNTO_VENTA);
-        accreditation.setImporte(IMPORTE);
-        accreditation.setIdPuntoVenta(ID_PUNTO_VENTA);
+        accreditation.setAmount(IMPORTE);
+        accreditation.setIdPointSale(ID_PUNTO_VENTA);
 
         AccreditationRequest request = new AccreditationRequest();
         request.setAmount(IMPORTE);
@@ -65,10 +65,10 @@ public class AccreditationControllerTest {
 
         AccreditationResponse responseSinLinks = new AccreditationResponse(
                 accreditation.getId(),
-                accreditation.getImporte(),
-                accreditation.getIdPuntoVenta(),
-                accreditation.getNombrePuntoVenta(),
-                accreditation.getFechaRecepcion()
+                accreditation.getAmount(),
+                accreditation.getIdPointSale(),
+                accreditation.getPointSaleName(),
+                accreditation.getDateReception()
         );
 
         when(acreditacionServiceImpl.recibirAcreditacion(IMPORTE, ID_PUNTO_VENTA)).thenReturn(accreditation);
@@ -92,23 +92,23 @@ public class AccreditationControllerTest {
         // Arrange: simulate two accreditations returned by the service
         Accreditation accreditation1 = new Accreditation();
         accreditation1.setId(ID_PUNTO_VENTA);
-        accreditation1.setImporte(IMPORTE);
+        accreditation1.setAmount(IMPORTE);
 
         Accreditation accreditation2 = new Accreditation();
         accreditation2.setId(ID_PUNTO_VENTA2);
-        accreditation2.setImporte(IMPORTE2);
+        accreditation2.setAmount(IMPORTE2);
 
         Iterable<Accreditation> acreditaciones = Arrays.asList(accreditation1, accreditation2);
 
         AccreditationResponse response1 = new AccreditationResponse(
-                accreditation1.getId(), accreditation1.getImporte(),
-                accreditation1.getIdPuntoVenta(), accreditation1.getNombrePuntoVenta(),
-                accreditation1.getFechaRecepcion()
+                accreditation1.getId(), accreditation1.getAmount(),
+                accreditation1.getIdPointSale(), accreditation1.getPointSaleName(),
+                accreditation1.getDateReception()
         );
         AccreditationResponse response2 = new AccreditationResponse(
-                accreditation2.getId(), accreditation2.getImporte(),
-                accreditation2.getIdPuntoVenta(), accreditation2.getNombrePuntoVenta(),
-                accreditation2.getFechaRecepcion()
+                accreditation2.getId(), accreditation2.getAmount(),
+                accreditation2.getIdPointSale(), accreditation2.getPointSaleName(),
+                accreditation2.getDateReception()
         );
 
         when(acreditacionServiceImpl.obtenerAcreditaciones()).thenReturn(acreditaciones);

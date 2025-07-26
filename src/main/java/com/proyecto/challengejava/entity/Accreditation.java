@@ -13,10 +13,10 @@ public class Accreditation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Double importe;
-    private Long idPuntoVenta;
-    private String nombrePuntoVenta;
-    private LocalDate fechaRecepcion;
+    private Double amount;
+    private Long idPointSale;
+    private String pointSaleName;
+    private LocalDate dateReception;
 
     public Long getId() {
         return id;
@@ -26,35 +26,35 @@ public class Accreditation {
         this.id = id;
     }
 
-    public Double getImporte() {
-        return importe;
+    public Double getAmount() {
+        return amount;
     }
 
-    public void setImporte(Double importe) {
-        this.importe = importe;
+    public void setAmount(Double amount) {
+        this.amount = amount;
     }
 
-    public Long getIdPuntoVenta() {
-        return idPuntoVenta;
+    public Long getIdPointSale() {
+        return idPointSale;
     }
 
-    public void setIdPuntoVenta(Long idPuntoVenta) {
-        this.idPuntoVenta = idPuntoVenta;
+    public void setIdPointSale(Long idPointSale) {
+        this.idPointSale = idPointSale;
     }
 
-    public String getNombrePuntoVenta() {
-        return nombrePuntoVenta;
+    public String getPointSaleName() {
+        return pointSaleName;
     }
 
-    public void setNombrePuntoVenta(String nombrePuntoVenta) {
-        this.nombrePuntoVenta = nombrePuntoVenta;
+    public void setPointSaleName(String pointSaleName) {
+        this.pointSaleName = pointSaleName;
     }
 
-    public LocalDate getFechaRecepcion() {
-        return fechaRecepcion;
+    public LocalDate getDateReception() {
+        return dateReception;
     }
 
-    public void setFechaRecepcion(LocalDate fechaRecepcion) {
-        this.fechaRecepcion = fechaRecepcion;
+    public void setDateReception(LocalDate dateReception) {
+        this.dateReception = dateReception;
     }
 }

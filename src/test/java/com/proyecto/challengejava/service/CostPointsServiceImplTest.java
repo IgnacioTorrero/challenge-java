@@ -44,22 +44,22 @@ public class CostPointsServiceImplTest {
 
         // Mock initial sales points and cost repository data
         when(puntoVentaServiceImpl.getAllPuntosVenta()).thenReturn(Arrays.asList(
-                new PointSale() {{ setId(1L); setNombre(PUNTOS_VENTA.get(0)); }},
-                new PointSale() {{ setId(2L); setNombre(PUNTOS_VENTA.get(1)); }},
-                new PointSale() {{ setId(3L); setNombre(PUNTOS_VENTA.get(2)); }},
-                new PointSale() {{ setId(4L); setNombre(PUNTOS_VENTA.get(3)); }},
-                new PointSale() {{ setId(5L); setNombre(PUNTOS_VENTA.get(4)); }},
-                new PointSale() {{ setId(6L); setNombre(PUNTOS_VENTA.get(5)); }},
-                new PointSale() {{ setId(7L); setNombre(PUNTOS_VENTA.get(6)); }},
-                new PointSale() {{ setId(8L); setNombre(PUNTOS_VENTA.get(7)); }},
-                new PointSale() {{ setId(9L); setNombre(PUNTOS_VENTA.get(8)); }},
-                new PointSale() {{ setId(10L); setNombre(PUNTOS_VENTA.get(9)); }}
+                new PointSale() {{ setId(1L); setName(PUNTOS_VENTA.get(0)); }},
+                new PointSale() {{ setId(2L); setName(PUNTOS_VENTA.get(1)); }},
+                new PointSale() {{ setId(3L); setName(PUNTOS_VENTA.get(2)); }},
+                new PointSale() {{ setId(4L); setName(PUNTOS_VENTA.get(3)); }},
+                new PointSale() {{ setId(5L); setName(PUNTOS_VENTA.get(4)); }},
+                new PointSale() {{ setId(6L); setName(PUNTOS_VENTA.get(5)); }},
+                new PointSale() {{ setId(7L); setName(PUNTOS_VENTA.get(6)); }},
+                new PointSale() {{ setId(8L); setName(PUNTOS_VENTA.get(7)); }},
+                new PointSale() {{ setId(9L); setName(PUNTOS_VENTA.get(8)); }},
+                new PointSale() {{ setId(10L); setName(PUNTOS_VENTA.get(9)); }}
         ));
 
         when(costRepository.findAll()).thenReturn(Arrays.asList(
-                new CostPoints() {{ setIdA(1L); setIdB(2L); setCosto(2.0); }},
-                new CostPoints() {{ setIdA(1L); setIdB(3L); setCosto(3.0); }},
-                new CostPoints() {{ setIdA(1L); setIdB(4L); setCosto(4.0); }}
+                new CostPoints() {{ setIdA(1L); setIdB(2L); setCost(2.0); }},
+                new CostPoints() {{ setIdA(1L); setIdB(3L); setCost(3.0); }},
+                new CostPoints() {{ setIdA(1L); setIdB(4L); setCost(4.0); }}
         ));
 
         costoPuntosServiceImpl = new CostPointsServiceImpl(puntoVentaServiceImpl, costRepository);
@@ -169,8 +169,8 @@ public class CostPointsServiceImplTest {
     @Test
     void calcularRutaMinima_ThrowsIllegalArgumentException_WhenPuntoVentaDoesNotExist() {
         when(puntoVentaServiceImpl.getAllPuntosVenta()).thenReturn(Arrays.asList(
-                new PointSale() {{ setId(1L); setNombre(PUNTOS_VENTA.get(0)); }},
-                new PointSale() {{ setId(2L); setNombre(PUNTOS_VENTA.get(1)); }}
+                new PointSale() {{ setId(1L); setName(PUNTOS_VENTA.get(0)); }},
+                new PointSale() {{ setId(2L); setName(PUNTOS_VENTA.get(1)); }}
         ));
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
@@ -213,9 +213,9 @@ public class CostPointsServiceImplTest {
     void eliminarCostosRelacionadosA_DeletesFromRepository() {
         Long id = 2L;
 
-        CostPoints costo1 = new CostPoints(); costo1.setIdA(1L); costo1.setIdB(2L); costo1.setCosto(2.0);
-        CostPoints costo2 = new CostPoints(); costo2.setIdA(2L); costo2.setIdB(3L); costo2.setCosto(2.5);
-        CostPoints costo3 = new CostPoints(); costo3.setIdA(4L); costo3.setIdB(5L); costo3.setCosto(3.0); // unrelated
+        CostPoints costo1 = new CostPoints(); costo1.setIdA(1L); costo1.setIdB(2L); costo1.setCost(2.0);
+        CostPoints costo2 = new CostPoints(); costo2.setIdA(2L); costo2.setIdB(3L); costo2.setCost(2.5);
+        CostPoints costo3 = new CostPoints(); costo3.setIdA(4L); costo3.setIdB(5L); costo3.setCost(3.0); // unrelated
 
         when(costRepository.findAll()).thenReturn(Arrays.asList(costo1, costo2, costo3));
 
@@ -236,10 +236,10 @@ public class CostPointsServiceImplTest {
         Long puntoB = 4L;
 
         when(puntoVentaServiceImpl.getAllPuntosVenta()).thenReturn(Arrays.asList(
-                new PointSale() {{ setId(1L); setNombre("P1"); }},
-                new PointSale() {{ setId(2L); setNombre("P2"); }},
-                new PointSale() {{ setId(3L); setNombre("P3"); }},
-                new PointSale() {{ setId(4L); setNombre("P4"); }}
+                new PointSale() {{ setId(1L); setName("P1"); }},
+                new PointSale() {{ setId(2L); setName("P2"); }},
+                new PointSale() {{ setId(3L); setName("P3"); }},
+                new PointSale() {{ setId(4L); setName("P4"); }}
         ));
 
         costoPuntosServiceImpl.getCache().clear();
@@ -264,8 +264,8 @@ public class CostPointsServiceImplTest {
         Long idRelacionado = 1L;
 
         when(puntoVentaServiceImpl.getAllPuntosVenta()).thenReturn(Arrays.asList(
-                new PointSale() {{ setId(idA); setNombre("Punto 2"); }},
-                new PointSale() {{ setId(idRelacionado); setNombre("Punto 1"); }}
+                new PointSale() {{ setId(idA); setName("Punto 2"); }},
+                new PointSale() {{ setId(idRelacionado); setName("Punto 1"); }}
         ));
 
         costoPuntosServiceImpl.getCache().clear();
@@ -297,7 +297,7 @@ public class CostPointsServiceImplTest {
         CostPoints existente = new CostPoints();
         existente.setIdA(menor);
         existente.setIdB(mayor);
-        existente.setCosto(10.0);
+        existente.setCost(10.0);
 
         when(costRepository.findByIdAAndIdB(menor, mayor)).thenReturn(Optional.of(existente));
 
@@ -310,7 +310,7 @@ public class CostPointsServiceImplTest {
         costoPuntosServiceImpl.addCostoPuntos(idA, idB, nuevoCosto);
 
         // Assert
-        assertEquals(nuevoCosto, existente.getCosto());
+        assertEquals(nuevoCosto, existente.getCost());
         verify(costRepository).save(existente);
     }
 }

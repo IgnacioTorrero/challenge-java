@@ -87,7 +87,7 @@ public class PointSaleServiceImpl implements PointSaleService {
     private void precargarCache() {
         List<PointSale> puntos = pointSaleRepository.findAll();
         for (PointSale p : puntos) {
-            cache.put(p.getId(), p.getNombre());
+            cache.put(p.getId(), p.getName());
         }
     }
 
@@ -103,7 +103,7 @@ public class PointSaleServiceImpl implements PointSaleService {
             throw new IllegalArgumentException(PUNTO_VENTA_ALREADY_EXISTS);
         }
         PointSale pointSale = new PointSale();
-        pointSale.setNombre(nombre);
+        pointSale.setName(nombre);
         pointSale = pointSaleRepository.save(pointSale);
         cache.put(pointSale.getId(), nombre);
     }
@@ -118,7 +118,7 @@ public class PointSaleServiceImpl implements PointSaleService {
     public void updatePuntoVenta(Long id, String nombre) {
         PointSale pointSale = pointSaleRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException(PUNTO_VENTA_NOT_FOUND));
-        pointSale.setNombre(nombre);
+        pointSale.setName(nombre);
         pointSaleRepository.save(pointSale);
         cache.put(id, nombre);
     }

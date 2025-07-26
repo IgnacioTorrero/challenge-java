@@ -11,11 +11,11 @@ public class PointSale {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String nombre;
+    private String name;
 
-    public PointSale(Long id, String nombre) {
+    public PointSale(Long id, String name) {
         this.id = id;
-        this.nombre = nombre;
+        this.name = name;
     }
 
     public PointSale() {
@@ -27,10 +27,10 @@ public class PointSale {
     public void setId(Long id) {
         this.id = id;
     }
-    public String getNombre() {
-        return nombre;
+    public String getName() {
+        return name;
     }
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setName(String name) {
+        this.name = name;
     }
 }

@@ -7,10 +7,10 @@ public class AccreditationMapper {
     public static AccreditationResponse mapToResponse(Accreditation entity) {
         return new AccreditationResponse(
                 entity.getId(),
-                entity.getImporte(),
-                entity.getIdPuntoVenta(),
-                entity.getNombrePuntoVenta(),
-                entity.getFechaRecepcion()
+                entity.getAmount(),
+                entity.getIdPointSale(),
+                entity.getPointSaleName(),
+                entity.getDateReception()
         );
     }
 }

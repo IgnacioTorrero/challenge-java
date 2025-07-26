@@ -55,7 +55,7 @@ public class CostPointsServiceImpl implements CostPointsService {
         costRepository.findAll().forEach(costo -> {
             Long idA = costo.getIdA();
             Long idB = costo.getIdB();
-            Double importe = costo.getCosto();
+            Double importe = costo.getCost();
             String key = generateKey(idA, idB);
             cache.putIfAbsent(key, importe);
             System.out.println("✅ Cache loaded with key: " + key + " => " + importe);
@@ -145,7 +145,7 @@ public class CostPointsServiceImpl implements CostPointsService {
     private String getNombrePuntoVenta(Long id, List<PointSale> puntos) {
         return puntos.stream()
                 .filter(p -> p.getId().equals(id))
-                .map(PointSale::getNombre)
+                .map(PointSale::getName)
                 .findFirst()
                 .orElse(UNKNOWN);
     }
@@ -238,13 +238,13 @@ public class CostPointsServiceImpl implements CostPointsService {
         Optional<CostPoints> existente = costRepository.findByIdAAndIdB(menor, mayor);
         if (existente.isPresent()) {
             CostPoints costoExistente = existente.get();
-            costoExistente.setCosto(costo);
+            costoExistente.setCost(costo);
             costRepository.save(costoExistente);
         } else {
             CostPoints nuevo = new CostPoints();
             nuevo.setIdA(menor);
             nuevo.setIdB(mayor);
-            nuevo.setCosto(costo);
+            nuevo.setCost(costo);
             costRepository.save(nuevo);
         }
     }

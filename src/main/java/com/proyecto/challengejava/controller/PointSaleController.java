@@ -48,7 +48,7 @@ public class PointSaleController {
     @GetMapping
     public ResponseEntity<CollectionModel<PointSaleResponse>> getAllPointsSale() {
         List<PointSaleResponse> responses = service.getAllPuntosVenta().stream()
-                .map(p -> new PointSaleResponse(p.getId(), p.getNombre()))
+                .map(p -> new PointSaleResponse(p.getId(), p.getName()))
                 .map(assembler::toModel)
                 .collect(Collectors.toList());
 

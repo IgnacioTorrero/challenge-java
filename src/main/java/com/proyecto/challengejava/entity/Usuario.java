@@ -10,7 +10,7 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nombre;
+    private String name;
 
     @Column(unique = true)
     private String email;
@@ -28,12 +28,12 @@ public class Usuario {
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getName() {
+        return name;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {
@@ -52,11 +52,11 @@ public class Usuario {
         this.password = password;
     }
 
-    public Role getRol() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRol(Role role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 }

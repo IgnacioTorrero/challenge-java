@@ -46,15 +46,15 @@ public class AccreditationServiceImpl implements AccreditationService {
 
         String nombrePuntoVenta = pointSaleService.getAllPuntosVenta().stream()
                 .filter(p -> p.getId().equals(idPuntoVenta))
-                .map(PointSale::getNombre)
+                .map(PointSale::getName)
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException(PUNTO_VENTA_NOT_FOUND));
 
         Accreditation accreditation = new Accreditation();
-        accreditation.setImporte(importe);
-        accreditation.setIdPuntoVenta(idPuntoVenta);
-        accreditation.setNombrePuntoVenta(nombrePuntoVenta);
-        accreditation.setFechaRecepcion(LocalDate.now());
+        accreditation.setAmount(importe);
+        accreditation.setIdPointSale(idPuntoVenta);
+        accreditation.setPointSaleName(nombrePuntoVenta);
+        accreditation.setDateReception(LocalDate.now());
 
         return repository.save(accreditation);
     }

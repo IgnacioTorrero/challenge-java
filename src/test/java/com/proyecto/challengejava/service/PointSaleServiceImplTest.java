@@ -107,7 +107,7 @@ public class PointSaleServiceImplTest {
         assertNotNull(puntosVenta);
         assertEquals(10, puntosVenta.size());
         assertEquals(1L, puntosVenta.get(0).getId());
-        assertEquals("Punto 1", puntosVenta.get(0).getNombre());
+        assertEquals("Punto 1", puntosVenta.get(0).getName());
     }
 
     /**
@@ -123,7 +123,7 @@ public class PointSaleServiceImplTest {
         assertEquals(11, puntosVenta.size());
 
         PointSale agregado = puntosVenta.stream()
-                .filter(p -> PUNTO_VENTA_3.equals(p.getNombre()))
+                .filter(p -> PUNTO_VENTA_3.equals(p.getName()))
                 .findFirst()
                 .orElse(null);
         assertNotNull(agregado);
@@ -160,7 +160,7 @@ public class PointSaleServiceImplTest {
                 .findFirst()
                 .orElse(null);
         assertNotNull(actualizado);
-        assertEquals(PUNTO_VENTA_5, actualizado.getNombre());
+        assertEquals(PUNTO_VENTA_5, actualizado.getName());
     }
 
     /**
