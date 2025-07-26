@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import static com.proyecto.challengejava.constants.Constants.*;
 
 @Component
-public class PuntoVentaModelAssembler implements RepresentationModelAssembler<PointSaleResponse, PointSaleResponse> {
+public class PointSaleModelAssembler implements RepresentationModelAssembler<PointSaleResponse, PointSaleResponse> {
 
     @Override
     public PointSaleResponse toModel(PointSaleResponse puntoVenta) {

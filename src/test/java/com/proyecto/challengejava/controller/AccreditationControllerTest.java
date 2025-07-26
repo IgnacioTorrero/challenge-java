@@ -3,7 +3,7 @@ package com.proyecto.challengejava.controller;
 import com.proyecto.challengejava.dto.AccreditationRequest;
 import com.proyecto.challengejava.dto.AccreditationResponse;
 import com.proyecto.challengejava.entity.Accreditation;
-import com.proyecto.challengejava.hateoas.AcreditacionModelAssembler;
+import com.proyecto.challengejava.hateoas.AccreditationModelAssembler;
 import com.proyecto.challengejava.service.AcreditacionServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,7 +29,7 @@ public class AccreditationControllerTest {
     private AcreditacionServiceImpl acreditacionServiceImpl;
 
     @Mock
-    private AcreditacionModelAssembler acreditacionAssembler;
+    private AccreditationModelAssembler acreditacionAssembler;
 
     @InjectMocks
     private AccreditationController accreditationController;

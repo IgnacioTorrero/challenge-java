@@ -3,7 +3,7 @@ package com.proyecto.challengejava.controller;
 import com.proyecto.challengejava.dto.PointSaleRequest;
 import com.proyecto.challengejava.dto.PointSaleResponse;
 import com.proyecto.challengejava.entity.PointSale;
-import com.proyecto.challengejava.hateoas.PuntoVentaModelAssembler;
+import com.proyecto.challengejava.hateoas.PointSaleModelAssembler;
 import com.proyecto.challengejava.service.PuntoVentaManager;
 import com.proyecto.challengejava.service.PuntoVentaServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,7 +34,7 @@ public class PointSaleControllerTest {
     private PuntoVentaManager puntoVentaManager;
 
     @Mock
-    private PuntoVentaModelAssembler assembler;
+    private PointSaleModelAssembler assembler;
 
     @InjectMocks
     private PointSaleController controller;

@@ -3,8 +3,8 @@ package com.proyecto.challengejava.controller;
 import com.proyecto.challengejava.dto.CostPointsRequest;
 import com.proyecto.challengejava.dto.CostPointsResponse;
 import com.proyecto.challengejava.dto.MinCostRouteResponse;
-import com.proyecto.challengejava.hateoas.CostoPuntosModelAssembler;
-import com.proyecto.challengejava.hateoas.RutaCostoMinimoModelAssembler;
+import com.proyecto.challengejava.hateoas.CostPointsModelAssembler;
+import com.proyecto.challengejava.hateoas.MinCostRouteModelAssembler;
 import com.proyecto.challengejava.service.CostoPuntosService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,22 +25,22 @@ import static com.proyecto.challengejava.constants.Constants.*;
 public class CostPointsController {
 
     private final CostoPuntosService service;
-    private final CostoPuntosModelAssembler costoPuntosModelAssembler;
-    private final RutaCostoMinimoModelAssembler rutaCostoMinimoModelAssembler;
+    private final CostPointsModelAssembler costPointsModelAssembler;
+    private final MinCostRouteModelAssembler minCostRouteModelAssembler;
 
     /**
      * Constructor that injects required services and assemblers.
      *
      * @param service                     Service handling business logic for point-to-point costs.
-     * @param costoPuntosModelAssembler  HATEOAS assembler for cost responses.
-     * @param rutaCostoMinimoModelAssembler HATEOAS assembler for minimum cost route responses.
+     * @param costPointsModelAssembler  HATEOAS assembler for cost responses.
+     * @param minCostRouteModelAssembler HATEOAS assembler for minimum cost route responses.
      */
     @Autowired
-    public CostPointsController(CostoPuntosService service, CostoPuntosModelAssembler costoPuntosModelAssembler,
-                                RutaCostoMinimoModelAssembler rutaCostoMinimoModelAssembler) {
+    public CostPointsController(CostoPuntosService service, CostPointsModelAssembler costPointsModelAssembler,
+                                MinCostRouteModelAssembler minCostRouteModelAssembler) {
         this.service = service;
-        this.costoPuntosModelAssembler = costoPuntosModelAssembler;
-        this.rutaCostoMinimoModelAssembler = rutaCostoMinimoModelAssembler;
+        this.costPointsModelAssembler = costPointsModelAssembler;
+        this.minCostRouteModelAssembler = minCostRouteModelAssembler;
     }
 
     /**
@@ -81,7 +81,7 @@ public class CostPointsController {
     public ResponseEntity<CollectionModel<CostPointsResponse>> getCostosDesdePunto(@PathVariable Long idA) {
         List<CostPointsResponse> responseList = service.getCostosDesdePunto(idA)
                 .stream()
-                .map(costoPuntosModelAssembler::toModel)
+                .map(costPointsModelAssembler::toModel)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(CollectionModel.of(responseList));
     }
@@ -102,7 +102,7 @@ public class CostPointsController {
         Double costoTotal = service.calcularCostoTotalRuta(ruta);
 
         MinCostRouteResponse response = new MinCostRouteResponse(ruta, costoTotal);
-        return ResponseEntity.ok(rutaCostoMinimoModelAssembler.toModel(response));
+        return ResponseEntity.ok(minCostRouteModelAssembler.toModel(response));
     }
 
     /**

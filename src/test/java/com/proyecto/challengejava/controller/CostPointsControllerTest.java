@@ -3,8 +3,8 @@ package com.proyecto.challengejava.controller;
 import com.proyecto.challengejava.dto.CostPointsRequest;
 import com.proyecto.challengejava.dto.CostPointsResponse;
 import com.proyecto.challengejava.dto.MinCostRouteResponse;
-import com.proyecto.challengejava.hateoas.CostoPuntosModelAssembler;
-import com.proyecto.challengejava.hateoas.RutaCostoMinimoModelAssembler;
+import com.proyecto.challengejava.hateoas.CostPointsModelAssembler;
+import com.proyecto.challengejava.hateoas.MinCostRouteModelAssembler;
 import com.proyecto.challengejava.service.CostoPuntosServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,10 +33,10 @@ public class CostPointsControllerTest {
     private CostoPuntosServiceImpl service;
 
     @Mock
-    private CostoPuntosModelAssembler assembler;
+    private CostPointsModelAssembler assembler;
 
     @Mock
-    private RutaCostoMinimoModelAssembler rutaAssembler;
+    private MinCostRouteModelAssembler rutaAssembler;
 
     @InjectMocks
     private CostPointsController controller;

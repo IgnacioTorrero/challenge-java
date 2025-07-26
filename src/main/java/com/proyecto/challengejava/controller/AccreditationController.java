@@ -3,7 +3,7 @@ package com.proyecto.challengejava.controller;
 import com.proyecto.challengejava.dto.AccreditationRequest;
 import com.proyecto.challengejava.dto.AccreditationResponse;
 import com.proyecto.challengejava.entity.Accreditation;
-import com.proyecto.challengejava.hateoas.AcreditacionModelAssembler;
+import com.proyecto.challengejava.hateoas.AccreditationModelAssembler;
 import com.proyecto.challengejava.mapper.AcreditacionMapper;
 import com.proyecto.challengejava.service.AcreditacionService;
 import jakarta.validation.Valid;
@@ -26,7 +26,7 @@ import static com.proyecto.challengejava.mapper.AcreditacionMapper.mapToResponse
 public class AccreditationController {
 
     private final AcreditacionService service;
-    private final AcreditacionModelAssembler acreditacionAssembler;
+    private final AccreditationModelAssembler acreditacionAssembler;
 
     /**
      * Constructor that injects the required dependencies.
@@ -35,7 +35,7 @@ public class AccreditationController {
      * @param acreditacionAssembler Assembler to convert responses into HATEOAS models.
      */
     @Autowired
-    public AccreditationController(AcreditacionService service, AcreditacionModelAssembler acreditacionAssembler) {
+    public AccreditationController(AcreditacionService service, AccreditationModelAssembler acreditacionAssembler) {
         this.service = service;
         this.acreditacionAssembler = acreditacionAssembler;
     }

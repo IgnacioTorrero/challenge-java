@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import static com.proyecto.challengejava.constants.Constants.*;
 
 @Component
-public class RutaCostoMinimoModelAssembler implements RepresentationModelAssembler<MinCostRouteResponse, MinCostRouteResponse> {
+public class MinCostRouteModelAssembler implements RepresentationModelAssembler<MinCostRouteResponse, MinCostRouteResponse> {
 
     @Override
     public MinCostRouteResponse toModel(MinCostRouteResponse response) {

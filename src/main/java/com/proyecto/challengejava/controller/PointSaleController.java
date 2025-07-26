@@ -2,7 +2,7 @@ package com.proyecto.challengejava.controller;
 
 import com.proyecto.challengejava.dto.PointSaleRequest;
 import com.proyecto.challengejava.dto.PointSaleResponse;
-import com.proyecto.challengejava.hateoas.PuntoVentaModelAssembler;
+import com.proyecto.challengejava.hateoas.PointSaleModelAssembler;
 import com.proyecto.challengejava.service.PuntoVentaManager;
 import com.proyecto.challengejava.service.PuntoVentaService;
 import jakarta.validation.Valid;
@@ -23,7 +23,7 @@ public class PointSaleController {
 
     private final PuntoVentaService service;
     private final PuntoVentaManager manager;
-    private final PuntoVentaModelAssembler assembler;
+    private final PointSaleModelAssembler assembler;
 
     /**
      * Constructor that injects the required services and assembler.
@@ -34,7 +34,7 @@ public class PointSaleController {
      */
     @Autowired
     public PointSaleController(PuntoVentaService service, PuntoVentaManager manager,
-                               PuntoVentaModelAssembler assembler) {
+                               PointSaleModelAssembler assembler) {
         this.service = service;
         this.manager = manager;
         this.assembler = assembler;

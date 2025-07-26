@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import static com.proyecto.challengejava.constants.Constants.*;
 
 @Component
-public class AcreditacionModelAssembler implements RepresentationModelAssembler<AccreditationResponse, AccreditationResponse> {
+public class AccreditationModelAssembler implements RepresentationModelAssembler<AccreditationResponse, AccreditationResponse> {
 
     @Override
     public AccreditationResponse toModel(AccreditationResponse entity) {
