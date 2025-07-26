@@ -17,23 +17,23 @@ public class CostPointsUtil {
         return (idA < idB ? idA + REGEX + idB : idB + REGEX + idA);
     }
 
-    public static Map<Long, Double> getVecinos(Long punto, ConcurrentHashMap<String, Double> cache, String separator) {
-        Map<Long, Double> vecinos = new HashMap<>();
+    public static Map<Long, Double> getNeighbors(Long point, ConcurrentHashMap<String, Double> cache, String separator) {
+        Map<Long, Double> neighbors = new HashMap<>();
         cache.forEach((key, value) -> {
             String[] ids = key.split(separator);
             Long id1 = Long.valueOf(ids[0]);
             Long id2 = Long.valueOf(ids[1]);
 
-            if (id1.equals(punto)) {
-                vecinos.put(id2, value);
-            } else if (id2.equals(punto)) {
-                vecinos.put(id1, value);
+            if (id1.equals(point)) {
+                neighbors.put(id2, value);
+            } else if (id2.equals(point)) {
+                neighbors.put(id1, value);
             }
         });
-        return vecinos;
+        return neighbors;
     }
 
-    public static boolean puntoVentaExists(List<PointSale> puntos, Long id) {
-        return puntos.stream().anyMatch(p -> p.getId().equals(id));
+    public static boolean pointSaleExists(List<PointSale> points, Long id) {
+        return points.stream().anyMatch(p -> p.getId().equals(id));
     }
 }

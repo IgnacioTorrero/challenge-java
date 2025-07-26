@@ -69,20 +69,20 @@ public class CostPointsServiceImplTest {
     }
 
     /**
-     * Verifies that {@code addCostoPuntos} stores a new cost and updates the cache.
+     * Verifies that {@code addCostPoints} stores a new cost and updates the cache.
      */
     @Test
     void addCostPoints_ReturnsOk() {
         costoPuntosServiceImpl.addCostPoints(ID_PUNTO_VENTA, ID_PUNTO_VENTA2, IMPORTE);
 
-        List<CostPointsResponse> costos = costoPuntosServiceImpl.getCostsFromPoint(ID_PUNTO_VENTA);
+        List<CostPointsResponse> costs = costoPuntosServiceImpl.getCostsFromPoint(ID_PUNTO_VENTA);
 
-        assertEquals(3, costos.size());
-        assertEquals(IMPORTE, costos.get(0).getCost());
+        assertEquals(3, costs.size());
+        assertEquals(IMPORTE, costs.get(0).getCost());
     }
 
     /**
-     * Verifies that {@code addCostoPuntos} throws exception if the cost is less than zero.
+     * Verifies that {@code addCostPoints} throws exception if the cost is less than zero.
      */
     @Test
     void addCostPointsLessThanZero_ThrowsIllegalArgumentException() {
@@ -93,7 +93,7 @@ public class CostPointsServiceImplTest {
     }
 
     /**
-     * Verifies that {@code addCostoPuntos} throws exception when a sales point does not exist.
+     * Verifies that {@code addCostPoints} throws exception when a sales point does not exist.
      */
     @Test
     void addCostPointsNotFound_ThrowsIllegalArgumentException() {
@@ -104,32 +104,32 @@ public class CostPointsServiceImplTest {
     }
 
     /**
-     * Verifies that {@code removeCostoPuntos} removes a cost and sets it to zero in cache.
+     * Verifies that {@code removeCostPoints} removes a cost and sets it to zero in cache.
      */
     @Test
     void removeCostPoints_ReturnsOk() {
         costoPuntosServiceImpl.removeCostPoints(ID_PUNTO_VENTA, ID_PUNTO_VENTA2);
-        double costoAhora = costoPuntosServiceImpl.getCostsFromPoint(ID_PUNTO_VENTA).get(0).getCost();
-        assertEquals(0.0, costoAhora);
+        double actualCost = costoPuntosServiceImpl.getCostsFromPoint(ID_PUNTO_VENTA).get(0).getCost();
+        assertEquals(0.0, actualCost);
     }
 
     /**
-     * Verifies that {@code getCostosDesdePunto} returns all related costs.
+     * Verifies that {@code getCostsFromPoint} returns all related costs.
      */
     @Test
-    void getCostsFromPoint_ReturnsCostoPuntos() {
+    void getCostsFromPoint_ReturnsCostPoints() {
         costoPuntosServiceImpl.addCostPoints(ID_PUNTO_VENTA, ID_PUNTO_VENTA2, IMPORTE);
         costoPuntosServiceImpl.addCostPoints(ID_PUNTO_VENTA, ID_PUNTO_VENTA3, IMPORTE2);
 
-        List<CostPointsResponse> costos = costoPuntosServiceImpl.getCostsFromPoint(ID_PUNTO_VENTA);
+        List<CostPointsResponse> costs = costoPuntosServiceImpl.getCostsFromPoint(ID_PUNTO_VENTA);
 
-        assertEquals(3, costos.size());
-        assertEquals(IMPORTE, costos.get(0).getCost());
-        assertEquals(IMPORTE2, costos.get(1).getCost());
+        assertEquals(3, costs.size());
+        assertEquals(IMPORTE, costs.get(0).getCost());
+        assertEquals(IMPORTE2, costs.get(1).getCost());
     }
 
     /**
-     * Verifies that {@code getCostosDesdePunto} throws exception for invalid sales point ID.
+     * Verifies that {@code getCostsFromPoint} throws exception for invalid sales point ID.
      */
     @Test
     void getCostsFromPoint_ThrowsExceptionIllegalArgumentException() {
@@ -140,7 +140,7 @@ public class CostPointsServiceImplTest {
     }
 
     /**
-     * Verifies that {@code removeCostoPuntos} throws exception when sales points are invalid.
+     * Verifies that {@code removeCostPoints} throws exception when sales points are invalid.
      */
     @Test
     void removeCostPoints_ThrowsIllegalArgumentException() {
@@ -151,23 +151,23 @@ public class CostPointsServiceImplTest {
     }
 
     /**
-     * Verifies that {@code cargarCacheDesdeDB} successfully loads initial data.
+     * Verifies that {@code loadCacheFromDB} successfully loads initial data.
      */
     @Test
     void loadCacheFromDB_ReturnsOk() {
         costoPuntosServiceImpl.loadCacheFromDB();
 
-        List<CostPointsResponse> costosDesdePunto1 = costoPuntosServiceImpl.getCostsFromPoint(ID_PUNTO_VENTA);
+        List<CostPointsResponse> costsFromPoint1 = costoPuntosServiceImpl.getCostsFromPoint(ID_PUNTO_VENTA);
 
-        assertFalse(costosDesdePunto1.isEmpty());
-        assertEquals(3, costosDesdePunto1.size());
+        assertFalse(costsFromPoint1.isEmpty());
+        assertEquals(3, costsFromPoint1.size());
     }
 
     /**
-     * Verifies that {@code calcularRutaMinima} throws exception if any sales point doesn't exist.
+     * Verifies that {@code calculateMinPath} throws exception if any sales point doesn't exist.
      */
     @Test
-    void calculateMinPath_ThrowsIllegalArgumentException_WhenPuntoVentaDoesNotExist() {
+    void calculateMinPath_ThrowsIllegalArgumentException_WhenPointSaleDoesNotExist() {
         when(puntoVentaServiceImpl.getAllPointSale()).thenReturn(Arrays.asList(
                 new PointSale() {{ setId(1L); setName(PUNTOS_VENTA.get(0)); }},
                 new PointSale() {{ setId(2L); setName(PUNTOS_VENTA.get(1)); }}
@@ -181,59 +181,59 @@ public class CostPointsServiceImplTest {
     }
 
     /**
-     * Verifies that {@code calcularCostoTotalRuta} returns correct total cost of a path.
+     * Verifies that {@code calculateTotalRouteCost} returns correct total cost of a path.
      */
     @Test
     void calculate() {
         List<Long> ruta = Arrays.asList(1L, 2L); // Cost 2.0 between 1 and 2
 
-        double costoTotal = costoPuntosServiceImpl.calculateTotalRouteCost(ruta);
+        double totalCost = costoPuntosServiceImpl.calculateTotalRouteCost(ruta);
 
-        assertEquals(2.0, costoTotal);
+        assertEquals(2.0, totalCost);
     }
 
     /**
-     * Verifies that {@code calcularCostoTotalRuta} throws exception when cost is missing in cache.
+     * Verifies that {@code calculateTotalRouteCost} throws exception when cost is missing in cache.
      */
     @Test
     void calculateTotalRouteCost_ThrowsException_WhenKeyNotInCache() {
-        List<Long> rutaInvalida = Arrays.asList(2L, 3L);
+        List<Long> invalidRute = Arrays.asList(2L, 3L);
 
         Exception exception = assertThrows(IllegalStateException.class, () -> {
-            costoPuntosServiceImpl.calculateTotalRouteCost(rutaInvalida);
+            costoPuntosServiceImpl.calculateTotalRouteCost(invalidRute);
         });
 
         assertEquals("Falta costo entre 2 y 3", exception.getMessage());
     }
 
     /**
-     * Verifies that {@code eliminarCostosRelacionadosA} removes all costs linked to a sales point.
+     * Verifies that {@code deleteRelatedCostsToA} removes all costs linked to a sales point.
      */
     @Test
     void deleteRelatedCostsTo_DeletesFromRepository() {
         Long id = 2L;
 
-        CostPoints costo1 = new CostPoints(); costo1.setIdA(1L); costo1.setIdB(2L); costo1.setCost(2.0);
-        CostPoints costo2 = new CostPoints(); costo2.setIdA(2L); costo2.setIdB(3L); costo2.setCost(2.5);
-        CostPoints costo3 = new CostPoints(); costo3.setIdA(4L); costo3.setIdB(5L); costo3.setCost(3.0); // unrelated
+        CostPoints cost1 = new CostPoints(); cost1.setIdA(1L); cost1.setIdB(2L); cost1.setCost(2.0);
+        CostPoints cost2 = new CostPoints(); cost2.setIdA(2L); cost2.setIdB(3L); cost2.setCost(2.5);
+        CostPoints cost3 = new CostPoints(); cost3.setIdA(4L); cost3.setIdB(5L); cost3.setCost(3.0); // unrelated
 
-        when(costRepository.findAll()).thenReturn(Arrays.asList(costo1, costo2, costo3));
+        when(costRepository.findAll()).thenReturn(Arrays.asList(cost1, cost2, cost3));
 
         costoPuntosServiceImpl.deleteRelatedCostsTo(id);
 
-        verify(costRepository).delete(costo1);
-        verify(costRepository).delete(costo2);
-        verify(costRepository, never()).delete(costo3);
+        verify(costRepository).delete(cost1);
+        verify(costRepository).delete(cost2);
+        verify(costRepository, never()).delete(cost3);
     }
 
     /**
-     * Verifies that {@code calcularRutaMinima} returns the shortest path between two points.
+     * Verifies that {@code calculateMinPath} returns the shortest path between two points.
      */
     @Test
     void calculateMinPath_ReturnsCorrectPath() {
         // Arrange
-        Long puntoA = 1L;
-        Long puntoB = 4L;
+        Long pointA = 1L;
+        Long pointB = 4L;
 
         when(puntoVentaServiceImpl.getAllPointSale()).thenReturn(Arrays.asList(
                 new PointSale() {{ setId(1L); setName("P1"); }},
@@ -248,58 +248,58 @@ public class CostPointsServiceImplTest {
         costoPuntosServiceImpl.addCostPoints(3L, 4L, 1.0);
 
         // Act
-        List<Long> ruta = costoPuntosServiceImpl.calculateMinPath(puntoA, puntoB);
+        List<Long> ruta = costoPuntosServiceImpl.calculateMinPath(pointA, pointB);
 
         // Assert
         assertEquals(Arrays.asList(1L, 2L, 3L, 4L), ruta);
     }
 
     /**
-     * Verifies that {@code getCostosDesdePunto} works even if the point is the destination (idB).
+     * Verifies that {@code getCostsFromPoint} works even if the point is the destination (idB).
      */
     @Test
-    void getCostsFromPoint_ReturnsCostoCuandoEsId2() {
+    void getCostsFromPoint_ReturnsCostWhenIsId2() {
         // Arrange
         Long idA = 2L;
-        Long idRelacionado = 1L;
+        Long relatedId = 1L;
 
         when(puntoVentaServiceImpl.getAllPointSale()).thenReturn(Arrays.asList(
                 new PointSale() {{ setId(idA); setName("Punto 2"); }},
-                new PointSale() {{ setId(idRelacionado); setName("Punto 1"); }}
+                new PointSale() {{ setId(relatedId); setName("Punto 1"); }}
         ));
 
         costoPuntosServiceImpl.getCache().clear();
-        costoPuntosServiceImpl.addCostPoints(idRelacionado, idA, 5.5); // creates key "1-2"
+        costoPuntosServiceImpl.addCostPoints(relatedId, idA, 5.5); // creates key "1-2"
 
         // Act
-        List<CostPointsResponse> costos = costoPuntosServiceImpl.getCostsFromPoint(idA);
+        List<CostPointsResponse> costs = costoPuntosServiceImpl.getCostsFromPoint(idA);
 
         // Assert
-        assertEquals(1, costos.size());
-        assertEquals(idA, costos.get(0).getIdA());
-        assertEquals(idRelacionado, costos.get(0).getIdB());
-        assertEquals(5.5, costos.get(0).getCost());
-        assertEquals("Punto 1", costos.get(0).getPointNameB());
+        assertEquals(1, costs.size());
+        assertEquals(idA, costs.get(0).getIdA());
+        assertEquals(relatedId, costs.get(0).getIdB());
+        assertEquals(5.5, costs.get(0).getCost());
+        assertEquals("Punto 1", costs.get(0).getPointNameB());
     }
 
     /**
-     * Verifies that {@code saveCostoToDB} updates the cost if it already exists in the database.
+     * Verifies that {@code saveCostToDB} updates the cost if it already exists in the database.
      */
     @Test
-    void saveCostoToDB_actualizaCostExistente() {
+    void saveCostToDB_updateExistingCost() {
         // Arrange
         Long idA = 1L;
         Long idB = 2L;
-        Double nuevoCosto = 15.0;
-        Long menor = Math.min(idA, idB);
+        Double newCost = 15.0;
+        Long minor = Math.min(idA, idB);
         Long mayor = Math.max(idA, idB);
 
-        CostPoints existente = new CostPoints();
-        existente.setIdA(menor);
-        existente.setIdB(mayor);
-        existente.setCost(10.0);
+        CostPoints existing = new CostPoints();
+        existing.setIdA(minor);
+        existing.setIdB(mayor);
+        existing.setCost(10.0);
 
-        when(costRepository.findByIdAAndIdB(menor, mayor)).thenReturn(Optional.of(existente));
+        when(costRepository.findByIdAAndIdB(minor, mayor)).thenReturn(Optional.of(existing));
 
         // Act
         when(pointSaleService.getAllPointSale()).thenReturn(List.of(
@@ -307,10 +307,10 @@ public class CostPointsServiceImplTest {
                 new PointSale(idB, "B")
         ));
 
-        costoPuntosServiceImpl.addCostPoints(idA, idB, nuevoCosto);
+        costoPuntosServiceImpl.addCostPoints(idA, idB, newCost);
 
         // Assert
-        assertEquals(nuevoCosto, existente.getCost());
-        verify(costRepository).save(existente);
+        assertEquals(newCost, existing.getCost());
+        verify(costRepository).save(existing);
     }
 }

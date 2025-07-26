@@ -48,7 +48,7 @@ public class AccreditationControllerTest {
     }
 
     /**
-     * Test to verify that the {@code recibirAcreditacion} method
+     * Test to verify that the {@code receiveAccreditation} method
      * returns a response with the expected data.
      */
     @Test
@@ -84,11 +84,11 @@ public class AccreditationControllerTest {
     }
 
     /**
-     * Test to verify that the {@code obtenerAcreditaciones} method
+     * Test to verify that the {@code getAccreditations} method
      * returns a list of accreditations correctly transformed.
      */
     @Test
-    void getAccreditations_ReturnsCollectionModelOfAcreditacionResponses() {
+    void getAccreditations_ReturnsCollectionModelOfAccreditationsResponses() {
         // Arrange: simulate two accreditations returned by the service
         Accreditation accreditation1 = new Accreditation();
         accreditation1.setId(ID_PUNTO_VENTA);
@@ -98,7 +98,7 @@ public class AccreditationControllerTest {
         accreditation2.setId(ID_PUNTO_VENTA2);
         accreditation2.setAmount(IMPORTE2);
 
-        Iterable<Accreditation> acreditaciones = Arrays.asList(accreditation1, accreditation2);
+        Iterable<Accreditation> accreditations = Arrays.asList(accreditation1, accreditation2);
 
         AccreditationResponse response1 = new AccreditationResponse(
                 accreditation1.getId(), accreditation1.getAmount(),
@@ -111,7 +111,7 @@ public class AccreditationControllerTest {
                 accreditation2.getDateReception()
         );
 
-        when(acreditacionServiceImpl.getAccreditations()).thenReturn(acreditaciones);
+        when(acreditacionServiceImpl.getAccreditations()).thenReturn(accreditations);
         when(acreditacionAssembler.toModel(response1)).thenReturn(response1);
         when(acreditacionAssembler.toModel(response2)).thenReturn(response2);
 

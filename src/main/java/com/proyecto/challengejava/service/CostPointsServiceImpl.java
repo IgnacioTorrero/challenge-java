@@ -75,7 +75,7 @@ public class CostPointsServiceImpl implements CostPointsService {
             throw new IllegalArgumentException(COSTO_PUNTOS_LESS_THAN_ZERO);
         }
         List<PointSale> puntos = pointSaleService.getAllPointSale();
-        if (!puntoVentaExists(puntos, idA) || !puntoVentaExists(puntos, idB)) {
+        if (!pointSaleExists(puntos, idA) || !pointSaleExists(puntos, idB)) {
             throw new IllegalArgumentException(PUNTO_VENTA_NOT_FOUND);
         }
 
@@ -94,7 +94,7 @@ public class CostPointsServiceImpl implements CostPointsService {
      */
     public void removeCostPoints(Long idA, Long idB) {
         List<PointSale> points = pointSaleService.getAllPointSale();
-        if (!puntoVentaExists(points, idA) || !puntoVentaExists(points, idB)) {
+        if (!pointSaleExists(points, idA) || !pointSaleExists(points, idB)) {
             throw new PointSaleNotFoundException(PUNTO_VENTA_NOT_FOUND);
         }
 
@@ -111,7 +111,7 @@ public class CostPointsServiceImpl implements CostPointsService {
      */
     public List<CostPointsResponse> getCostsFromPoint(Long idA) {
         List<PointSale> points = pointSaleService.getAllPointSale();
-        if (!puntoVentaExists(points, idA)) {
+        if (!pointSaleExists(points, idA)) {
             throw new IllegalArgumentException(PUNTO_VENTA_NOT_FOUND);
         }
         List<CostPointsResponse> costs = new ArrayList<>();
@@ -122,12 +122,12 @@ public class CostPointsServiceImpl implements CostPointsService {
 
             if (id1.equals(idA)) {
                 Long idB = id2;
-                if (!puntoVentaExists(points, idB)) return;
+                if (!pointSaleExists(points, idB)) return;
                 String pointBName = getPointSaleName(idB, points);
                 costs.add(new CostPointsResponse(idA, idB, value, pointBName));
             } else if (id2.equals(idA)) {
                 Long idB = id1;
-                if (!puntoVentaExists(points, idB)) return;
+                if (!pointSaleExists(points, idB)) return;
                 String nombrePuntoB = getPointSaleName(idB, points);
                 costs.add(new CostPointsResponse(idA, idB, value, nombrePuntoB));
             }
@@ -164,7 +164,7 @@ public class CostPointsServiceImpl implements CostPointsService {
         PriorityQueue<Map.Entry<Long, Double>> pq = new PriorityQueue<>(Comparator.comparing(Map.Entry::getValue));
 
         List<PointSale> points = pointSaleService.getAllPointSale();
-        if (!puntoVentaExists(points, pointA) || !puntoVentaExists(points, pointB)) {
+        if (!pointSaleExists(points, pointA) || !pointSaleExists(points, pointB)) {
             throw new IllegalArgumentException(PUNTO_VENTA_NOT_FOUND);
         }
 
@@ -176,7 +176,7 @@ public class CostPointsServiceImpl implements CostPointsService {
         while (!pq.isEmpty()) {
             long actual = pq.poll().getKey();
 
-            for (Map.Entry<Long, Double> neighbor : getVecinos(actual, cache, REGEX).entrySet()) {
+            for (Map.Entry<Long, Double> neighbor : getNeighbors(actual, cache, REGEX).entrySet()) {
                 double newCost = distances.get(actual) + neighbor.getValue();
                 if (newCost < distances.get(neighbor.getKey())) {
                     distances.put(neighbor.getKey(), newCost);

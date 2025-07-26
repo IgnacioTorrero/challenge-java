@@ -54,7 +54,7 @@ public class CostPointsControllerTest {
     }
 
     /**
-     * Verifies that the {@code addCostoPuntos} method returns HTTP 200 OK
+     * Verifies that the {@code addCostPoints} method returns HTTP 200 OK
      * and correctly invokes the service.
      */
     @Test
@@ -66,7 +66,7 @@ public class CostPointsControllerTest {
     }
 
     /**
-     * Verifies that the {@code removeCostoPuntos} method returns HTTP 200 OK
+     * Verifies that the {@code removeCostPoints} method returns HTTP 200 OK
      * and invokes the service to remove the cost.
      */
     @Test
@@ -78,18 +78,18 @@ public class CostPointsControllerTest {
     }
 
     /**
-     * Verifies that the {@code getCostosDesdePunto} method correctly returns
+     * Verifies that the {@code getCostsFromPoint} method correctly returns
      * the costs from a sales point in HATEOAS format.
      */
     @Test
-    void getCostosDesdePunto_ReturnsCollectionModelOfCostos() {
+    void getCostsFromPoint_ReturnsCollectionModelOfCosts() {
         // Arrange
-        List<CostPointsResponse> costos = Arrays.asList(
+        List<CostPointsResponse> costs = Arrays.asList(
                 new CostPointsResponse(1L, 2L, 100.0, "GBA_1"),
                 new CostPointsResponse(1L, 3L, 150.0, "GBA_2")
         );
 
-        when(service.getCostsFromPoint(ID_PUNTO_VENTA)).thenReturn(costos);
+        when(service.getCostsFromPoint(ID_PUNTO_VENTA)).thenReturn(costs);
         when(assembler.toModel(any())).thenAnswer(invocation -> invocation.getArgument(0));
 
         // Act
@@ -100,15 +100,15 @@ public class CostPointsControllerTest {
 
         CollectionModel<CostPointsResponse> body = response.getBody();
         assertNotNull(body);
-        assertEquals(costos.size(), body.getContent().size());
+        assertEquals(costs.size(), body.getContent().size());
 
-        for (CostPointsResponse esperado : costos) {
+        for (CostPointsResponse expected : costs) {
             assertTrue(body.getContent().stream().anyMatch(item ->
                     item != null &&
-                            item.getIdA().equals(esperado.getIdA()) &&
-                            item.getIdB().equals(esperado.getIdB()) &&
-                            item.getCost().equals(esperado.getCost()) &&
-                            item.getPointNameB().equals(esperado.getPointNameB())
+                            item.getIdA().equals(expected.getIdA()) &&
+                            item.getIdB().equals(expected.getIdB()) &&
+                            item.getCost().equals(expected.getCost()) &&
+                            item.getPointNameB().equals(expected.getPointNameB())
             ));
         }
 
@@ -116,23 +116,23 @@ public class CostPointsControllerTest {
     }
 
     /**
-     * Verifies that the {@code calcularCostoMinimo} method returns the expected route and total cost,
+     * Verifies that the {@code calculateMinCost} method returns the expected route and total cost,
      * with the corresponding HATEOAS links.
      */
     @Test
     void calculateMinCostResponse() {
-        List<Long> ruta = Arrays.asList(1L, 2L, 3L);
-        Double costoTotal = 25.0;
-        MinCostRouteResponse original = new MinCostRouteResponse(ruta, costoTotal);
+        List<Long> rute = Arrays.asList(1L, 2L, 3L);
+        Double totalCost = 25.0;
+        MinCostRouteResponse original = new MinCostRouteResponse(rute, totalCost);
 
-        MinCostRouteResponse responseConLinks = new MinCostRouteResponse(ruta, costoTotal);
+        MinCostRouteResponse responseConLinks = new MinCostRouteResponse(rute, totalCost);
         responseConLinks.add(linkTo(methodOn(CostPointsController.class).getCostsFromPoint(1L)).withRel("ver-costos-desde-1"));
         responseConLinks.add(linkTo(methodOn(CostPointsController.class).getCostsFromPoint(2L)).withRel("ver-costos-desde-2"));
         responseConLinks.add(linkTo(methodOn(CostPointsController.class).getCostsFromPoint(3L)).withRel("ver-costos-desde-3"));
         responseConLinks.add(linkTo(methodOn(CostPointsController.class).calculateMinCost(new CostPointsRequest(1L, 3L))).withRel("recalcular-ruta"));
 
-        when(service.calculateMinPath(anyLong(), anyLong())).thenReturn(ruta);
-        when(service.calculateTotalRouteCost(anyList())).thenReturn(costoTotal);
+        when(service.calculateMinPath(anyLong(), anyLong())).thenReturn(rute);
+        when(service.calculateTotalRouteCost(anyList())).thenReturn(totalCost);
         when(rutaAssembler.toModel(any())).thenReturn(responseConLinks);
 
         // Act
@@ -142,8 +142,8 @@ public class CostPointsControllerTest {
         // Assert
         assertEquals(SUCCESS_RESPONSE, response.getStatusCodeValue());
         assertNotNull(response.getBody());
-        assertEquals(ruta, response.getBody().getRute());
-        assertEquals(costoTotal, response.getBody().getTotalCost());
+        assertEquals(rute, response.getBody().getRute());
+        assertEquals(totalCost, response.getBody().getTotalCost());
 
         assertTrue(response.getBody().getLinks().hasLink("ver-costos-desde-1"));
         assertTrue(response.getBody().getLinks().hasLink("ver-costos-desde-2"));
@@ -156,7 +156,7 @@ public class CostPointsControllerTest {
     }
 
     /**
-     * Verifies that if a request with equal IDs is sent, the {@code addCostoPuntos}
+     * Verifies that if a request with equal IDs is sent, the {@code addCostPoints}
      * method throws an {@link IllegalArgumentException}.
      */
     @Test

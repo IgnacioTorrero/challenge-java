@@ -40,7 +40,7 @@ public class AccreditationServiceImplTest {
     }
 
     /**
-     * Verifies that {@code recibirAcreditacion} correctly saves and returns an accreditation
+     * Verifies that {@code receiveAccreditation} correctly saves and returns an accreditation
      * when the sales point exists.
      */
     @Test
@@ -70,7 +70,7 @@ public class AccreditationServiceImplTest {
     }
 
     /**
-     * Verifies that {@code recibirAcreditacion} throws a {@link PointSaleNotFoundException}
+     * Verifies that {@code receiveAccreditation} throws a {@link PointSaleNotFoundException}
      * when the sales point does not exist.
      */
     @Test
@@ -84,7 +84,7 @@ public class AccreditationServiceImplTest {
     }
 
     /**
-     * Verifies that {@code obtenerAcreditaciones} returns all accreditations
+     * Verifies that {@code getAccreditations} returns all accreditations
      * from the repository.
      */
     @Test

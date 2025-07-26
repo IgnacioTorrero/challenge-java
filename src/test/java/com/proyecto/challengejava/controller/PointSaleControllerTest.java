@@ -39,8 +39,8 @@ public class PointSaleControllerTest {
     @InjectMocks
     private PointSaleController controller;
 
-    private final PointSale punto1 = new PointSale();
-    private final PointSale punto2 = new PointSale();
+    private final PointSale point1 = new PointSale();
+    private final PointSale point2 = new PointSale();
     private final PointSaleRequest request = new PointSaleRequest();
 
     /**
@@ -50,23 +50,23 @@ public class PointSaleControllerTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        punto1.setId(ID_PUNTO_VENTA);
-        punto1.setName(PUNTO_VENTA_1);
-        punto2.setId(ID_PUNTO_VENTA2);
-        punto2.setName(PUNTO_VENTA_2);
+        point1.setId(ID_PUNTO_VENTA);
+        point1.setName(PUNTO_VENTA_1);
+        point2.setId(ID_PUNTO_VENTA2);
+        point2.setName(PUNTO_VENTA_2);
 
         request.setName(PUNTO_VENTA_3);
     }
 
     /**
-     * Verifies that the {@code getAllPuntosVenta} method correctly returns
+     * Verifies that the {@code getAllPointsSale} method correctly returns
      * a list of sales points converted to a CollectionModel.
      */
     @Test
     void getAllPointsSaleResponses() {
         // Arrange
-        List<PointSale> puntosVenta = Arrays.asList(punto1, punto2);
-        when(service.getAllPointSale()).thenReturn(puntosVenta);
+        List<PointSale> salePoints = Arrays.asList(point1, point2);
+        when(service.getAllPointSale()).thenReturn(salePoints);
         when(assembler.toModel(any(PointSaleResponse.class)))
                 .thenAnswer(invocation -> invocation.getArgument(0));
 
@@ -92,7 +92,7 @@ public class PointSaleControllerTest {
     }
 
     /**
-     * Verifies that the {@code addPuntoVenta} method returns HTTP 200 OK
+     * Verifies that the {@code addPointSale} method returns HTTP 200 OK
      * and invokes the service to create a new sales point.
      */
     @Test
@@ -104,7 +104,7 @@ public class PointSaleControllerTest {
     }
 
     /**
-     * Verifies that the {@code updatePuntoVenta} method correctly updates
+     * Verifies that the {@code updatePointSale} method correctly updates
      * the name of the given sales point.
      */
     @Test
@@ -116,7 +116,7 @@ public class PointSaleControllerTest {
     }
 
     /**
-     * Verifies that the {@code deletePuntoVenta} method properly deletes a sales point
+     * Verifies that the {@code deletePointSale} method properly deletes a sales point
      * along with its associated costs.
      */
     @Test
