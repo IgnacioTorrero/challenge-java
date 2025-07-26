@@ -13,7 +13,7 @@ public class ConstantsTest {
     public static final String POINT_SALE_4 = "Capital Federal";
     public static final String POINT_SALE_5 = "Gran Buenos Aires 1";
     public static final String POINT_SALE_6 = "Uruguay";
-    public static final String METHOD_ADD_INITIAL_COST = "agregarCostoInicial";
+    public static final String METHOD_ADD_INITIAL_COST = "addInitialCost";
     public static final Long INVALID_ID = 99L;
     public static final Long INVALID_ID2 = 100L;
     public static final double INVALID_COST = -10.0;
@@ -27,7 +27,7 @@ public class ConstantsTest {
     public static final double AMOUNT2 = 200.0;
 
     /* Error messages */
-    public static final String POINT_SALE_NOT_FOUND = "Punto/s de venta no encontrado/s";
-    public static final String COST_POINTS_LESS_THAN_ZERO = "El costo no puede ser menor a cero";
-    public static final String INVALID_ID_EXCEPTION = "Ambos IDs no pueden ser iguales";
+    public static final String POINT_OF_SALE_NOT_FOUND = "Point of sale/s not found";
+    public static final String COST_POINTS_LESS_THAN_ZERO = "The cost cannot be less than zero";
+    public static final String INVALID_ID_EXCEPTION = "Both IDs cannot be equal";
 }

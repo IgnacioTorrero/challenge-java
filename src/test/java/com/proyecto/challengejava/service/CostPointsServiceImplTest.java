@@ -100,7 +100,7 @@ public class CostPointsServiceImplTest {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
                 costoPuntosServiceImpl.addCostPoints(INVALID_ID, INVALID_ID2, AMOUNT)
         );
-        assertEquals(POINT_SALE_NOT_FOUND, exception.getMessage());
+        assertEquals(POINT_OF_SALE_NOT_FOUND, exception.getMessage());
     }
 
     /**
@@ -136,7 +136,7 @@ public class CostPointsServiceImplTest {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
                 costoPuntosServiceImpl.getCostsFromPoint(INVALID_ID)
         );
-        assertEquals(POINT_SALE_NOT_FOUND, exception.getMessage());
+        assertEquals(POINT_OF_SALE_NOT_FOUND, exception.getMessage());
     }
 
     /**
@@ -147,7 +147,7 @@ public class CostPointsServiceImplTest {
         Exception exception = assertThrows(PointSaleNotFoundException.class, () ->
                 costoPuntosServiceImpl.removeCostPoints(INVALID_ID, INVALID_ID2)
         );
-        assertEquals(POINT_SALE_NOT_FOUND, exception.getMessage());
+        assertEquals(POINT_OF_SALE_NOT_FOUND, exception.getMessage());
     }
 
     /**

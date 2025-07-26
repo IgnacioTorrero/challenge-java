@@ -79,7 +79,7 @@ public class AccreditationServiceImplTest {
 
         Exception exception = assertThrows(PointSaleNotFoundException.class,
                 () -> acreditacionServiceImpl.receiveAccreditation(AMOUNT, INVALID_ID));
-        assertEquals(POINT_SALE_NOT_FOUND + ": 99", exception.getMessage());
+        assertEquals(POINT_OF_SALE_NOT_FOUND + ": 99", exception.getMessage());
         verify(accreditationRepository, never()).save(any(Accreditation.class));
     }
 
