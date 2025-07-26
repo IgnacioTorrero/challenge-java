@@ -5,7 +5,7 @@ import com.proyecto.challengejava.dto.AuthResponse;
 import com.proyecto.challengejava.dto.RegisterRequest;
 import com.proyecto.challengejava.entity.Usuario;
 import com.proyecto.challengejava.enums.Role;
-import com.proyecto.challengejava.repository.UsuarioRepository;
+import com.proyecto.challengejava.repository.UsernameRepository;
 import com.proyecto.challengejava.security.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.*;
@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthServiceImpl implements AuthService {
 
-    private final UsuarioRepository usuarioRepository;
+    private final UsernameRepository usernameRepository;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
@@ -28,17 +28,17 @@ public class AuthServiceImpl implements AuthService {
     /**
      * Constructor that injects the dependencies required for authentication.
      *
-     * @param usuarioRepository       Repository for users.
+     * @param usernameRepository       Repository for users.
      * @param jwtService              Service for generating JWT tokens.
      * @param authenticationManager   Spring Security authentication manager.
      * @param passwordEncoder         Password encoder.
      */
     @Autowired
-    public AuthServiceImpl(UsuarioRepository usuarioRepository,
+    public AuthServiceImpl(UsernameRepository usernameRepository,
                            JwtService jwtService,
                            AuthenticationManager authenticationManager,
                            PasswordEncoder passwordEncoder) {
-        this.usuarioRepository = usuarioRepository;
+        this.usernameRepository = usernameRepository;
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
         this.passwordEncoder = passwordEncoder;
@@ -58,7 +58,7 @@ public class AuthServiceImpl implements AuthService {
         usuario.setPassword(passwordEncoder.encode(request.getPassword()));
         usuario.setRole(Role.USER);
 
-        usuarioRepository.save(usuario);
+        usernameRepository.save(usuario);
 
         String token = jwtService.generateToken(usuario.getEmail());
 

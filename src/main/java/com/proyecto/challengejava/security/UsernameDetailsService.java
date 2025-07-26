@@ -1,7 +1,7 @@
 package com.proyecto.challengejava.security;
 
 import com.proyecto.challengejava.entity.Usuario;
-import com.proyecto.challengejava.repository.UsuarioRepository;
+import com.proyecto.challengejava.repository.UsernameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.Service;
@@ -9,23 +9,23 @@ import org.springframework.stereotype.Service;
 import static com.proyecto.challengejava.constants.Constants.*;
 
 @Service
-public class UsuarioDetailsService implements UserDetailsService {
+public class UsernameDetailsService implements UserDetailsService {
 
-    private final UsuarioRepository usuarioRepository;
+    private final UsernameRepository usernameRepository;
 
     @Autowired
-    public UsuarioDetailsService(UsuarioRepository usuarioRepository) {
-        this.usuarioRepository = usuarioRepository;
+    public UsernameDetailsService(UsernameRepository usernameRepository) {
+        this.usernameRepository = usernameRepository;
     }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Usuario usuario = usuarioRepository.findByEmail(email)
+        Usuario username = usernameRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException(USUARIO_NO_ENCONTRADO + email));
 
-        return User.withUsername(usuario.getEmail())
-                .password(usuario.getPassword())
-                .roles(usuario.getRole().name()) // Usa el enum Rol (ej: USER, ADMIN)
+        return User.withUsername(username.getEmail())
+                .password(username.getPassword())
+                .roles(username.getRole().name()) // Use the Role enum (ex: USER, ADMIN)
                 .build();
     }
 }
