@@ -1,4 +1,4 @@
-# Challenge Java
+# SalesPoint Manager
 
 Este proyecto es una API REST construida con Spring Boot para la gestión de puntos de venta, acreditaciones y costos de conexión entre dichos puntos, incorporando JWT para autenticación, Swagger UI para documentación, y Docker/Podman para el despliegue.
 
@@ -47,19 +47,19 @@ Este proyecto es una API REST construida con Spring Boot para la gestión de pun
 - `POST /register`: Registrar un nuevo usuario.
 - `POST /login`: Iniciar sesión. Devuelve un token JWT.
 
-#### Puntos de venta (`/api/puntos-venta`)
+#### Puntos de venta (`/api/sale-points`)
 - `GET /`: Listar puntos de venta (token requerido).
 - `POST /`: Crear un punto de venta.
 - `PUT /{id}`: Actualizar nombre del punto.
 - `DELETE /{id}`: Eliminar un punto y sus costos relacionados.
 
-#### Costos (`/api/costos`)
-- `POST /`: Agregar costo entre dos puntos (requiere `costo` en query param).
+#### Costos (`/api/costs`)
+- `POST /`: Agregar costo entre dos puntos (requiere `cost` en query param).
 - `DELETE /`: Eliminar el costo entre dos puntos.
 - `GET /{idA}`: Listar todos los costos desde un punto A.
-- `POST /minimo`: Calcular ruta de costo mínimo entre dos puntos (usando algoritmo de Dijkstra).
+- `POST /min`: Calcular ruta de costo mínimo entre dos puntos (usando algoritmo de Dijkstra).
 
-#### Acreditaciones (`/api/acreditaciones`)
+#### Acreditaciones (`/api/accreditations`)
 - `GET /`: Listar todas las acreditaciones registradas.
 - `POST /`: Recibir y guardar una nueva acreditación.
 
@@ -132,7 +132,7 @@ Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6...
 ```http
 POST /api/auth/register
 Body:
-{ "nombre": "Juan", "email": "juan@mail.com", "password": "1234" }
+{ "name": "Juan", "email": "juan@mail.com", "password": "1234" }
 
 POST /api/auth/login
 Body:
@@ -142,40 +142,40 @@ Body:
 #### 🏬 Puntos de Venta
 
 ```http
-GET /api/puntos-venta
+GET /api/sale-points
 
-POST /api/puntos-venta
+POST /api/sale-points
 Body: { "nombre": "Jujuy" }
 
-PUT /api/puntos-venta/1
+PUT /api/sale-points/1
 Body: { "nombre": "Capital Federal" }
 
-DELETE /api/puntos-venta/1
+DELETE /api/sale-points/1
 ```
 
 #### 💸 Costos entre Puntos
 
 ```http
-POST /api/costos?costo=10
+POST /api/costs?cost=10
 Body: { "idA": 1, "idB": 4 }
 
-DELETE /api/costos
+DELETE /api/costs
 Body: { "idA": 1, "idB": 4 }
 
-GET /api/costos/1
+GET /api/costs/1
 
-POST /api/costos/minimo
+POST /api/costs/min
 Body: { "idA": 1, "idB": 5 }
 ```
 
 #### 🧾 Acreditaciones
 
 ```http
-GET /api/acreditaciones
+GET /api/accreditations
 
-POST /api/acreditaciones
+POST /api/accreditations
 Body:
-{ "importe": 1500.00, "idPuntoVenta": 2 }
+{ "amount": 1500.00, "idPointSale": 2 }
 ```
 
 💡 Todos los endpoints salvo `/auth/register` y `/auth/login` requieren el token JWT.
@@ -186,8 +186,8 @@ Body:
 
 Este proyecto incluye pruebas unitarias y de integración utilizando **JUnit 5** y **Mockito**.
 
-- Se testean controllers como `PuntoVentaController`, `CostoPuntosController` y `AcreditacionController`.
-- Se testean servicios como `PuntoVentaServiceImpl`, `CostoPuntosServiceImpl` y `AcreditacionServiceImpl`.
+- Se testean controllers como `PointSaleController`, `CostPointsController` y `AccreditationController`.
+- Se testean servicios como `PointSaleServiceImpl`, `CostPointsServiceImpl` y `AccreditationServiceImpl`.
 - Se mockean dependencias con Mockito (`@Mock`, `@InjectMocks`).
 - Se verifica la lógica de negocio, validaciones y manejo de excepciones.
 - Coberturas del 100%.
@@ -221,7 +221,7 @@ Podés encontrar la definición del workflow en el directorio `.github/workflows
 Si algo no funciona, lo primero que deberías revisar es:
 - ⚡ Que el contenedor de MySQL esté corriendo y haya sido creado correctamente.
 - 🔐 Que el token JWT sea válido y no esté vencido.
-- ✉ Que los datos requeridos (como `nombre`, `importe`, `idA`, `idB`, etc) estén bien formateados en las requests.
+- ✉ Que los datos requeridos (como `name`, `amount`, `idA`, `idB`, etc) estén bien formateados en las requests.
 
 Cualquier duda extra, el código está completamente documentado y modularizado, con ejemplos y convenciones claras.
 
@@ -249,7 +249,7 @@ Las variables necesarias para la conexión a MySQL y JWT están definidas en `ap
 
 
 ```properties
-spring.application.name=challenge-java
+spring.application.name=sales-point-manager
 spring.datasource.url=${SPRING_DATASOURCE_URL}
 spring.datasource.username=${SPRING_DATASOURCE_USERNAME}
 spring.datasource.password=${SPRING_DATASOURCE_PASSWORD}

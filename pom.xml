@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.proyecto</groupId>
-	<artifactId>challenge-java</artifactId>
+	<artifactId>sales-point-manager</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>challenge-java</name>
-	<description>challenge-java</description>
+	<name>sales-point-manager</name>
+	<description>sales-point-manager</description>
 	<url/>
 	<licenses>
 		<license/>
