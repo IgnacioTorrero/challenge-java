@@ -68,7 +68,7 @@ public class PointSaleControllerTest {
         List<PointSale> salePoints = Arrays.asList(point1, point2);
         when(service.getAllPointSale()).thenReturn(salePoints);
         when(assembler.toModel(any(PointSaleResponse.class)))
-                .thenAnswer(invocation -> invocation.getArgument(0));
+                .thenAnswer(invocation -> invocation.getArgument(ZERO));
 
         // Act
         ResponseEntity<CollectionModel<PointSaleResponse>> response = controller.getAllPointsSale();

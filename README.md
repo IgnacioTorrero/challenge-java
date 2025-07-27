@@ -1,4 +1,4 @@
-# Challenge Java
+# SalesPoint Manager
 
 > This project demonstrates a professional-grade backend architecture using Spring Boot, designed for scalable RESTful APIs with secure JWT authentication, HATEOAS support, and containerized deployment.
 
@@ -47,19 +47,19 @@
 - `POST /register`: Register a new user.
 - `POST /login`: Login. Returns a JWT token.
 
-#### Sales Points (`/api/puntos-venta`)
+#### Sales Points (`/api/sale-points`)
 - `GET /`: List sales points (token required).
 - `POST /`: Create a sales point.
 - `PUT /{id}`: Update point name.
 - `DELETE /{id}`: Delete a point and its related costs.
 
-#### Costs (`/api/costos`)
-- `POST /`: Add cost between two points (requires `costo` as query param).
+#### Costs (`/api/costs`)
+- `POST /`: Add cost between two points (requires `cost` as query param).
 - `DELETE /`: Delete the cost between two points.
 - `GET /{idA}`: List all costs from point A.
-- `POST /minimo`: Calculate minimum cost route between two points (using Dijkstra’s algorithm).
+- `POST /min`: Calculate minimum cost route between two points (using Dijkstra’s algorithm).
 
-#### Accreditations (`/api/acreditaciones`)
+#### Accreditations (`/api/accreditations`)
 - `GET /`: List all registered accreditations.
 - `POST /`: Receive and store a new accreditation.
 
@@ -140,7 +140,7 @@ Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6...
 ```http
 POST /api/auth/register
 Body:
-{ "nombre": "Juan", "email": "juan@mail.com", "password": "1234" }
+{ "name": "Juan", "email": "juan@mail.com", "password": "1234" }
 
 POST /api/auth/login
 Body:
@@ -149,39 +149,39 @@ Body:
 #### 🏬 Points of Sale
 
 ```http
-GET /api/puntos-venta
+GET /api/sale-points
 
-POST /api/puntos-venta
-Body: { "nombre": "Jujuy" }
+POST /api/sale-points
+Body: { "name": "Jujuy" }
 
-PUT /api/puntos-venta/1
-Body: { "nombre": "Capital Federal" }
+PUT /api/sale-points/1
+Body: { "name": "Capital Federal" }
 
-DELETE /api/puntos-venta/1
+DELETE /api/sale-points/1
 ```
 #### 💸 Costs between Points
 
 ```http
-POST /api/costos?costo=10
+POST /api/costs?cost=10
 Body: { "idA": 1, "idB": 4 }
 
-DELETE /api/costos
+DELETE /api/costs
 Body: { "idA": 1, "idB": 4 }
 
-GET /api/costos/1
+GET /api/costs/1
 
-POST /api/costos/minimo
+POST /api/costs/min
 Body: { "idA": 1, "idB": 5 }
 ```
 
 #### 🧾 Accreditations
 
 ```http
-GET /api/acreditaciones
+GET /api/accreditations
 
-POST /api/acreditaciones
+POST /api/accreditations
 Body:
-{ "importe": 1500.00, "idPuntoVenta": 2 }
+{ "amount": 1500.00, "idPointSale": 2 }
 ```
 💡 All endpoints except `/auth/register` and `/auth/login` require the JWT token.
 
@@ -224,7 +224,7 @@ You can find the workflow definition in the `.github/workflows/` directory.
 If something isn't working, the first thing you should check is:
 - ⚡ That the MySQL container is running and has been created correctly.
 - 🔐 That the JWT token is valid and hasn't expired.
-- ✉ That the required data (such as `nombre`, `monto`, `idA`, `idB`, etc.) is properly formatted in the requests.
+- ✉ That the required data (such as `name`, `amount`, `idA`, `idB`, etc.) is properly formatted in the requests.
 
 If you have any additional questions, the code is fully documented and modularized, with clear examples and conventions.
 
@@ -248,7 +248,7 @@ You are free to use, modify, and distribute this project under the terms of the 
 The variables required for connecting to MySQL and JWT are defined in `application.properties`.
 
 ```properties
-spring.application.name=challenge-java
+spring.application.name=sales-point-manager
 spring.datasource.url=${SPRING_DATASOURCE_URL}
 spring.datasource.username=${SPRING_DATASOURCE_USERNAME}
 spring.datasource.password=${SPRING_DATASOURCE_PASSWORD}

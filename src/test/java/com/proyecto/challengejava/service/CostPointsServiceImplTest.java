@@ -169,12 +169,12 @@ public class CostPointsServiceImplTest {
     @Test
     void calculateMinPath_ThrowsIllegalArgumentException_WhenPointSaleDoesNotExist() {
         when(puntoVentaServiceImpl.getAllPointSale()).thenReturn(Arrays.asList(
-                new PointSale() {{ setId(1L); setName(POINTS_OF_SALE.get(0)); }},
-                new PointSale() {{ setId(2L); setName(POINTS_OF_SALE.get(1)); }}
+                new PointSale() {{ setId(ID_POINT_SALE1); setName(POINTS_OF_SALE.get(0)); }},
+                new PointSale() {{ setId(ID_POINT_SALE2); setName(POINTS_OF_SALE.get(1)); }}
         ));
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            costoPuntosServiceImpl.calculateMinPath(1L, 3L);
+            costoPuntosServiceImpl.calculateMinPath(ID_POINT_SALE1, ID_POINT_SALE3);
         });
 
         assertEquals("Point of sale/s not found", exception.getMessage());
@@ -197,13 +197,13 @@ public class CostPointsServiceImplTest {
      */
     @Test
     void calculateTotalRouteCost_ThrowsException_WhenKeyNotInCache() {
-        List<Long> invalidRoute = Arrays.asList(2L, 3L);
+        List<Long> invalidRoute = Arrays.asList(ID_POINT_SALE2, ID_POINT_SALE3);
 
         Exception exception = assertThrows(IllegalStateException.class, () -> {
             costoPuntosServiceImpl.calculateTotalRouteCost(invalidRoute);
         });
 
-        assertEquals("Missing cost between 2 and 3", exception.getMessage());
+        assertEquals(MISSING_COST_BETWEEN, exception.getMessage());
     }
 
     /**
@@ -264,8 +264,8 @@ public class CostPointsServiceImplTest {
         Long relatedId = 1L;
 
         when(puntoVentaServiceImpl.getAllPointSale()).thenReturn(Arrays.asList(
-                new PointSale() {{ setId(idA); setName("Punto 2"); }},
-                new PointSale() {{ setId(relatedId); setName("Punto 1"); }}
+                new PointSale() {{ setId(idA); setName("Point 2"); }},
+                new PointSale() {{ setId(relatedId); setName("Point 1"); }}
         ));
 
         costoPuntosServiceImpl.getCache().clear();
@@ -279,7 +279,7 @@ public class CostPointsServiceImplTest {
         assertEquals(idA, costs.get(0).getIdA());
         assertEquals(relatedId, costs.get(0).getIdB());
         assertEquals(5.5, costs.get(0).getCost());
-        assertEquals("Punto 1", costs.get(0).getPointNameB());
+        assertEquals("Point 1", costs.get(0).getPointNameB());
     }
 
     /**
