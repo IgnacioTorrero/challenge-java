@@ -1,4 +1,4 @@
--- Precarga de costos entre puntos de venta
+-- Preloading costs between points of sale
 
 INSERT INTO cost_points (idA, idB, cost) VALUES (1, 2, 2.0);
 INSERT INTO cost_points (idA, idB, cost) VALUES (1, 3, 3.0);
