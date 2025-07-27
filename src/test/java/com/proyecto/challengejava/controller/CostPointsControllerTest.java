@@ -73,7 +73,7 @@ public class CostPointsControllerTest {
     void removeCostPoints_ReturnsOk() {
         ResponseEntity<Void> response = controller.removeCostPoints(request);
 
-        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(SUCCESS_RESPONSE, response.getStatusCodeValue());
         verify(service, times(1)).removeCostPoints(ID_POINT_SALE5, ID_POINT_SALE2);
     }
 
@@ -85,12 +85,12 @@ public class CostPointsControllerTest {
     void getCostsFromPoint_ReturnsCollectionModelOfCosts() {
         // Arrange
         List<CostPointsResponse> costs = Arrays.asList(
-                new CostPointsResponse(1L, 2L, 100.0, "GBA_1"),
-                new CostPointsResponse(1L, 3L, 150.0, "GBA_2")
+                new CostPointsResponse(ID_POINT_SALE1, ID_POINT_SALE2, AMOUNT, POINT_SALE_2),
+                new CostPointsResponse(ID_POINT_SALE1, ID_POINT_SALE3, AMOUNT3, POINT_SALE_4)
         );
 
         when(service.getCostsFromPoint(ID_POINT_SALE1)).thenReturn(costs);
-        when(assembler.toModel(any())).thenAnswer(invocation -> invocation.getArgument(0));
+        when(assembler.toModel(any())).thenAnswer(invocation -> invocation.getArgument(ZERO));
 
         // Act
         ResponseEntity<CollectionModel<CostPointsResponse>> response = controller.getCostsFromPoint(ID_POINT_SALE1);
@@ -121,22 +121,22 @@ public class CostPointsControllerTest {
      */
     @Test
     void calculateMinCostResponse() {
-        List<Long> route = Arrays.asList(1L, 2L, 3L);
+        List<Long> route = Arrays.asList(ID_POINT_SALE1, ID_POINT_SALE2, ID_POINT_SALE3);
         Double totalCost = 25.0;
         MinCostRouteResponse original = new MinCostRouteResponse(route, totalCost);
 
         MinCostRouteResponse responseConLinks = new MinCostRouteResponse(route, totalCost);
-        responseConLinks.add(linkTo(methodOn(CostPointsController.class).getCostsFromPoint(1L)).withRel("ver-costos-desde-1"));
-        responseConLinks.add(linkTo(methodOn(CostPointsController.class).getCostsFromPoint(2L)).withRel("ver-costos-desde-2"));
-        responseConLinks.add(linkTo(methodOn(CostPointsController.class).getCostsFromPoint(3L)).withRel("ver-costos-desde-3"));
-        responseConLinks.add(linkTo(methodOn(CostPointsController.class).calculateMinCost(new CostPointsRequest(1L, 3L))).withRel("recalcular-ruta"));
+        responseConLinks.add(linkTo(methodOn(CostPointsController.class).getCostsFromPoint(ID_POINT_SALE1)).withRel(SEE_COSTS_FROM_1));
+        responseConLinks.add(linkTo(methodOn(CostPointsController.class).getCostsFromPoint(ID_POINT_SALE2)).withRel(SEE_COSTS_FROM_2));
+        responseConLinks.add(linkTo(methodOn(CostPointsController.class).getCostsFromPoint(ID_POINT_SALE3)).withRel(SEE_COSTS_FROM_3));
+        responseConLinks.add(linkTo(methodOn(CostPointsController.class).calculateMinCost(new CostPointsRequest(1L, 3L))).withRel(RECALCULATE_ROUTE));
 
         when(service.calculateMinPath(anyLong(), anyLong())).thenReturn(route);
         when(service.calculateTotalRouteCost(anyList())).thenReturn(totalCost);
         when(rutaAssembler.toModel(any())).thenReturn(responseConLinks);
 
         // Act
-        CostPointsRequest request = new CostPointsRequest(1L, 3L);
+        CostPointsRequest request = new CostPointsRequest(ID_POINT_SALE1, ID_POINT_SALE3);
         ResponseEntity<MinCostRouteResponse> response = controller.calculateMinCost(request);
 
         // Assert
@@ -145,10 +145,10 @@ public class CostPointsControllerTest {
         assertEquals(route, response.getBody().getRoute());
         assertEquals(totalCost, response.getBody().getTotalCost());
 
-        assertTrue(response.getBody().getLinks().hasLink("ver-costos-desde-1"));
-        assertTrue(response.getBody().getLinks().hasLink("ver-costos-desde-2"));
-        assertTrue(response.getBody().getLinks().hasLink("ver-costos-desde-3"));
-        assertTrue(response.getBody().getLinks().hasLink("recalcular-ruta"));
+        assertTrue(response.getBody().getLinks().hasLink(SEE_COSTS_FROM_1));
+        assertTrue(response.getBody().getLinks().hasLink(SEE_COSTS_FROM_2));
+        assertTrue(response.getBody().getLinks().hasLink(SEE_COSTS_FROM_3));
+        assertTrue(response.getBody().getLinks().hasLink(RECALCULATE_ROUTE));
 
         verify(service, times(1)).calculateMinPath(anyLong(), anyLong());
         verify(service, times(1)).calculateTotalRouteCost(anyList());
@@ -163,11 +163,11 @@ public class CostPointsControllerTest {
     void addCostPoints_SameId_ThrowsException() {
         // Arrange
         Long id = 5L;
-        CostPointsRequest requestConIdsIguales = new CostPointsRequest(id, id);
+        CostPointsRequest requestWithSameId = new CostPointsRequest(id, id);
 
         // Act & Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            controller.addCostPoints(requestConIdsIguales, 100.0);
+            controller.addCostPoints(requestWithSameId, AMOUNT);
         });
 
         assertEquals(INVALID_ID_EXCEPTION, exception.getMessage());

@@ -42,7 +42,7 @@ public class PointSaleServiceImplTest {
     void setUp() {
         datosMock = new ArrayList<>();
         for (long i = 1; i <= 10; i++) {
-            datosMock.add(new PointSale(i, "Punto " + i));
+            datosMock.add(new PointSale(i, "Point " + i));
         }
 
         when(pointSaleRepository.findAll()).thenAnswer(invocation -> new ArrayList<>(datosMock));
@@ -81,18 +81,18 @@ public class PointSaleServiceImplTest {
     @Test
     void preloadCache_LoadDataInCache() throws Exception {
         // Act
-        var method = PointSaleServiceImpl.class.getDeclaredMethod("preloadCache");
+        var method = PointSaleServiceImpl.class.getDeclaredMethod(METHOD_PRELOAD_CACHE);
         method.setAccessible(true);
         method.invoke(service);
 
-        var field = PointSaleServiceImpl.class.getDeclaredField("cache");
+        var field = PointSaleServiceImpl.class.getDeclaredField(FIELD_CACHE);
         field.setAccessible(true);
         Map<Long, String> cache = (Map<Long, String>) field.get(service);
 
         // Assert
         assertEquals(10, cache.size());
-        assertEquals("Punto 1", cache.get(1L));
-        assertEquals("Punto 10", cache.get(10L));
+        assertEquals("Point 1", cache.get(ID_POINT_SALE1));
+        assertEquals("Point 10", cache.get(ID_POINT_SALE4));
     }
 
     /**
@@ -107,7 +107,7 @@ public class PointSaleServiceImplTest {
         assertNotNull(salePoints);
         assertEquals(10, salePoints.size());
         assertEquals(1L, salePoints.get(0).getId());
-        assertEquals("Punto 1", salePoints.get(0).getName());
+        assertEquals("Point 1", salePoints.get(0).getName());
     }
 
     /**
@@ -135,7 +135,7 @@ public class PointSaleServiceImplTest {
     @Test
     void addPointSale_ThrowsIllegalArgumentException_WhenNameAlreadyExists() {
         // Arrange
-        String duplicatedName = "Punto 5";
+        String duplicatedName = "Point 5";
         when(pointSaleRepository.existsByName(duplicatedName)).thenReturn(true);
 
         // Act & Assert
