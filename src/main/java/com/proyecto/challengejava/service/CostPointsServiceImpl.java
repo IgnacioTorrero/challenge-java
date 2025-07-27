@@ -58,7 +58,7 @@ public class CostPointsServiceImpl implements CostPointsService {
             Double amount = cost.getCost();
             String key = generateKey(idA, idB);
             cache.putIfAbsent(key, amount);
-            System.out.println("✅ Cache loaded with key: " + key + " => " + amount);
+            System.out.println(LOADED_CACHE + key + " => " + amount);
         });
     }
 
@@ -213,9 +213,9 @@ public class CostPointsServiceImpl implements CostPointsService {
 
             Double cost = cache.get(key);
             if (!cache.containsKey(key)) {
-                System.err.println("❌ Key faltante en cache: " + key);
-                System.err.println("📦 Cache disponible: " + cache);
-                throw new IllegalStateException("Missing cost between " + idA + " and " + idB);
+                System.err.println(MISSING_KEY + key);
+                System.err.println(AVAILABLE_CACHE + cache);
+                throw new IllegalStateException(MISSING_COST_BETWEEN + idA + " and " + idB);
             }
 
             totalCost += cost;

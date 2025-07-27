@@ -42,35 +42,10 @@ public class PointSaleServiceImpl implements PointSaleService {
      */
     @PostConstruct
     public void init() {
-//        precargarPuntosVentaSiNoExisten();
         if (!Arrays.asList(env.getActiveProfiles()).contains("test")) {
             preloadCache();
         }
     }
-
-    /*
-     * Alternative method to load cache from the database.
-     * Currently unused.
-     */
-//    private void cargarCacheDesdeDB() {
-//        puntoVentaRepository.findAll().forEach(p -> cache.put(p.getId(), p.getNombre()));
-//    }
-
-    /*
-     * Preloads sales points into the database if they do not exist.
-     * Commented out because the containerized database is used instead.
-     */
-//    private void precargarPuntosVentaSiNoExisten() {
-//        if (puntoVentaRepository.count() == 0) {
-//            List<PuntoVenta> puntos = new ArrayList<>();
-//            for (long i = 1; i <= 10; i++) {
-//                PuntoVenta puntoVenta = new PuntoVenta();
-//                puntoVenta.setNombre(PUNTOS_VENTA.get((int) (i - 1)));
-//                puntos.add(puntoVenta);
-//            }
-//            puntoVentaRepository.saveAll(puntos);
-//        }
-//    }
 
     /**
      * Retrieves all sales points registered in the database.
