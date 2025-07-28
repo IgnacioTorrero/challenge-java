@@ -107,12 +107,10 @@ The correct execution order is:
 
 ---
 
-### 6) How to Visualize and Test Swagger UI?
+### 6) How to visualize and test Swagger UI?
 
-**From IntelliJ:**
-
-- Plugin: `OpenAPI (Swagger) Editor`
-- Menu: `Tools > OpenAPI (Swagger) Editor > Show Open API Preview`
+**Enter the following URL:**
+- http://localhost:8080/swagger-ui.html
 
 ---
 
