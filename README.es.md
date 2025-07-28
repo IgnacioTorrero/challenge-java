@@ -2,7 +2,7 @@
 
 Este proyecto es una API REST construida con Spring Boot para la gestión de puntos de venta, acreditaciones y costos de conexión entre dichos puntos, incorporando JWT para autenticación, Swagger UI para documentación, y Docker/Podman para el despliegue.
 
-🌐 Este README también está disponible en [English](README.es.md)
+🌐 Este README también está disponible en [English](README.md)
 ---
 
 ## 📖 Módulo teórico
@@ -182,7 +182,7 @@ Body:
 
 ---
 
-## 🧪 Tests
+### 7) 🧪 Tests
 
 Este proyecto incluye pruebas unitarias y de integración utilizando **JUnit 5** y **Mockito**.
 
@@ -193,7 +193,7 @@ Este proyecto incluye pruebas unitarias y de integración utilizando **JUnit 5**
 - Coberturas del 100%.
 ---
 
-## 🔄 CI/CD
+### 8) 🔄 CI/CD
 
 Este proyecto integra **GitHub Actions** como herramienta de Integración Continua (CI) para asegurar la calidad y estabilidad del código en cada push o pull request.
 
