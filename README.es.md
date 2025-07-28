@@ -104,9 +104,8 @@ El orden para levantar de cero sería:
 3) podman-compose up --detach
 ### 6) ¿Cómo visualizar y testear Swagger UI?
 
-**Desde IntelliJ:**
-- Plugin `OpenAPI (Swagger) Editor`
-- `Tools > OpenAPI (Swagger) Editor > Show Open API Preview`
+**Ingresar la siguiente URL:**
+- http://localhost:8080/swagger-ui.html
 
 ### 7) ¿Cómo testear cada endpoint en Postman?
 
